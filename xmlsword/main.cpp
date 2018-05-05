@@ -10,8 +10,10 @@
 #include <QtDebug>
 #include <QString>
 #include <QRegExp>
+#include <simpleosisverseparser.h>
 using namespace std;
 using namespace::sword;
+
 
 
 int main()
@@ -24,6 +26,8 @@ int main()
     SWMgr library(new MarkupFilterMgr(FMT_OSIS));
     XMLTag x;
     QString qStr;
+    qDebug()<<"start";
+
     /*
      *<w lemma=\"lemma.Strong:καί strong:G2532\" morph=\"robinson:CONJ\">⸀καὶ</w>
      * */
@@ -66,54 +70,79 @@ int main()
     qStr= QString::fromUtf8(target->renderText(0, -1, true));
     //std::cout << "plop" << qStr.toStdString();
 
-    qDebug()<<qStr;
+    //qDebug()<<qStr;
 
-    QStringList list;
+    SimpleOsisVerseParser simpleParser(qStr);
+    //qDebug() << simpleParser.getVerselist();
+    QStringList list=simpleParser.getVerselist();
+
+   /*
     int pos = 0;
 
+
     while ((pos = rx.indexIn(qStr, pos)) != -1) {
+
+
         list << rx.cap(1);
         qDebug() << "\n\nCOIN" <<rx.cap(1)<<"\n\n";
         pos += rx.matchedLength();
         qDebug()<<pos<<"\n";
     }
+*/
 
-    exit(0);
-    QXmlStreamReader reader(qStr);
-    while(!reader.atEnd() && !reader.hasError()) {
 
-        if(reader.readNext() == QXmlStreamReader::StartElement && reader.name() == "w") {
-            qDebug() << reader.readElementText();
-            qDebug()<< reader.text();
 
+
+
+    QString s;
+    foreach( s, list ) {
+        qDebug()<<"#############";
+
+        QString word;
+        QXmlStreamReader reader(s);
+        while(!reader.atEnd() && !reader.hasError()) {
+
+            if(reader.readNext() == QXmlStreamReader::StartElement && reader.name() == "w") {
+                //qDebug() << "readelementText" << reader.readElementText();
+                //qDebug()<< "text()" << reader.text();
+                word=reader.readElementText();
+
+
+            }
+            if(reader.hasError()) {
+		qDebug()<<"error:"<<s<<"\n";
+                qDebug()<< "\n\nreader error: " << reader.errorString() << "\n";
+
+            }
         }
-        if(reader.hasError()) {
-            qDebug()<< "\n\nreader error: " << reader.errorString() << "\n";
 
+
+
+
+
+        x.setText(s.toUtf8());
+
+        cout <<"\n\n";
+        //qDebug()<<"s="<<s;
+        qDebug()<<"Word"<<word;
+        //qDebug() <<"to string " << x.toString();
+        //cout << "Tag name: [" << x.getName() << "]\n";
+        StringList attributes = x.getAttributeNames();
+        for (StringList::iterator it = attributes.begin(); it != attributes.end(); it++) {
+            const char *name = it->c_str();
+            cout << " - attribute: [" << name << "] = [";
+            cout << x.getAttribute(name) << "]\n";
+
+            int count = x.getAttributePartCount(name, ' ');
+            cout << "\t" << count << " parts:\n";
+            int i = (count > 1) ? 0 : -1;		// -1 for whole value cuz it's faster, but does the same thing as 0
+            do {
+                cout << "\t" << x.getAttribute(name, i, ' ') << "\n";
+                if (i < 0) i = 0;	// to handle our -1 condition
+            } while (++i < count);
         }
+
     }
-
-
-
-    x.setText(qStr.toUtf8());
-    cout <<"\n\n";
-    cout << "Tag name: [" << x.getName() << "]\n";
-    StringList attributes = x.getAttributeNames();
-    for (StringList::iterator it = attributes.begin(); it != attributes.end(); it++) {
-        const char *name = it->c_str();
-        cout << " - attribute: [" << name << "] = [";
-        cout << x.getAttribute(name) << "]\n";
-
-        int count = x.getAttributePartCount(name, ' ');
-        cout << "\t" << count << " parts:\n";
-        int i = (count > 1) ? 0 : -1;		// -1 for whole value cuz it's faster, but does the same thing as 0
-        do {
-            cout << "\t" << x.getAttribute(name, i, ' ') << "\n";
-            if (i < 0) i = 0;	// to handle our -1 condition
-        } while (++i < count);
-    }
-
-
 
     cout << "Hello World!" << endl;
     return 0;
