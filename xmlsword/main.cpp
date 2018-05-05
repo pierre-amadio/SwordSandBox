@@ -41,7 +41,7 @@ int main()
     library.setGlobalOption("OSISStrongs","On");
 
     bookName="MorphGNT";
-    keyName="Mark 2:2";
+    keyName="Mark 2:3";
     target = library.getModule(bookName);
 
     if (!target) {
@@ -74,7 +74,7 @@ int main()
 
     SimpleOsisVerseParser simpleParser(qStr);
     //qDebug() << simpleParser.getVerselist();
-    QStringList list=simpleParser.getVerselist();
+    QList<verseChunk> list=simpleParser.getVerselist();
 
    /*
     int pos = 0;
@@ -94,12 +94,14 @@ int main()
 
 
 
-    QString s;
-    foreach( s, list ) {
+    foreach( verseChunk s, list ) {
+        qDebug()<<s.word<<s.isXmlTag;
         qDebug()<<"#############";
 
         QString word;
-        QXmlStreamReader reader(s);
+        QXmlStreamReader reader(s.word);
+
+        if(! s.isXmlTag) {continue;}
         while(!reader.atEnd() && !reader.hasError()) {
 
             if(reader.readNext() == QXmlStreamReader::StartElement && reader.name() == "w") {
@@ -110,7 +112,7 @@ int main()
 
             }
             if(reader.hasError()) {
-		qDebug()<<"error:"<<s<<"\n";
+                qDebug()<<"error:"<<s.word<<"\n";
                 qDebug()<< "\n\nreader error: " << reader.errorString() << "\n";
 
             }
@@ -120,11 +122,12 @@ int main()
 
 
 
-        x.setText(s.toUtf8());
+        x.setText(s.word.toUtf8());
 
         cout <<"\n\n";
         //qDebug()<<"s="<<s;
         qDebug()<<"Word"<<word;
+
         //qDebug() <<"to string " << x.toString();
         //cout << "Tag name: [" << x.getName() << "]\n";
         StringList attributes = x.getAttributeNames();

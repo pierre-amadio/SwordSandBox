@@ -2,16 +2,17 @@
 #define SIMPLEOSISVERSEPARSER_H
 #include<QString>
 #include<QList>
+#include "versechunk.h"
 
 class SimpleOsisVerseParser
 {
 public:
     SimpleOsisVerseParser(QString OsisVerse);
-    QList<QString> getVerselist();
+    QList<verseChunk> getVerselist();
 
 private:
     QString OsisVerse;
-    QList<QString> VerseList;
+    QList<verseChunk> verseChunkList;
 };
 
 #endif // SIMPLEOSISVERSEPARSER_H
