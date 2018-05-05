@@ -1,0 +1,176 @@
+# http://wiki.crosswire.org/Main_Page
+# http://www.crosswire.org/~ghellings/svnclassdocs/main.html
+# http://crosswire.org/sword/develop/swordapi/apiprimer.jsp
+# http://wiki.crosswire.org/DevTools:conf_Files
+
+mkdir -p ~/tmp
+cd ~/tmp
+wget http://www.crosswire.org/ftpmirror/pub/sword/source/v1.8/sword-1.8.1.tar.gz
+tar xvzf sword-1.8.1.tar.gz 
+sudo mkdir /usr/local/sword
+sudo chown debian /usr/local/sword
+sudo apt-get install g++ swig python-all-dev libtool automake autoconf libcurl4-openssl-dev libclucene-dev  make  python-virtualenv libicu-dev git
+
+#### from http://wiki.crosswire.org/Tutorial:Compiling_%26_Installing_SWORD#Debian_or_Ubuntu
+PKGS="subversion build-essential autotools-dev pkg-config libz-dev libclucene-dev libicu-dev libcurl4-gnutls-dev"
+sudo apt-get install $PKGS -y
+####
+
+
+cd sword-1.8.1
+./autogen.sh
+./configure --prefix=/usr/local/sword --with-clucene --with-curl_sftp --enable-examples   
+make
+make install
+make install_config
+
+
+####################
+#sword is installed.
+#
+#if this is your first time, you may need a basic global
+#configuration file.  one can be generated to /usr/local/sword/etc/sword.conf
+#by typing: "make install_config"
+#
+#modules (Bibles, etc.), may then be unzipped to /usr/local/sword/share/sword/
+#
+#
+#type "make register" to help us keep track of how many
+#people are using sword.
+#(you may consider exiting from 'root', first, to make this
+#a little more personal)
+####################
+
+cat >> ~/.bashrc <<EOF 
+export PATH=$PATH:/usr/local/sword/bin/
+export LD_LIBRARY_PATH=/usr/local/sword/lib
+export PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig 
+export CPPFLAGS="-I/usr/local/sword/include/sword"
+EOF
+
+. ~/.bashrc 
+
+rm -rf ~/.sword
+installmgr -init
+echo yes | installmgr -sc
+echo yes | installmgr -s
+echo yes | installmgr -r CrossWire
+echo yes | installmgr -r "CrossWire Attic"
+echo yes | installmgr -r "CrossWire Beta"
+
+echo yes | installmgr -r "CrossWire"
+echo yes | installmgr -r "CrossWire Attic"
+echo yes | installmgr -r "CrossWire Beta"
+
+
+
+echo yes | installmgr -ri CrossWire ESV2011
+
+for i in JapBungo JapDenmo JapKougo JapMeiji JapRaguet ;do  echo yes | installmgr -ri "CrossWire" $i;done
+echo yes | installmgr -ri CrossWire OSHB
+echo yes | installmgr -ri CrossWire LXX 
+echo yes | installmgr -ri CrossWire FreSegond
+echo yes | installmgr -ri CrossWire Nestle1904 
+echo yes | installmgr -ri CrossWire MorphGNT 
+
+
+diatheke -b OSHB -o valm -f plain -k Genesis 1:1
+diatheke -b FreSegond -o va -f plain -k Genesis 1:1
+diatheke -b LXX -o va -f plain -k Genesis 1:1
+diatheke -b Nestle1904 -o va -f plain -k Mark 1:1
+
+diatheke -b OSHB -o avlmn -f OSIS -k Genesis 1:1
+diatheke -b MorphGNT -o avlmn -f OSIS -k Mark 1:1
+
+diatheke -b OSHB -s phrase -r Genesis -k בראשׁית
+diatheke -b OSHB -o v -s phrase -r Genesis -k בְּרֵאשִׁית
+diatheke -b OSHB -s phrase -r Psalms -k בקשׁ 
+
+diatheke -b StrongsGreek -k 3056 
+diatheke -b Robinson -k V-PAI-3S
+
+mkfastmod ESV2011
+mkfastmod OSHB
+mkfastmod FreSegond
+mkfastmod LXX
+mkfastmod Nestle1904
+mkfastmod MorphGNT
+
+
+echo yes | installmgr -ri CrossWire Packard
+echo yes | installmgr -ri CrossWire Robinson
+echo yes | installmgr -ri CrossWire StrongsGreek
+echo yes | installmgr -ri CrossWire StrongsHebrew
+
+#SWORD_PATH=/usr/local/sword/share/sword/ /usr/local/sword/bin/installmgr -l
+#SWORD_PATH=/usr/local/sword/share/sword/ /usr/local/sword/bin/mkfastmod ESV2011
+#SWORD_PATH=/usr/local/sword/share/sword/ /usr/local/sword/bin/mkfastmod OSHB
+
+
+#####################
+Now, let s build the python module.
+
+sudo mkdir /usr/local/python-sword
+sudo chown debian /usr/local/python-sword
+virtualenv /usr/local/python-sword
+. /usr/local/python-sword/bin/activate
+
+cd /home/debian/tmp/sword-1.8.1/bindings/swig/package
+./autogen.sh
+
+./configure PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/"
+
+
+make pythonswig
+PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/" make python_make
+cd python
+python setup.py install
+#########################
+fonts stuff
+
+sudo apt-get install fonts-linuxlibertine
+
+#########################
+bibletime
+
+cd ~/tmp
+git clone https://github.com/bibletime/bibletime.git
+cd bibletime
+
+
+#debian
+sudo apt-get install qt5-default qt5-qmake qt5-doc-html cmake qt5-qmltooling-plugins qttools5-dev-tools libqt5webkit5-dev libqt5svg5-dev
+
+#ubuntu add aslo 
+#    sudo apt install qtbase5-dev
+
+
+PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/"  ./build-debug.sh
+
+
+./build/install/bin/bibletime
+
+#########################
+#QtCreator
+#https://www.qt.io/qt-features-libraries-apis-tools-and-ide/#ide
+
+
+wget http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run
+chmod +x qt-unified-linux-x64-online.run 
+./qt-unified-linux-x64-online.run 
+
+/home/debian/Qt/Tools/QtCreator/bin/qtcreator
+
+mkdir ~/dev
+sudo apt-get install qt5-doc gdb
+#generate an app
+
+#Add the sword library in the project
+#lib is /usr/local/sword/lib/debug/ -lsword-1.8.1
+#include is /usr/local/sword/include/sword
+#create the makefile:
+qmake test1.pro
+qmake CONFIG+=debug test1.pro
+
+
+
