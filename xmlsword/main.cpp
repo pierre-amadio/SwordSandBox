@@ -95,9 +95,10 @@ int main()
 
 
     foreach( verseChunk s, list ) {
-        qDebug()<<"word ='"<< s.rootValue<<"'";
+        qDebug()<<"word ='"<< s.fullWord<<"'";
+        qDebug()<<"root="<<s.rootValue;
         qDebug()<<"tag="<<s.isXmlTag;
-        qDebug()<<"mortp" << s.morph;
+        qDebug()<<"morph" << s.morph;
         qDebug()<<"strong"<<s.strong;
         qDebug()<<"#############";
     }

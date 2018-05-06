@@ -7,6 +7,7 @@ verseChunk::verseChunk()
 
     this->isXmlTag=false;
     this->rootValue="Undefine";
+    this->fullWord="Undefined";
     }
 
 void verseChunk::setIsXmlTag(bool i){

@@ -55,6 +55,7 @@ SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
             QString tmpRoot="none found";
             QString tmpStrong="none found";
             QString tmpMorph="none found";
+            QString tmpFullWord="none found";
 
             XMLTag xmlTag;
 
@@ -62,7 +63,7 @@ SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
 
             while(!reader.atEnd() && !reader.hasError()) {
                 if(reader.readNext() == QXmlStreamReader::StartElement && reader.name() == "w") {
-                    tmpRoot=reader.readElementText();
+                    tmpFullWord=reader.readElementText();
                 }
                 if(reader.hasError()) {
                     qDebug()<<"error:"<<curWord<<"\n";
@@ -81,6 +82,7 @@ SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
                 if(attributeName=="lemma") {
                     qDebug()<<"it s a lemma"<<xmlTag.getAttribute("lemma", 1, ' ');
                     tmpStrong=xmlTag.getAttribute("lemma", 1, ' ');
+                    tmpRoot=xmlTag.getAttribute("lemma", 0, ' ');
                 } else if (attributeName=="morph"){
                     qDebug()<<"it s a morph"<<xmlTag.getAttribute("morph", 0, ' ');
                     tmpMorph=xmlTag.getAttribute("morph", 0, ' ');
@@ -91,7 +93,7 @@ SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
 
             }
 
-
+            tmpChunk.fullWord=tmpFullWord;
             tmpChunk.rootValue=tmpRoot;
             tmpChunk.strong=tmpStrong;
             tmpChunk.morph=tmpMorph;
@@ -100,7 +102,7 @@ SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
        } else {
             tmpChunk.morph="NONE";
             tmpChunk.strong="NONE";
-            tmpChunk.rootValue=curWord;
+            tmpChunk.fullWord=curWord;
        }
 
 
