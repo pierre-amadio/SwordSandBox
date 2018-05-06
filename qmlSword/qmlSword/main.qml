@@ -6,4 +6,8 @@ Window {
     width: 640
     height: 480
     title: qsTr("Qml Test")
+
+    TODOList {
+        anchors.centerIn: parent
+    }
 }
