@@ -11,8 +11,6 @@ using namespace::sword;
 SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
 {
 
-    qDebug()<<"New verse";
-    qDebug()<<verse;
     QList<QString> wordList;
     int maxLenght=verse.length();
     QString newWord("");
@@ -43,14 +41,12 @@ SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
 
 
     foreach( QString curWord, wordList ) {
-      qDebug()<<"curWord:"<<curWord;
        bool isXml=false;
        QString tmpWord=curWord;
 
        verseChunk tmpChunk;
 
        if(curWord.mid(0,2)=="<w") {
-            //qDebug()<<"yep tag";
             tmpChunk.setIsXmlTag(true);
             QString tmpRoot="none found";
             QString tmpStrong="none found";
@@ -80,11 +76,9 @@ SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
                 QString attributeName=it->c_str();
 
                 if(attributeName=="lemma") {
-                    qDebug()<<"it s a lemma"<<xmlTag.getAttribute("lemma", 1, ' ');
                     tmpStrong=xmlTag.getAttribute("lemma", 1, ' ');
                     tmpRoot=xmlTag.getAttribute("lemma", 0, ' ');
                 } else if (attributeName=="morph"){
-                    qDebug()<<"it s a morph"<<xmlTag.getAttribute("morph", 0, ' ');
                     tmpMorph=xmlTag.getAttribute("morph", 0, ' ');
                 } else {
                     qDebug()<<"unknown attributeName"<<attributeName;
