@@ -2,6 +2,7 @@
 #include <QString>
 #include <QDebug>
 #include "versechunk.h"
+#include <QXmlStreamReader>
 
 SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
 {
@@ -45,10 +46,24 @@ SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
        verseChunk tmpChunk;
 
        if(curWord.mid(0,2)=="<w") {
-           qDebug()<<"yep tag";
-
+            //qDebug()<<"yep tag";
             tmpChunk.setIsXmlTag(true);
-            tmpChunk.rootValue="TO BE DONE";
+            QString tmpRoot="none";
+
+            QXmlStreamReader reader(curWord);
+
+            while(!reader.atEnd() && !reader.hasError()) {
+                if(reader.readNext() == QXmlStreamReader::StartElement && reader.name() == "w") {
+                    tmpRoot=reader.readElementText();
+                }
+                if(reader.hasError()) {
+                    qDebug()<<"error:"<<curWord<<"\n";
+                    qDebug()<< "\n\nreader error: " << reader.errorString() << "\n";
+                }
+            }
+
+
+            tmpChunk.rootValue=tmpRoot;
             tmpChunk.morph="TO BE DEFINE";
 
 
