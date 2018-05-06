@@ -5,9 +5,12 @@
 class verseChunk
 {
 public:
-    verseChunk(bool i,QString w);
+    verseChunk();
     bool isXmlTag;
     QString word;
+    QString rootValue;
+    QString strong;
+    QString morph;
     void setIsXmlTag(bool i);
 
 };

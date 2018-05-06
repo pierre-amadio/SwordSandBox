@@ -2,12 +2,12 @@
 #include <QDebug>
 #include <QString>
 
-verseChunk::verseChunk(bool i,QString w)
+verseChunk::verseChunk()
 {
-    this->isXmlTag=i;
-    this->word=w;
-    qDebug()<<"Let s create a word"<<word;
-}
+
+    this->isXmlTag=false;
+    this->rootValue="Undefine";
+    }
 
 void verseChunk::setIsXmlTag(bool i){
     this->isXmlTag=i;

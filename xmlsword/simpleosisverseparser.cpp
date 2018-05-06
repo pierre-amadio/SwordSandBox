@@ -6,8 +6,9 @@
 SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
 {
 
+    qDebug()<<"New verse";
+    qDebug()<<verse;
     QList<QString> wordList;
-
     int maxLenght=verse.length();
     QString newWord("");
 
@@ -21,30 +22,44 @@ SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
             }
         }
 
-
         newWord.append(verse[n]);
+
         if (n>3){
             if(verse.mid(n-3,4)=="</w>" ) {
                 wordList.append(newWord);
                 newWord="";
             }
         }
-
     }
+
     if(newWord.length()>0){
         wordList.append(newWord);
     }
 
+
     foreach( QString curWord, wordList ) {
-       qDebug()<<"plop:"<<curWord;
+      qDebug()<<"curWord:"<<curWord;
        bool isXml=false;
        QString tmpWord=curWord;
-       verseChunk tmpChunk(false,curWord);
+
+       verseChunk tmpChunk;
 
        if(curWord.mid(0,2)=="<w") {
-           tmpChunk.setIsXmlTag(true);
            qDebug()<<"yep tag";
+
+            tmpChunk.setIsXmlTag(true);
+            tmpChunk.rootValue="TO BE DONE";
+            tmpChunk.morph="TO BE DEFINE";
+
+
+       } else {
+            tmpChunk.morph="NONE";
+            tmpChunk.rootValue=curWord;
+
+
        }
+
+
 
        verseChunkList.append(tmpChunk);
 
@@ -54,5 +69,6 @@ SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
 
 QList<verseChunk> SimpleOsisVerseParser::getVerselist(){
     return this->verseChunkList;
+
 
 }

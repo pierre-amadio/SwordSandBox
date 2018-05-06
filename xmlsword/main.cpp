@@ -41,7 +41,7 @@ int main()
     library.setGlobalOption("OSISStrongs","On");
 
     bookName="MorphGNT";
-    keyName="Mark 2:3";
+    keyName="Mark 2:5";
     target = library.getModule(bookName);
 
     if (!target) {
@@ -68,7 +68,7 @@ int main()
     //std::cout << "plop \n"<< qStr.toStdString() <<"\n";
 
     qStr= QString::fromUtf8(target->renderText(0, -1, true));
-    //std::cout << "plop" << qStr.toStdString();
+    //std::cout << "" << qStr.toStdString();
 
     //qDebug()<<qStr;
 
@@ -95,9 +95,11 @@ int main()
 
 
     foreach( verseChunk s, list ) {
-        qDebug()<<s.word<<s.isXmlTag;
+        qDebug()<<"word ='"<< s.rootValue<<"'";
+        qDebug()<<"tag="<<s.isXmlTag;
+        qDebug()<<"mortp" << s.morph;
         qDebug()<<"#############";
-
+        continue;
         QString word;
         QXmlStreamReader reader(s.word);
 
