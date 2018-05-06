@@ -10,13 +10,26 @@ Frame {
         implicitHeight: 250
         clip: true
 
-        model:100
+        model: ListModel {
+            ListElement {
+                done:true
+                description: "wash the car."
+            }
+
+            ListElement {
+                done:false
+                description: "fix the sink."
+            }
+        }
 
         delegate: RowLayout {
             width: parent.width
 
-            CheckBox {}
+            CheckBox {
+                checked:model.done
+            }
             TextField {
+                text:model.description
                 Layout.fillWidth: true
             }
         }
