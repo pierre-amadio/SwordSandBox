@@ -13,6 +13,7 @@ int TODOModel::rowCount(const QModelIndex &parent) const
         return 0;
 
     // FIXME: Implement me!
+    return 100;
 }
 
 QVariant TODOModel::data(const QModelIndex &index, int role) const
@@ -21,6 +22,12 @@ QVariant TODOModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     // FIXME: Implement me!
+    switch(role) {
+        case DoneRole:
+            return QVariant(false);
+        case DescriptionRole:
+            return QVariant(QStringLiteral("Test description !"));
+    }
     return QVariant();
 }
 
@@ -40,4 +47,12 @@ Qt::ItemFlags TODOModel::flags(const QModelIndex &index) const
         return Qt::NoItemFlags;
 
     return Qt::ItemIsEditable; // FIXME: Implement me!
+}
+
+QHash<int, QByteArray> TODOModel::roleNames() const {
+    QHash<int, QByteArray> names;
+    names[DoneRole] = "done";
+    names[DescriptionRole] = "description";
+    return names;
+
 }

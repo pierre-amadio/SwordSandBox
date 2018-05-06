@@ -4,23 +4,15 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
+import Todo 1.0
+
 Frame {
     ListView {
         implicitWidth: 250
         implicitHeight: 250
         clip: true
 
-        model: ListModel {
-            ListElement {
-                done:true
-                description: "wash the car."
-            }
-
-            ListElement {
-                done:false
-                description: "fix the sink."
-            }
-        }
+        model: TODOModel {}
 
         delegate: RowLayout {
             width: parent.width
