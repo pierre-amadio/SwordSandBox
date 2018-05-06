@@ -76,7 +76,7 @@ int main()
     //qDebug() << simpleParser.getVerselist();
     QList<verseChunk> list=simpleParser.getVerselist();
 
-   /*
+    /*
     int pos = 0;
 
 
@@ -98,57 +98,10 @@ int main()
         qDebug()<<"word ='"<< s.rootValue<<"'";
         qDebug()<<"tag="<<s.isXmlTag;
         qDebug()<<"mortp" << s.morph;
+        qDebug()<<"strong"<<s.strong;
         qDebug()<<"#############";
-        continue;
-        QString word;
-        QXmlStreamReader reader(s.word);
-
-        if(! s.isXmlTag) {continue;}
-        while(!reader.atEnd() && !reader.hasError()) {
-
-            if(reader.readNext() == QXmlStreamReader::StartElement && reader.name() == "w") {
-                //qDebug() << "readelementText" << reader.readElementText();
-                //qDebug()<< "text()" << reader.text();
-                word=reader.readElementText();
-
-
-            }
-            if(reader.hasError()) {
-                qDebug()<<"error:"<<s.word<<"\n";
-                qDebug()<< "\n\nreader error: " << reader.errorString() << "\n";
-
-            }
-        }
-
-
-
-
-
-        x.setText(s.word.toUtf8());
-
-        cout <<"\n\n";
-        //qDebug()<<"s="<<s;
-        qDebug()<<"Word"<<word;
-
-        //qDebug() <<"to string " << x.toString();
-        //cout << "Tag name: [" << x.getName() << "]\n";
-        StringList attributes = x.getAttributeNames();
-        for (StringList::iterator it = attributes.begin(); it != attributes.end(); it++) {
-            const char *name = it->c_str();
-            cout << " - attribute: [" << name << "] = [";
-            cout << x.getAttribute(name) << "]\n";
-
-            int count = x.getAttributePartCount(name, ' ');
-            cout << "\t" << count << " parts:\n";
-            int i = (count > 1) ? 0 : -1;		// -1 for whole value cuz it's faster, but does the same thing as 0
-            do {
-                cout << "\t" << x.getAttribute(name, i, ' ') << "\n";
-                if (i < 0) i = 0;	// to handle our -1 condition
-            } while (++i < count);
-        }
-
     }
+        cout << "Hello World!" << endl;
+        return 0;
 
-    cout << "Hello World!" << endl;
-    return 0;
 }

@@ -7,7 +7,6 @@ class verseChunk
 public:
     verseChunk();
     bool isXmlTag;
-    QString word;
     QString rootValue;
     QString strong;
     QString morph;

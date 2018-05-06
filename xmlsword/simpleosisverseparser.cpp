@@ -3,6 +3,10 @@
 #include <QDebug>
 #include "versechunk.h"
 #include <QXmlStreamReader>
+#include <utilxml.h>
+
+using namespace::sword;
+
 
 SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
 {
@@ -48,7 +52,11 @@ SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
        if(curWord.mid(0,2)=="<w") {
             //qDebug()<<"yep tag";
             tmpChunk.setIsXmlTag(true);
-            QString tmpRoot="none";
+            QString tmpRoot="none found";
+            QString tmpStrong="none found";
+            QString tmpMorph="none found";
+
+            XMLTag xmlTag;
 
             QXmlStreamReader reader(curWord);
 
@@ -63,15 +71,36 @@ SimpleOsisVerseParser::SimpleOsisVerseParser(QString verse)
             }
 
 
+            xmlTag.setText(curWord.toUtf8());
+
+            StringList attributes = xmlTag.getAttributeNames();
+
+            for (StringList::iterator it = attributes.begin(); it != attributes.end(); it++) {
+                QString attributeName=it->c_str();
+
+                if(attributeName=="lemma") {
+                    qDebug()<<"it s a lemma"<<xmlTag.getAttribute("lemma", 1, ' ');
+                    tmpStrong=xmlTag.getAttribute("lemma", 1, ' ');
+                } else if (attributeName=="morph"){
+                    qDebug()<<"it s a morph"<<xmlTag.getAttribute("morph", 0, ' ');
+                    tmpMorph=xmlTag.getAttribute("morph", 0, ' ');
+                } else {
+                    qDebug()<<"unknown attributeName"<<attributeName;
+                    }
+
+
+            }
+
+
             tmpChunk.rootValue=tmpRoot;
-            tmpChunk.morph="TO BE DEFINE";
+            tmpChunk.strong=tmpStrong;
+            tmpChunk.morph=tmpMorph;
 
 
        } else {
             tmpChunk.morph="NONE";
+            tmpChunk.strong="NONE";
             tmpChunk.rootValue=curWord;
-
-
        }
 
 
