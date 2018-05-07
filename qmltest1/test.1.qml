@@ -13,7 +13,7 @@ Rectangle {
    width:parent.width
 
    Rectangle {
-     id: selectBookView
+     id: selectModuleView
      anchors.left: parent.left
      color: "#22FF22"
      width: parent.width/3
@@ -21,11 +21,43 @@ Rectangle {
    }
 
    Rectangle {
-     id: selectVerseView
-     anchors.left: selectBookView.right
-     color: "#FFFFFF"
-     width:parent.width-selectBookView.width
-     height: parent.height
+       id: selectVerseKeyView
+       anchors.left: selectModuleView.right
+       color: "#FFFFFF"
+       width:parent.width-selectModuleView.width
+       height: parent.height
+
+       Row {
+           id: selectVerseRow
+           anchors.centerIn: parent
+           spacing: 20
+
+           Rectangle {
+               id: selectBookView
+               width: 48
+               height: 48
+               color: "#ea7025"
+               border.color: Qt.lighter(color)
+
+           }
+           Rectangle {
+               id:selectChapterView
+               width: 48
+               height: 48
+               color: "#ea7025"
+               border.color: Qt.lighter(color)
+
+           }
+           Rectangle {
+               id:selectVerseView
+               width: 48
+               height: 48
+               color: "#ea7025"
+               border.color: Qt.lighter(color)
+
+           }
+       }
+
 
    }
 
