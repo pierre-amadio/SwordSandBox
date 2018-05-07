@@ -9,13 +9,17 @@ Rectangle {
  Text {
    id: verseWindow
    width: root.width
-   height: 10
+   //height: 10
    color: "#FFFFCC"
    font {
     //family: "Ezra SIL"
     family: "Linux Libertine O"
     pixelSize: 40
    }
+   //wrapMode: Text.WordWrap
+   elide: Text.ElideMiddle
+   style: Text.Sunken
+   styleColor: '#FF4444'
    //focus: true
    //color: focus?"red":"black"
    text:"οὐδέν ἐστιν ἔξωθεν τοῦ ἀνθρώπου εἰσπορευόμενον εἰς αὐτὸν ὃ δύναται κοινῶσαι αὐτόν· ἀλλὰ τὰ ἐκ τοῦ ἀνθρώπου ἐκπορευόμενά ἐστιν τὰ κοινοῦντα τὸν ἄνθρωπον." 
