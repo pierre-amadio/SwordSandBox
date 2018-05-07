@@ -1,4 +1,5 @@
 //https://www.youtube.com/watch?v=9BcAYDlpuT8
+//https://www.youtube.com/watch?v=CR2qQebqv6I
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include "todomodel.h"
