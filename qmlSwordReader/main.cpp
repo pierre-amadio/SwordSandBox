@@ -7,6 +7,19 @@
 #include <QDebug>
 using namespace::sword;
 
+/*
+
+
+18:36 <@ben{}> yep
+18:42 <@ben{}> tu peux remplir le modèle au moment de son constructeur, ou bien tu peux ajouter une fonction des méthodes de load/unload avec ou sans arguments pour la pagination
+18:44 <@ben{}> https://doc.qt.io/qt-5/qtqml-tutorials-extending-qml-example.html pour ajouter des proerties ou des fonctions appelables depuis le Qqml
+18:44 < midbot> « https://doc.qt.io/qt-5/qtqml-tutorials-extending-qml-example.html » → « Writing QML Extensions with C++ | Qt QML 5.10 »
+18:44 <@ben{}> tu peux mixer ça tout en héritant du listmodel
+
+
+*/
+
+
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
