@@ -13,7 +13,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+    swordutils.cpp
 
 RESOURCES += qml.qrc
 
@@ -27,3 +28,13 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+HEADERS += \
+    swordutils.h
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/sword/lib/release/ -lsword-1.8.1
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/sword/lib/debug/ -lsword-1.8.1
+else:unix: LIBS += -L$$PWD/../../../../../usr/local/sword/lib/ -lsword-1.8.1
+
+INCLUDEPATH += $$PWD/../../../../../usr/local/sword/include/sword
+DEPENDPATH += $$PWD/../../../../../usr/local/sword/include/sword
