@@ -1,4 +1,5 @@
 import QtQuick 2.5
+import QtQuick.Controls 1.4
 
 Rectangle {
   id: root
@@ -18,7 +19,49 @@ Rectangle {
      color: "#22FF22"
      width: parent.width/3
      height: parent.height
-   }
+
+     ListModel {
+         id: testModel
+         ListElement { name: "Banana"; color: "Yellow" }
+         ListElement { name: "Apple"; color: "Green" }
+         ListElement { name: "Coconut"; color: "Brown" }
+         ListElement { name: "scoobydoo"; color: "Red" }
+         ListElement { name: "Banana"; color: "Yellow" }
+         ListElement { name: "Apple"; color: "Green" }
+         ListElement { name: "Coconut"; color: "Brown" }
+         ListElement { name: "scoobydoo"; color: "Red" }
+         ListElement { name: "Banana"; color: "Yellow" }
+         ListElement { name: "Apple"; color: "Green" }
+         ListElement { name: "Coconut"; color: "Brown" }
+         ListElement { name: "scoobydoo"; color: "Red" }
+
+     }
+
+/*
+     ComboBox{
+         model: testModel
+     }
+*/
+
+     ListView{
+         width:400
+         height:400
+         model:testModel
+         clip:true
+         spacing:3
+         snapMode:ListView.SnapToItem
+
+
+         delegate: Text{
+             font.pixelSize: 40
+             text: name
+             color: color
+         }
+     }
+
+
+
+  }
 
    Rectangle {
        id: selectVerseKeyView
