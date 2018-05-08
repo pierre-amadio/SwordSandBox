@@ -44,21 +44,30 @@ Rectangle {
 */
 
             ListView{
+                id:moduleListView
                 width:parent.width
                 height:parent.height
                 model:testModel
                 clip:true
                 spacing:3
                 snapMode:ListView.SnapToItem
-
-
+                //highlightRangeMode:ListView.NoHighlightRange
+                highlightRangeMode:ListView.StrictlyEnforceRange
+                //highlightRangeMode:ListView.ApplyRange
+                //highlightFollowCurrentItem:true
+                onCurrentItemChanged:{
+                    console.log('new item:',testModel.get(moduleListView.currentIndex).name )
+                }
                 delegate:
 
                     Rectangle{
                     //color:"blue"
-                    height:selectModuleView.height/3
+                    color: ListView.isCurrentItem ? "yellow" : "red"
+
+                    height:selectModuleView.height/2
                     width:parent.width
                     Text{
+                        id:moduleNameText
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
                         verticalAlignment: Text.AlignVCenter
@@ -126,6 +135,9 @@ Rectangle {
         height:parent.height-selectStuffView.height
         anchors.top:selectStuffView.bottom
         color: "#22DDFF"
+
+        focus: true
+
         Text {
             id: verseWindow
             anchors.fill:parent
