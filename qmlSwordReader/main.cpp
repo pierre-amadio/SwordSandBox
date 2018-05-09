@@ -36,8 +36,9 @@ int main(int argc, char *argv[])
         //SWBuf modName = (*modIterator).first; // .conf [section] name (also stored in module->Name())
         SWModule *module = (*modIterator).second;
         qDebug() << module->getName() << module->Type()<<module->getLanguage();
-        moduleInfo modInfo;
-        modInfo=new moduleInfo("n");
+        //TODO read http://doc.qt.io/archives/qt-4.8/qobject.html#no-copy-constructor
+        moduleInfo * plop;
+        plop=new moduleInfo();
         //if ((!strcmp(module->Type(), "Biblical Texts"))) {
         //    module->setKey("Gen 1:19");
         //    qDebug() << modName << ": " << (const char *) *module << "\n";
