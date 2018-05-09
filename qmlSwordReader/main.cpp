@@ -5,6 +5,7 @@
 #include <swmodule.h>
 #include <markupfiltmgr.h>
 #include <QDebug>
+#include "moduleinfo.h"
 using namespace::sword;
 
 /*
@@ -35,7 +36,8 @@ int main(int argc, char *argv[])
         //SWBuf modName = (*modIterator).first; // .conf [section] name (also stored in module->Name())
         SWModule *module = (*modIterator).second;
         qDebug() << module->getName() << module->Type()<<module->getLanguage();
-
+        moduleInfo modInfo;
+        modInfo=new moduleInfo("n");
         //if ((!strcmp(module->Type(), "Biblical Texts"))) {
         //    module->setKey("Gen 1:19");
         //    qDebug() << modName << ": " << (const char *) *module << "\n";
