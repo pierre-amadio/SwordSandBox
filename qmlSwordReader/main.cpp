@@ -6,6 +6,7 @@
 #include <markupfiltmgr.h>
 #include <QDebug>
 #include "moduleinfo.h"
+#include <QQmlContext>
 using namespace::sword;
 
 /*
@@ -65,6 +66,20 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    //TODO read https://qmlbook.github.io/ch16/index.html
+
+    QObject *rootObject = engine.rootObjects().first();
+    //QObject *qmlObject = rootObject->findChild<QObject*>("testModel");
+    QObject *mainWindow = rootObject->findChild<QObject*>("root");
+
+    QQmlContext *rootContext = engine.rootContext();
+    rootContext->setContextProperty("testModel", QVariant::fromValue(moduleListModel));
+    //rootContext.setContext
+    //engine->rootContext()->setContextProperty("testModel", QVariant::fromValue(moduleListModel));
+
+    //QQmlContext* ctx{engine->rootContext()};
+    qDebug()<<"BO;";
+    //ctx->setContextProperty("testModel", QVariant::fromValue(moduleListModel));
     if (engine.rootObjects().isEmpty())
         return -1;
 

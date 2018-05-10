@@ -33,7 +33,8 @@ Window {
             height: parent.height
 
             ListModel {
-                id: testModel
+                id: manualModel
+
                 ListElement { name: "Banana"; color: "Yellow" }
                 ListElement { name: "Apple"; color: "Green" }
                 ListElement { name: "Coconut"; color: "Brown" }
