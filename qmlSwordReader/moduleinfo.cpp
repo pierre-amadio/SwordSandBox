@@ -4,7 +4,6 @@
 moduleInfo::moduleInfo(QObject *parent)
     : QObject(parent)
 {
-    qDebug()<<"LET S CREATE A MODULE INFO";
 }
 
 
@@ -12,6 +11,14 @@ QString  moduleInfo::getName() const {
     return this->moduleName;
 }
 
+void moduleInfo::setName(const QString name) {
+    this->moduleName=name;
+}
+
 QString  moduleInfo::getLang() const {
     return this->moduleLang;
+}
+
+QString  moduleInfo::getType() const {
+    return this->moduleType;
 }

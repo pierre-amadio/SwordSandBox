@@ -21,6 +21,27 @@ using namespace::sword;
 */
 
 
+void refreshListModel(QList<moduleInfo*> &model){
+    qDebug()<<"hop";
+    qDeleteAll(model.begin(), model.end());
+    model.clear();
+
+    SWMgr library;
+    ModMap::iterator modIterator;
+
+    for (modIterator = library.Modules.begin(); modIterator != library.Modules.end(); modIterator++) {
+        SWModule *swordModule = (*modIterator).second;
+
+        //qDebug() << swordModule->getName() << swordModule->Type()<<swordModule->getLanguage();
+        //http://doc.qt.io/qt-5/qtquick-models-objectlistmodel-example.html
+        moduleInfo * curMod;
+        curMod=new moduleInfo();
+        curMod->setName(swordModule->getName());
+
+        model.append(curMod);
+    }
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -28,22 +49,13 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
 
-    SWMgr library;
-    ModMap::iterator modIterator;
+    QList<moduleInfo*> moduleListModel;
 
-    // Loop thru all installed modules and print out information
-    for (modIterator = library.Modules.begin(); modIterator != library.Modules.end(); modIterator++) {
-        //SWBuf modName = (*modIterator).first; // .conf [section] name (also stored in module->Name())
-        SWModule *module = (*modIterator).second;
-        qDebug() << module->getName() << module->Type()<<module->getLanguage();
-        //TODO read http://doc.qt.io/archives/qt-4.8/qobject.html#no-copy-constructor
-        moduleInfo * plop;
-        plop=new moduleInfo();
-        //if ((!strcmp(module->Type(), "Biblical Texts"))) {
-        //    module->setKey("Gen 1:19");
-        //    qDebug() << modName << ": " << (const char *) *module << "\n";
-        //}
+    refreshListModel(moduleListModel);
+    foreach (moduleInfo * m, moduleListModel) {
+        qDebug()<<"COIN COIN"<< m->getName();
     }
+
 
 
 
