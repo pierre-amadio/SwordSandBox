@@ -19,6 +19,16 @@ QString  moduleInfo::getLang() const {
     return this->moduleLang;
 }
 
+
+void moduleInfo::setLang(const QString lang) {
+    this->moduleLang=lang;
+}
+
 QString  moduleInfo::getType() const {
     return this->moduleType;
+}
+
+
+void moduleInfo::setType(const QString type) {
+    this->moduleType=type;
 }

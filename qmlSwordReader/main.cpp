@@ -21,7 +21,7 @@ using namespace::sword;
 */
 
 
-void refreshListModel(QList<moduleInfo*> &model){
+void refreshModuleListModel(QList<moduleInfo*> &model){
     qDebug()<<"hop";
     qDeleteAll(model.begin(), model.end());
     model.clear();
@@ -37,6 +37,8 @@ void refreshListModel(QList<moduleInfo*> &model){
         moduleInfo * curMod;
         curMod=new moduleInfo();
         curMod->setName(swordModule->getName());
+        curMod->setLang(swordModule->getLanguage());
+        curMod->setType(swordModule->getType());
 
         model.append(curMod);
     }
@@ -51,9 +53,11 @@ int main(int argc, char *argv[])
 
     QList<moduleInfo*> moduleListModel;
 
-    refreshListModel(moduleListModel);
+    refreshModuleListModel(moduleListModel);
     foreach (moduleInfo * m, moduleListModel) {
-        qDebug()<<"COIN COIN"<< m->getName();
+        if(m->getType()=="Biblical Texts"){
+            qDebug()<<"COIN COIN"<< m->getName()<<m->getLang();
+        }
     }
 
 

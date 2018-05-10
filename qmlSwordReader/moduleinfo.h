@@ -17,7 +17,9 @@ public:
     QString getName() const;
     void setName(const QString name);
     QString getLang() const;
+    void setLang(const QString lang);
     QString getType() const;
+    void setType(const QString type);
 
 
 
