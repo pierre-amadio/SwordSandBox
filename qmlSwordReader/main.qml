@@ -40,6 +40,9 @@ Window {
                 //highlightFollowCurrentItem:true
                 onCurrentItemChanged:{
                     console.log('new item:',testModel[currentIndex].name)
+                    console.log('new item:',testModel[currentIndex].type)
+                    console.log('new item:',testModel[currentIndex].lang)
+
                 }
                 delegate:
 

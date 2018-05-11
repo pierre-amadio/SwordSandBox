@@ -1,12 +1,13 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-
+#include <stdio.h>
 #include <swmgr.h>
 #include <swmodule.h>
 #include <markupfiltmgr.h>
 #include <QDebug>
 #include "moduleinfo.h"
 #include <QQmlContext>
+#include <QString>
 using namespace::sword;
 
 /*
@@ -35,12 +36,17 @@ void refreshModuleListModel(QList<QObject*> &model){
 
     for (modIterator = library.Modules.begin(); modIterator != library.Modules.end(); modIterator++) {
         SWModule *swordModule = (*modIterator).second;
-        moduleInfo * curMod;
-        curMod=new moduleInfo();
-        curMod->setName(swordModule->getName());
-        curMod->setLang(swordModule->getLanguage());
-        curMod->setType(swordModule->getType());
-        model.append(curMod);
+        const char * bibleTextSnt = "Biblical Texts";
+        const char * modType=swordModule->getType();
+        int strCmp=strncmp ( bibleTextSnt, modType, strlen(bibleTextSnt));
+        if(strlen(bibleTextSnt)==strlen(modType) && strCmp==0){
+            moduleInfo * curMod;
+            curMod=new moduleInfo();
+            curMod->setName(swordModule->getName());
+            curMod->setLang(swordModule->getLanguage());
+            curMod->setType(swordModule->getType());
+            model.append(curMod);
+        }
     }
 }
 
