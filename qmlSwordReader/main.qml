@@ -50,11 +50,8 @@ Window {
 
             }
 
-            /*
-     ComboBox{
-         model: testModel
-     }
-*/
+
+
 
             ListView{
                 id:moduleListView
