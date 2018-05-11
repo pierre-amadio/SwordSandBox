@@ -12,11 +12,11 @@ QString  moduleInfo::getName() const {
 }
 
 void moduleInfo::setName(const QString name) {
-    qDebug()<<"setName name"<<name<< "moduleName"<<moduleName;
+    //qDebug()<<"setName name"<<name<< "moduleName"<<moduleName;
     if(moduleName!=name){
         moduleName=name;
         emit notifyName();
-        qDebug()<<"notifyName emitted";
+        qDebug()<<"notifyName emitted"<<moduleName;
       }
 }
 
