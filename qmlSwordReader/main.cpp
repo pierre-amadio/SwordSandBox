@@ -24,7 +24,6 @@ http://doc.qt.io/qt-5/qtquick-models-objectlistmodel-example.html
 
 
 void refreshModuleListModel(QList<moduleInfo*> &model){
-    qDebug()<<"hop";
     qDeleteAll(model.begin(), model.end());
     model.clear();
 
@@ -56,32 +55,26 @@ int main(int argc, char *argv[])
     QList<moduleInfo*> moduleListModel;
 
     refreshModuleListModel(moduleListModel);
+ /*
     foreach (moduleInfo * m, moduleListModel) {
         if(m->getType()=="Biblical Texts"){
             qDebug()<<"COIN COIN"<< m->getName()<<m->getLang();
         }
     }
+*/
 
 
-
-    qmlRegisterType<moduleInfo>("org.example", 1, 0, "moduleInfo");
+    //qmlRegisterType<moduleInfo>("org.example", 1, 0, "moduleInfo");
     QQmlApplicationEngine engine;
 
     //TODO read https://qmlbook.github.io/ch16/index.html
 
- //   QObject *rootObject = engine.rootObjects().first();
-    //QObject *qmlObject = rootObject->findChild<QObject*>("testModel");
-//    QObject *mainWindow = rootObject->findChild<QObject*>("root");
-
     QQmlContext *rootContext = engine.rootContext();
     rootContext->setContextProperty("testModel", QVariant::fromValue(moduleListModel));
 
-    //QQmlContext* ctx{engine->rootContext()};
-    qDebug()<<"BO;";
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
-    //ctx->setContextProperty("testModel", QVariant::fromValue(moduleListModel));
     if (engine.rootObjects().isEmpty())
         return -1;
 
