@@ -28,7 +28,7 @@ http://doc.qt.io/qt-5/qtquick-modelviewsdata-cppmodels.html
 */
 
 
-void refreshModuleListModel(QList<moduleInfo*> &model){
+void refreshModuleListModel(QList<QObject*> &model){
     qDeleteAll(model.begin(), model.end());
     model.clear();
 
@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
 
 
     QList<QObject*>moduleListModel;
+    refreshModuleListModel(moduleListModel);
 
 
     moduleInfo * curMod;
