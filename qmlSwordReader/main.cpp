@@ -20,6 +20,11 @@ using namespace::sword;
 
 currently trying something based on
 http://doc.qt.io/qt-5/qtquick-models-objectlistmodel-example.html
+
+does not work if the list is not a list of QObject (at least not even a subclass....)
+Lets try the qabstract model instead ?
+
+http://doc.qt.io/qt-5/qtquick-modelviewsdata-cppmodels.html
 */
 
 
