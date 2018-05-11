@@ -52,10 +52,20 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
 
-    QList<moduleInfo*> moduleListModel;
 
+    QList<QObject*>moduleListModel;
+
+
+    moduleInfo * curMod;
+    curMod=new moduleInfo();
+    curMod->setName("pikachu");
+    moduleListModel.append(curMod);
+
+/*
+    QList<moduleInfo*> moduleListModel;
     refreshModuleListModel(moduleListModel);
- /*
+
+
     foreach (moduleInfo * m, moduleListModel) {
         if(m->getType()=="Biblical Texts"){
             qDebug()<<"COIN COIN"<< m->getName()<<m->getLang();

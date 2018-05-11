@@ -82,7 +82,7 @@ Window {
                         anchors.left: parent.left
                         verticalAlignment: Text.AlignVCenter
                         //text: testModel.moduleListModel.name
-                        text: "coin"
+                        text: name
                         //color: color
                     }
                 }
