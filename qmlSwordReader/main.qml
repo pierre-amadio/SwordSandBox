@@ -8,8 +8,11 @@ Window {
     visible:true
     width: 800; height: 440
     color: "#000000"
-    //onHeightChanged: console.log('height:', height)
+    onHeightChanged: console.log(curModuleName, curModuleLang)
     title:qsTr("Sword Reader")
+
+    property string curModuleName: "none"
+    property string curModuleLang: "none"
 
     Rectangle {
         id: selectStuffView
@@ -39,16 +42,17 @@ Window {
                 //highlightRangeMode:ListView.ApplyRange
                 //highlightFollowCurrentItem:true
                 onCurrentItemChanged:{
-                    console.log('new item:',testModel[currentIndex].name)
-                    console.log('new item:',testModel[currentIndex].type)
-                    console.log('new item:',testModel[currentIndex].lang)
-
+                    //console.log('new item:',testModel[currentIndex].name)
+                    //console.log('new item:',testModel[currentIndex].type)
+                    //console.log('new item:',testModel[currentIndex].lang)
+                    root.curModuleName=testModel[currentIndex].name
+                    root.curModuleLang=testModel[currentIndex].lang
                 }
                 delegate:
 
                     Rectangle{
                     //color:"blue"
-                    color: ListView.isCurrentItem ? "yellow" : "red"
+                    color: ListView.isCurrentItem ? "white" : "gey"
 
                     height:selectModuleView.height/1
                     width:parent.width
