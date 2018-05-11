@@ -66,7 +66,7 @@ Window {
                 //highlightRangeMode:ListView.ApplyRange
                 //highlightFollowCurrentItem:true
                 onCurrentItemChanged:{
-                    console.log('new item:',testModel.get(moduleListView.currentIndex).name )
+                    console.log('new item:',testModel[currentIndex].name)
                 }
                 delegate:
 
@@ -82,7 +82,7 @@ Window {
                         anchors.left: parent.left
                         verticalAlignment: Text.AlignVCenter
                         //text: testModel.moduleListModel.name
-                        text: name
+                        text: modelData.name
                         //color: color
                     }
                 }
