@@ -2,14 +2,6 @@ import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 
-//Window {
-//    visible: true
-//    width: 640
-//    height: 480
-//    title: qsTr("Hello World")
-//}
-
-
 
 Window {
     id: root
@@ -17,7 +9,6 @@ Window {
     width: 800; height: 440
     color: "#000000"
     //onHeightChanged: console.log('height:', height)
-    //onHeightChanged: console.log(moduleListView.
     title:qsTr("Sword Reader")
 
     Rectangle {
@@ -25,6 +16,7 @@ Window {
         anchors.top: parent.top
         color: "#FFFF00"
         width:parent.width
+        height:50
 
         Rectangle {
             id: selectModuleView
@@ -32,26 +24,6 @@ Window {
             color: "#22FF22"
             width: parent.width/3
             height: parent.height
-
-            ListModel {
-                id: manualModel
-
-                ListElement { name: "Banana"; color: "Yellow" }
-                ListElement { name: "Apple"; color: "Green" }
-                ListElement { name: "Coconut"; color: "Brown" }
-                ListElement { name: "scoobydoo"; color: "Red" }
-                ListElement { name: "pear"; color: "Yellow" }
-                ListElement { name: "Raspberry"; color: "Green" }
-                ListElement { name: "hazelnuts"; color: "Brown" }
-                ListElement { name: "strawberry"; color: "Red" }
-                ListElement { name: "figs"; color: "Yellow" }
-                ListElement { name: "other stuff"; color: "Green" }
-                ListElement { name: "milk"; color: "Brown" }
-                ListElement { name: "kebab"; color: "Red" }
-
-            }
-
-
 
 
             ListView{
@@ -79,12 +51,12 @@ Window {
                     width:parent.width
                     Text{
                         id:moduleNameText
+                        font.pixelSize: 16
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
                         verticalAlignment: Text.AlignVCenter
                         //text: testModel.moduleListModel.name
                         text: modelData.name
-                        //color: color
                     }
                 }
 
@@ -131,14 +103,8 @@ Window {
 
                 }
             }
-
-
         }
 
-
-
-
-        height:100
     }
 
     Rectangle {

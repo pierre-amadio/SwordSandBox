@@ -12,11 +12,9 @@ QString  moduleInfo::getName() const {
 }
 
 void moduleInfo::setName(const QString name) {
-    //qDebug()<<"setName name"<<name<< "moduleName"<<moduleName;
     if(moduleName!=name){
         moduleName=name;
         emit notifyName();
-        qDebug()<<"notifyName emitted"<<moduleName;
       }
 }
 
@@ -31,10 +29,8 @@ void moduleInfo::setLang(const QString lang) {
     this->notifyLang();
 }
 
-
 QString  moduleInfo::getType() const {
     return this->moduleType;
-
 }
 
 
