@@ -61,11 +61,12 @@ int main(int argc, char *argv[])
     QList<QObject*>moduleListModel;
     refreshModuleListModel(moduleListModel);
 
-
+/*
     moduleInfo * curMod;
     curMod=new moduleInfo();
     curMod->setName("pikachu");
     moduleListModel.append(curMod);
+*/
 
 /*
     QList<moduleInfo*> moduleListModel;

@@ -59,7 +59,7 @@ Window {
                 height:parent.height
                 model:testModel
                 clip:true
-                spacing:3
+                spacing:10
                 snapMode:ListView.SnapToItem
                 //highlightRangeMode:ListView.NoHighlightRange
                 highlightRangeMode:ListView.StrictlyEnforceRange
@@ -74,7 +74,7 @@ Window {
                     //color:"blue"
                     color: ListView.isCurrentItem ? "yellow" : "red"
 
-                    height:selectModuleView.height/2
+                    height:selectModuleView.height/1
                     width:parent.width
                     Text{
                         id:moduleNameText
