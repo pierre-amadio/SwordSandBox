@@ -8,12 +8,18 @@ moduleInfo::moduleInfo(QObject *parent)
 
 
 QString  moduleInfo::getName() const {
-    return this->moduleName;
+    return moduleName;
 }
 
 void moduleInfo::setName(const QString name) {
-    this->moduleName=name;
+    qDebug()<<"setName name"<<name<< "moduleName"<<moduleName;
+    if(moduleName!=name){
+        moduleName=name;
+        emit notifyName();
+        qDebug()<<"notifyName emitted";
+      }
 }
+
 
 QString  moduleInfo::getLang() const {
     return this->moduleLang;
@@ -22,13 +28,17 @@ QString  moduleInfo::getLang() const {
 
 void moduleInfo::setLang(const QString lang) {
     this->moduleLang=lang;
+    this->notifyLang();
 }
+
 
 QString  moduleInfo::getType() const {
     return this->moduleType;
+
 }
 
 
 void moduleInfo::setType(const QString type) {
     this->moduleType=type;
+    this->notifyType();
 }

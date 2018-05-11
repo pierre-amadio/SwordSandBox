@@ -18,7 +18,8 @@ using namespace::sword;
 18:44 < midbot> « https://doc.qt.io/qt-5/qtqml-tutorials-extending-qml-example.html » → « Writing QML Extensions with C++ | Qt QML 5.10 »
 18:44 <@ben{}> tu peux mixer ça tout en héritant du listmodel
 
-
+currently trying something based on
+http://doc.qt.io/qt-5/qtquick-models-objectlistmodel-example.html
 */
 
 
@@ -63,7 +64,7 @@ int main(int argc, char *argv[])
 
 
 
-    //qmlRegisterType<moduleInfo>("org.example", 1, 0, "moduleInfo");
+    qmlRegisterType<moduleInfo>("org.example", 1, 0, "moduleInfo");
     QQmlApplicationEngine engine;
 
     //TODO read https://qmlbook.github.io/ch16/index.html
