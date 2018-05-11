@@ -25,6 +25,9 @@ does not work if the list is not a list of QObject (at least not even a subclass
 Lets try the qabstract model instead ?
 
 http://doc.qt.io/qt-5/qtquick-modelviewsdata-cppmodels.html
+
+signal and stuff:
+http://doc.qt.io/archives/qt-4.8/qtbinding.html
 */
 
 

@@ -16,7 +16,8 @@ Window {
     visible:true
     width: 800; height: 440
     color: "#000000"
-    onHeightChanged: console.log('height:', height)
+    //onHeightChanged: console.log('height:', height)
+    //onHeightChanged: console.log(moduleListView.
     title:qsTr("Sword Reader")
 
     Rectangle {
