@@ -7,7 +7,8 @@ Window {
     id: root
     visible:true
     width: 800; height: 440
-    color: "#000000"
+    //color: "#00EE00"
+    //opacity: .9
     onHeightChanged: console.log(curModuleName, curModuleLang)
     title:qsTr("Sword Reader")
 
@@ -17,14 +18,14 @@ Window {
     Rectangle {
         id: selectStuffView
         anchors.top: parent.top
-        color: "#FFFF00"
+        //color: "#000000"
         width:parent.width
         height:50
 
-        Rectangle {
+        MyListSelect {
             id: selectModuleView
             anchors.left: parent.left
-            color: "#22FF22"
+            //color: "#22FF22"
             width: parent.width/3
             height: parent.height
 
@@ -35,8 +36,8 @@ Window {
                 height:parent.height
                 model:testModel
                 clip:true
-                spacing:10
-                snapMode:ListView.SnapToItem
+                //spacing:10
+                //snapMode:ListView.SnapToItem
                 //highlightRangeMode:ListView.NoHighlightRange
                 highlightRangeMode:ListView.StrictlyEnforceRange
                 //highlightRangeMode:ListView.ApplyRange
@@ -51,11 +52,12 @@ Window {
                 delegate:
 
                     Rectangle{
-                    //color:"blue"
                     color: ListView.isCurrentItem ? "white" : "gey"
+                    //opacity:.9
+                    //radius: 5
 
                     height:selectModuleView.height/1
-                    width:parent.width
+                    //width:parent.width
                     Text{
                         id:moduleNameText
                         font.pixelSize: 16
@@ -76,7 +78,7 @@ Window {
         Rectangle {
             id: selectVerseKeyView
             anchors.left: selectModuleView.right
-            color: "#FFFFFF"
+            //color: "#F00FFF"
             width:parent.width-selectModuleView.width
             height: parent.height
 
@@ -85,30 +87,20 @@ Window {
                 anchors.centerIn: parent
                 spacing: 20
 
-                Rectangle {
+                MyListSelect {
                     id: selectBookView
-                    width: 48
-                    height: 48
-                    color: "#ea7025"
-                    border.color: Qt.lighter(color)
 
                 }
-                Rectangle {
+                MyListSelect {
                     id:selectChapterView
-                    width: 48
-                    height: 48
-                    color: "#ea7025"
-                    border.color: Qt.lighter(color)
-
+                    width:100
                 }
-                Rectangle {
+                MyListSelect {
                     id:selectVerseView
-                    width: 48
-                    height: 48
-                    color: "#ea7025"
-                    border.color: Qt.lighter(color)
 
                 }
+
+
             }
         }
 
@@ -119,7 +111,7 @@ Window {
         width:parent.width
         height:parent.height-selectStuffView.height
         anchors.top:selectStuffView.bottom
-        color: "#22DDFF"
+        //color: "#22DDFF"
 
         focus: true
 
@@ -127,7 +119,7 @@ Window {
             id: verseWindow
             anchors.fill:parent
             //height: 10
-            color: "#101010"
+            //color: "#101010"
             font {
                 //family: "Ezra SIL"
                 family: "Linux Libertine O"

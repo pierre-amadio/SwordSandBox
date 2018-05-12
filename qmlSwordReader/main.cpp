@@ -24,6 +24,8 @@ http://doc.qt.io/archives/qt-4.8/qtbinding.html
 plugins:
 TODO read https://qmlbook.github.io/ch16/index.html
 
+qml widgets
+
 */
 
 
