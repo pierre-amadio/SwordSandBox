@@ -34,19 +34,8 @@ Window {
             ListView{
                 id:moduleListView
                 anchors.fill:parent
-                spacing:4
-                //width:parent.width
-                //height:parent.height
                 model:testModel
-                //preferredHighlightBegin: 2
-                //preferredHighlightEnd: 2
-                //clip:true
-                //spacing:10
-                //snapMode:ListView.SnapToItem
-                //highlightRangeMode:ListView.NoHighlightRange
-                highlightRangeMode:ListView.StrictlyEnforceRange
-                //highlightRangeMode:ListView.ApplyRange
-                //highlightFollowCurrentItem:true
+                snapMode:ListView.SnapToItem
                 onCurrentItemChanged:{
                     console.log('new item:',testModel[currentIndex].name)
                     //console.log('new item:',testModel[currentIndex].type)
@@ -55,19 +44,18 @@ Window {
                     root.curModuleLang=testModel[currentIndex].lang
                 }
                 delegate:
-                   Text{
+                    Text{
                     id:moduleNameText
                     font.pixelSize: 16
                     height:selectVerseRow.height/1
-                    //color:"yellow"
                     verticalAlignment: Text.AlignVCenter
-                    //horizontalAlignment: Text.AlignHCenter
-                    //anchors.leftMargin: 20
-                    //anchors.verticalCenter: parent.verticalCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    width: parent.width
+                    //anchors.centerIn:parent
+
                     //text: testModel.moduleListModel.name
                     text: modelData.name
                 }
-                //}
 
             }
         }
