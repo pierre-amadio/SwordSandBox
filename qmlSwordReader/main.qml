@@ -36,6 +36,7 @@ Window {
                 anchors.fill:parent
                 model:testModel
                 snapMode:ListView.SnapToItem
+                highlightRangeMode:ListView.StrictlyEnforceRange
                 onCurrentItemChanged:{
                     console.log('new item:',testModel[currentIndex].name)
                     //console.log('new item:',testModel[currentIndex].type)
