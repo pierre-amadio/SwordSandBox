@@ -15,27 +15,32 @@ Window {
     property string curModuleName: "none"
     property string curModuleLang: "none"
 
-    Rectangle {
-        id: selectStuffView
-        anchors.top: parent.top
-        //color: "#000000"
+
+    Row {
+        id: selectVerseRow
         width:parent.width
-        height:50
+        //height: 50
+        //anchors.centerIn: parent
+        spacing: 10
 
         MyListSelect {
             id: selectModuleView
-            anchors.left: parent.left
+            //anchors.left: parent.left
             //color: "#22FF22"
-            width: parent.width/3
-            height: parent.height
+            width: parent.width/4
+            //height: parent.height
 
 
             ListView{
                 id:moduleListView
-                width:parent.width
-                height:parent.height
+                anchors.fill:parent
+                spacing:4
+                //width:parent.width
+                //height:parent.height
                 model:testModel
-                clip:true
+                //preferredHighlightBegin: 2
+                //preferredHighlightEnd: 2
+                //clip:true
                 //spacing:10
                 //snapMode:ListView.SnapToItem
                 //highlightRangeMode:ListView.NoHighlightRange
@@ -43,74 +48,63 @@ Window {
                 //highlightRangeMode:ListView.ApplyRange
                 //highlightFollowCurrentItem:true
                 onCurrentItemChanged:{
-                    //console.log('new item:',testModel[currentIndex].name)
+                    console.log('new item:',testModel[currentIndex].name)
                     //console.log('new item:',testModel[currentIndex].type)
                     //console.log('new item:',testModel[currentIndex].lang)
                     root.curModuleName=testModel[currentIndex].name
                     root.curModuleLang=testModel[currentIndex].lang
                 }
                 delegate:
-
-                    Rectangle{
-                    color: ListView.isCurrentItem ? "white" : "gey"
-                    //opacity:.9
-                    //radius: 5
-
-                    height:selectModuleView.height/1
-                    //width:parent.width
-                    Text{
-                        id:moduleNameText
-                        font.pixelSize: 16
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                        verticalAlignment: Text.AlignVCenter
-                        //text: testModel.moduleListModel.name
-                        text: modelData.name
-                    }
+                   Text{
+                    id:moduleNameText
+                    font.pixelSize: 16
+                    height:selectVerseRow.height/1
+                    //color:"yellow"
+                    verticalAlignment: Text.AlignVCenter
+                    //horizontalAlignment: Text.AlignHCenter
+                    //anchors.leftMargin: 20
+                    //anchors.verticalCenter: parent.verticalCenter
+                    //text: testModel.moduleListModel.name
+                    text: modelData.name
                 }
-
-            }
-
-
-
-        }
-
-        Rectangle {
-            id: selectVerseKeyView
-            anchors.left: selectModuleView.right
-            //color: "#F00FFF"
-            width:parent.width-selectModuleView.width
-            height: parent.height
-
-            Row {
-                id: selectVerseRow
-                anchors.centerIn: parent
-                spacing: 20
-
-                MyListSelect {
-                    id: selectBookView
-
-                }
-                MyListSelect {
-                    id:selectChapterView
-                    width:100
-                }
-                MyListSelect {
-                    id:selectVerseView
-
-                }
-
+                //}
 
             }
         }
+
+
+
+        MyListSelect {
+            id: selectBookView
+            width:parent.width/4
+            Text {
+                anchors.centerIn:parent
+                text:"a"
+            }
+
+        }
+        MyListSelect {
+            id:selectChapterView
+            Text {text:"b"}
+            width:parent.width/4
+        }
+        MyListSelect {
+            id:selectVerseView
+            width:parent.width/4
+            Text {text:"c"}
+        }
+
 
     }
+
+
+
 
     Rectangle {
         id: verseView
         width:parent.width
-        height:parent.height-selectStuffView.height
-        anchors.top:selectStuffView.bottom
+        anchors.bottom: parent.bottom
+        anchors.top:selectVerseRow.bottom
         //color: "#22DDFF"
 
         focus: true
