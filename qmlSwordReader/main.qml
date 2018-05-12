@@ -19,18 +19,11 @@ Window {
     Row {
         id: selectVerseRow
         width:parent.width
-        //height: 50
-        //anchors.centerIn: parent
         spacing: 10
 
         MyListSelect {
             id: selectModuleView
-            //anchors.left: parent.left
-            //color: "#22FF22"
             width: parent.width/4
-            //height: parent.height
-
-
             ListView{
                 id:moduleListView
                 anchors.fill:parent
@@ -52,8 +45,6 @@ Window {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     width: parent.width
-                    //anchors.centerIn:parent
-
                     //text: testModel.moduleListModel.name
                     text: modelData.name
                 }
