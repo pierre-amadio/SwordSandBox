@@ -15,7 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     swordutils.cpp \
-    moduleinfo.cpp
+    moduleinfo.cpp \
+    swordwrapper.cpp
 
 RESOURCES += qml.qrc
 
@@ -32,7 +33,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     swordutils.h \
-    moduleinfo.h
+    moduleinfo.h \
+    swordwrapper.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/sword/lib/release/ -lsword-1.8.1
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/sword/lib/debug/ -lsword-1.8.1

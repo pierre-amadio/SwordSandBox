@@ -20,6 +20,8 @@ http://doc.qt.io/qt-5/qtquick-models-objectlistmodel-example.html
 
 signal and stuff:
 http://doc.qt.io/archives/qt-4.8/qtbinding.html
+http://doc.qt.io/qt-5/qtqml-syntax-signals.html
+http://www.qtcentre.org/threads/36782-SOLVED-qml-signal-with-c-slot
 
 plugins:
 TODO read https://qmlbook.github.io/ch16/index.html
@@ -62,6 +64,10 @@ int main(int argc, char *argv[])
 
     refreshModuleListModel(moduleListModel);
     rootContext->setContextProperty("testModel", QVariant::fromValue(moduleListModel));
+
+
+
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     if (engine.rootObjects().isEmpty())

@@ -15,6 +15,7 @@ Window {
     property string curModuleName: "none"
     property string curModuleLang: "none"
 
+    onCurModuleNameChanged: console.log("New module selected",curModuleName)
 
     Row {
         id: selectVerseRow
