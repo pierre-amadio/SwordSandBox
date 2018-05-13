@@ -12,6 +12,8 @@ public:
 signals:
 
 public slots:
+    void moduleNameChangedSlot(const QString &msg);
+
 };
 
 #endif // SWORDWRAPPER_H

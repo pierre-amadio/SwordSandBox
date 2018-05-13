@@ -6,6 +6,7 @@
 #include <markupfiltmgr.h>
 #include <QDebug>
 #include "moduleinfo.h"
+#include "swordwrapper.h"
 #include <QQmlContext>
 #include <QString>
 using namespace::sword;
@@ -59,16 +60,24 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
     QList<QObject*>moduleListModel;
+    swordWrapper * mySwordWrapper=new swordWrapper();
     QQmlApplicationEngine engine;
     QQmlContext *rootContext = engine.rootContext();
-
     refreshModuleListModel(moduleListModel);
     rootContext->setContextProperty("testModel", QVariant::fromValue(moduleListModel));
 
 
-
-
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
+    QObject *rootObject = engine.rootObjects().first();
+
+    QObject *rootWindow = rootObject->findChild<QObject *>("rootWin");
+    qDebug()<<"rootWindw"<<rootWindow;
+
+    QObject::connect(rootObject, SIGNAL(activated(QString)),
+                     mySwordWrapper, SLOT(moduleNameChangedSlot(QString)));
+
+
 
     if (engine.rootObjects().isEmpty())
         return -1;
