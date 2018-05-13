@@ -71,10 +71,10 @@ int main(int argc, char *argv[])
 
     QObject *rootObject = engine.rootObjects().first();
 
-    QObject *rootWindow = rootObject->findChild<QObject *>("rootWin");
-    qDebug()<<"rootWindw"<<rootWindow;
+    //QObject *rootWindow = rootObject->findChild<QObject *>("rootWin");
+    //qDebug()<<"rootWindw"<<rootWindow;
 
-    QObject::connect(rootObject, SIGNAL(activated(QString)),
+    QObject::connect(rootObject, SIGNAL(newModuleSelected(QString)),
                      mySwordWrapper, SLOT(moduleNameChangedSlot(QString)));
 
 

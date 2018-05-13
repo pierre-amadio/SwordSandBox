@@ -5,7 +5,6 @@ import QtQuick.Controls 1.4
 
 Window {
     id: root
-    objectName: "rootWin"
     visible:true
     width: 800; height: 440
     //color: "#00EE00"
@@ -16,12 +15,12 @@ Window {
     property string curModuleName: "none"
     property string curModuleLang: "none"
 
-    signal activated(string msg)
+    signal newModuleSelected(string msg)
     onCurModuleNameChanged: {
-
         console.log("New module selected",curModuleName)
-        activated(curModuleName)
+        newModuleSelected(curModuleName)
     }
+
     Row {
         id: selectVerseRow
         width:parent.width
