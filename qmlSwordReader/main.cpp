@@ -27,7 +27,8 @@ http://www.qtcentre.org/threads/36782-SOLVED-qml-signal-with-c-slot
 plugins:
 TODO read https://qmlbook.github.io/ch16/index.html
 
-qml widgets
+multiple windows management
+http://wiki.qt.io/QML_Application_Structuring_Approaches
 
 */
 
@@ -65,7 +66,6 @@ int main(int argc, char *argv[])
     QQmlContext *rootContext = engine.rootContext();
     refreshModuleListModel(moduleListModel);
     rootContext->setContextProperty("testModel", QVariant::fromValue(moduleListModel));
-
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
