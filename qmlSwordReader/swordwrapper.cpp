@@ -18,10 +18,17 @@ swordWrapper::swordWrapper(QObject *parent) : QObject(parent)
 }
 
 void swordWrapper::moduleNameChangedSlot(const QString &msg) {
-
-           qDebug() << "Called the C++ slot with message:" << msg;
-
+    qDebug() << "Called the C++ slot with message:" << msg;
+    //QString * tmpName=QString::QString(&"toto");
+    QList<QString*> booklist=getBookList(msg);
 }
+
+QList<QString *> swordWrapper::getBookList(const QString &moduleName){
+    qDebug()<<"What are the existing book for "<<moduleName;
+    QList<QString *> output;
+    return output;
+}
+
 
 void swordWrapper::refreshModuleListModel(QList<QObject*> &model){
     qDeleteAll(model.begin(), model.end());
