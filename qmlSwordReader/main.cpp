@@ -1,15 +1,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <stdio.h>
-#include <swmgr.h>
-#include <swmodule.h>
-#include <markupfiltmgr.h>
 #include <QDebug>
-#include "moduleinfo.h"
 #include "swordwrapper.h"
 #include <QQmlContext>
 #include <QString>
-using namespace::sword;
 
 /*
 c++ and qml:
@@ -33,40 +27,17 @@ http://wiki.qt.io/QML_Application_Structuring_Approaches
 */
 
 
-void refreshModuleListModel(QList<QObject*> &model){
-    qDeleteAll(model.begin(), model.end());
-    model.clear();
 
-    SWMgr library;
-    ModMap::iterator modIterator;
-
-    for (modIterator = library.Modules.begin(); modIterator != library.Modules.end(); modIterator++) {
-        SWModule *swordModule = (*modIterator).second;
-        const char * bibleTextSnt = "Biblical Texts";
-        const char * modType=swordModule->getType();
-        int strCmp=strncmp ( bibleTextSnt, modType, strlen(bibleTextSnt));
-        if(strlen(bibleTextSnt)==strlen(modType) && strCmp==0){
-            moduleInfo * curMod;
-            curMod=new moduleInfo();
-            curMod->setName(swordModule->getName());
-            curMod->setLang(swordModule->getLanguage());
-            curMod->setType(swordModule->getType());
-            model.append(curMod);
-        }
-    }
-}
 
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
-    QList<QObject*>moduleListModel;
     swordWrapper * mySwordWrapper=new swordWrapper();
     QQmlApplicationEngine engine;
     QQmlContext *rootContext = engine.rootContext();
-    refreshModuleListModel(moduleListModel);
-    rootContext->setContextProperty("testModel", QVariant::fromValue(moduleListModel));
 
+    rootContext->setContextProperty("testModel", QVariant::fromValue(mySwordWrapper->getModuleListModel()));
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     QObject *rootObject = engine.rootObjects().first();

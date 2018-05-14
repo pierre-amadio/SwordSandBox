@@ -8,11 +8,19 @@ class swordWrapper : public QObject
     Q_OBJECT
 public:
     explicit swordWrapper(QObject *parent = nullptr);
+    void refreshModuleListModel(QList<QObject*> &model);
+    QList<QObject*> getModuleListModel();
+
+private:
+    QList<QObject*> moduleListModel;
+    int testString;
 
 signals:
 
 public slots:
     void moduleNameChangedSlot(const QString &msg);
+
+
 
 };
 
