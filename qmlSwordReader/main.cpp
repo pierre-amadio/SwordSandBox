@@ -33,10 +33,11 @@ int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
-    swordWrapper * mySwordWrapper=new swordWrapper();
     QQmlApplicationEngine engine;
     QQmlContext *rootContext = engine.rootContext();
 
+
+    swordWrapper * mySwordWrapper=new swordWrapper();
     rootContext->setContextProperty("testModel", QVariant::fromValue(mySwordWrapper->getModuleListModel()));
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
@@ -49,7 +50,8 @@ int main(int argc, char *argv[])
                      mySwordWrapper, SLOT(moduleNameChangedSlot(QString)));
 
 
-
+    //qDebug()<<"coin "<< rootObject->property("curModuleName").toString();
+    mySwordWrapper->moduleNameChangedSlot(rootObject->property("curModuleName").toString());
     if (engine.rootObjects().isEmpty())
         return -1;
 

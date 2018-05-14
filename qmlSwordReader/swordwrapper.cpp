@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <swmgr.h>
 #include <swmodule.h>
+#include <versekey.h>
 #include <markupfiltmgr.h>
 #include "moduleinfo.h"
 
@@ -19,13 +20,33 @@ swordWrapper::swordWrapper(QObject *parent) : QObject(parent)
 
 void swordWrapper::moduleNameChangedSlot(const QString &msg) {
     qDebug() << "Called the C++ slot with message:" << msg;
-    //QString * tmpName=QString::QString(&"toto");
     QList<QString*> booklist=getBookList(msg);
 }
 
 QList<QString *> swordWrapper::getBookList(const QString &moduleName){
     qDebug()<<"What are the existing book for "<<moduleName;
     QList<QString *> output;
+
+    VerseKey vk;
+    for (int b = 0; b < 2; b++)
+    {
+        qDebug()<<"b="<<b;
+        // Set the Testament number to retrieve book names from that Testament.
+        // Add 1 to b since the Testament numbers don't start at 0.
+        vk.setTestament(b+1);
+        for (int i = 0; i < vk.BMAX[b]; i++)
+        {
+            // Add 1 to i since the book numbers don't start at 0.
+            vk.setBook(i+1);
+            qDebug() << "hop:"<<vk.getBookName()<<vk.getBookAbbrev();
+
+        }
+    }
+
+    SWMgr library(new MarkupFilterMgr(FMT_PLAIN));
+    qDebug()<<library.config->getFileName();
+
+
     return output;
 }
 
