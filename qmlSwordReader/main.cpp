@@ -50,7 +50,6 @@ int main(int argc, char *argv[])
                      mySwordWrapper, SLOT(moduleNameChangedSlot(QString)));
 
 
-    //qDebug()<<"coin "<< rootObject->property("curModuleName").toString();
     mySwordWrapper->moduleNameChangedSlot(rootObject->property("curModuleName").toString());
     if (engine.rootObjects().isEmpty())
         return -1;
