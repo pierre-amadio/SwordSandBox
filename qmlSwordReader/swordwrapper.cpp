@@ -52,9 +52,9 @@ QList<QString *> swordWrapper::getBookList(const QString &moduleName){
                 if (testLenght>0){
 
 
-                    qDebug()<<"\n testLength"<<testLenght;
-                    qDebug()<<"render="<<target->renderText();
-                    qDebug()<<"key"<<target->getKeyText();
+                    //qDebug()<<"\n testLength"<<testLenght;
+                    //qDebug()<<"render="<<target->renderText();
+                    //qDebug()<<"key"<<target->getKeyText();
                     qDebug() <<vk.getBookName()<<vk.getBookAbbrev();
                     //qDebug()<<"Nom du module:"<<moduleName;
                 }
