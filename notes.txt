@@ -2,7 +2,13 @@
 # http://www.crosswire.org/~ghellings/svnclassdocs/main.html
 # http://crosswire.org/sword/develop/swordapi/apiprimer.jsp
 # http://wiki.crosswire.org/DevTools:conf_Files
-
+# http://wiki.crosswire.org/Alternate_Versification
+# hebrew morphology code:
+# http://openscriptures.github.io/morphhb/parsing/HebrewMorphologyCodes.html
+# https://groups.google.com/forum/#!topic/openscriptures-hb/iF6ek80sKb8
+#
+# 
+#
 mkdir -p ~/tmp
 cd ~/tmp
 wget http://www.crosswire.org/ftpmirror/pub/sword/source/v1.8/sword-1.8.1.tar.gz
