@@ -38,7 +38,18 @@ int main(int argc, char *argv[])
 
 
     swordWrapper * mySwordWrapper=new swordWrapper();
-    rootContext->setContextProperty("testModel", QVariant::fromValue(mySwordWrapper->getModuleListModel()));
+    rootContext->setContextProperty("curModuleModel", QVariant::fromValue(mySwordWrapper->getModuleListModel()));
+
+    QStringList dataList;
+    dataList.append("Item 1");
+    dataList.append("Item 2");
+    dataList.append("Item 3");
+    dataList.append("Item 4");
+
+
+    //rootContext->setContextProperty("curBookModel",QVariant::fromValue(mySwordWrapper->getBookListModel()));
+    rootContext->setContextProperty("curBookModel",QVariant::fromValue(dataList));
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     QObject *rootObject = engine.rootObjects().first();
@@ -49,8 +60,14 @@ int main(int argc, char *argv[])
     QObject::connect(rootObject, SIGNAL(newModuleSelected(QString)),
                      mySwordWrapper, SLOT(moduleNameChangedSlot(QString)));
 
+    QObject::connect(rootObject,SIGNAL(newBookSelected(QString)),
+                     mySwordWrapper, SLOT(bookNameChangedSlot(const QString))
+                     );
+
 
     mySwordWrapper->moduleNameChangedSlot(rootObject->property("curModuleName").toString());
+    mySwordWrapper->bookNameChangedSlot(rootObject->property("curBookName").toString());
+
     if (engine.rootObjects().isEmpty())
         return -1;
 

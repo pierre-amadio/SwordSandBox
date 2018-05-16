@@ -15,10 +15,18 @@ Window {
     property string curModuleName: "none"
     property string curModuleLang: "none"
 
+    property string curBookName: "none"
+
     signal newModuleSelected(string msg)
     onCurModuleNameChanged: {
         console.log("New module selected",curModuleName)
         newModuleSelected(curModuleName)
+    }
+
+    signal newBookSelected(string msg)
+    onCurBookNameChanged: {
+        console.log("New book selected",curBookName)
+        newBookSelected(curBookName)
     }
 
     Row {
@@ -32,15 +40,12 @@ Window {
             ListView{
                 id:moduleListView
                 anchors.fill:parent
-                model:testModel
+                model:curModuleModel
                 snapMode:ListView.SnapToItem
                 highlightRangeMode:ListView.StrictlyEnforceRange
                 onCurrentItemChanged:{
-                    //console.log('new item:',testModel[currentIndex].name)
-                    //console.log('new item:',testModel[currentIndex].type)
-                    //console.log('new item:',testModel[currentIndex].lang)
-                    root.curModuleName=testModel[currentIndex].name
-                    root.curModuleLang=testModel[currentIndex].lang
+                    root.curModuleName=curModuleModel[currentIndex].name
+                    root.curModuleLang=curModuleModel[currentIndex].lang
                 }
                 delegate:
                     Text{
@@ -50,7 +55,6 @@ Window {
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     width: parent.width
-                    //text: testModel.moduleListModel.name
                     text: modelData.name
                 }
 
@@ -62,12 +66,29 @@ Window {
         MyListSelect {
             id: selectBookView
             width:parent.width/4
-            Text {
-                anchors.centerIn:parent
-                text:"a"
-            }
+            ListView{
+                id:bookListView
+                anchors.fill:parent
+                model:curBookModel
+                snapMode:ListView.SnapToItem
+                highlightRangeMode:ListView.StrictlyEnforceRange
+                onCurrentItemChanged:{
+                    root.curBookName=curBookModel[currentIndex].text
+                }
+                delegate:
+                    Text{
+                    id:bookNameText
+                    font.pixelSize: 16
+                    height:selectVerseRow.height/1
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    width: parent.width
+                    text: modelData
+                }
 
+            }
         }
+
         MyListSelect {
             id:selectChapterView
             Text {text:"b"}

@@ -21,11 +21,15 @@ swordWrapper::swordWrapper(QObject *parent) : QObject(parent)
 void swordWrapper::moduleNameChangedSlot(const QString &msg) {
     //qDebug() << "Called the C++ slot with message:" << msg;
     QList<QString> booklist=getBookList(msg);
+    bookListModel=booklist;
+    //foreach(QString curBook, bookListModel) {
+    //    qDebug()<< "curBook="<<curBook;
+    //}
 
-    foreach(QString curBook, booklist) {
-        qDebug()<< "curBook="<<curBook;
-    }
+}
 
+void swordWrapper::bookNameChangedSlot(const QString &msg) {
+    qDebug()<<"Need to implement bookNameChangedSlot"<<msg;
 }
 
 QList<QString> swordWrapper::getBookList(const QString &moduleName){
@@ -116,4 +120,8 @@ void swordWrapper::refreshModuleListModel(QList<QObject*> &model){
 QList<QObject*> swordWrapper::getModuleListModel(){
 
     return moduleListModel;
+}
+
+QList<QString> swordWrapper::getBookListModel(){
+    return bookListModel;
 }
