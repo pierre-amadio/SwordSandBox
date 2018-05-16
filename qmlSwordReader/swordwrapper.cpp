@@ -51,46 +51,6 @@ QList<QString> swordWrapper::getBookList(const QString &moduleName){
     }
     return output;
 
-/*
-
-    for (int b = 0; b < 2; b++)
-    {
-        //qDebug()<<"b="<<b;
-        // Set the Testament number to retrieve book names from that Testament.
-        // Add 1 to b since the Testament numbers don't start at 0.
-        vk.setTestament(b+1);
-        for (int i = 0; i < vk.BMAX[b]; i++)
-        {
-            // Add 1 to i since the book numbers don't start at 0.
-            vk.setBook(i+1);
-            target = library.getModule(moduleName.toStdString().c_str());
-            //QString my_formatted_string = QString("%1/%2-%3.txt").arg("~", "Tom", "Jane");
-            QString verseKey = QString("%1 1:1").arg(vk.getBookName());
-            //qDebug()<<"verseKey="<<verseKey;
-            target->setKey(verseKey.toStdString().c_str());
-            if(!target->Error()) {
-
-                int testLenght=target->renderText().length();
-                if (testLenght>0){
-
-
-                    //qDebug()<<"\n testLength"<<testLenght;
-                    //qDebug()<<"render="<<target->renderText();
-                    //qDebug()<<"key"<<target->getKeyText();
-                    qDebug() <<vk.getBookName()<<vk.getBookAbbrev();
-                    //qDebug()<<"Nom du module:"<<moduleName;
-                }
-            }
-
-        }
-    }
-
-    //    SWMgr library(new MarkupFilterMgr(FMT_PLAIN));
-    //    qDebug()<<library.config->getFileName();
-
-
-    return output;
-*/
 }
 
 
