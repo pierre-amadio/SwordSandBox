@@ -20,16 +20,34 @@ swordWrapper::swordWrapper(QObject *parent) : QObject(parent)
 
 void swordWrapper::moduleNameChangedSlot(const QString &msg) {
     //qDebug() << "Called the C++ slot with message:" << msg;
-    QList<QString*> booklist=getBookList(msg);
+    QList<QString> booklist=getBookList(msg);
+
+    foreach(QString curBook, booklist) {
+        qDebug()<< "curBook="<<curBook;
+    }
+
 }
 
-QList<QString *> swordWrapper::getBookList(const QString &moduleName){
+QList<QString> swordWrapper::getBookList(const QString &moduleName){
     qDebug()<<"##########################\nWhat are the existing book for "<<moduleName;
-    QList<QString *> output;
+    QList<QString> output;
 
-    VerseKey vk;
     SWMgr library(new MarkupFilterMgr(FMT_PLAIN));
     SWModule *target;
+    target = library.getModule(moduleName.toStdString().c_str());
+
+    VerseKey *vk = (target) ? (VerseKey *)target->getKey() : new VerseKey();
+
+    for ((*vk) = TOP; !vk->popError(); vk->setBook(vk->getBook()+1)) {
+        if (!target || target->hasEntry(vk)) {
+            //qDebug() << vk->getBookName();
+            QString  plop=QString::fromStdString(vk->getBookName());
+            output.append(plop);
+        }
+    }
+    return output;
+
+/*
 
     for (int b = 0; b < 2; b++)
     {
@@ -68,6 +86,7 @@ QList<QString *> swordWrapper::getBookList(const QString &moduleName){
 
 
     return output;
+*/
 }
 
 
