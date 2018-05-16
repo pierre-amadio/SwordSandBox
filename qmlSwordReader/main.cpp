@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     QQmlContext *rootContext = engine.rootContext();
 
 
-    swordWrapper * mySwordWrapper=new swordWrapper();
+    swordWrapper * mySwordWrapper=new swordWrapper(rootContext);
     //rootContext->setContextProperty("curModuleModel", QVariant::fromValue(mySwordWrapper->getModuleListModel()));
 
     /*
@@ -73,7 +73,6 @@ int main(int argc, char *argv[])
     mySwordWrapper->bookNameChangedSlot(rootObject->property("curBookName").toString());
 
 
-    rootContext->setContextProperty("curModuleModel", QVariant::fromValue(mySwordWrapper->getModuleListModel()));
 
 
     if (engine.rootObjects().isEmpty())

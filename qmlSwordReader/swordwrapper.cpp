@@ -5,6 +5,7 @@
 #include <versekey.h>
 #include <markupfiltmgr.h>
 #include "moduleinfo.h"
+#include <QQmlContext>
 
 
 using namespace::sword;
@@ -18,21 +19,34 @@ swordWrapper::swordWrapper(QObject *parent) : QObject(parent)
     //this->moduleListModel=moduleListModel;
 }
 
+swordWrapper::swordWrapper(QQmlContext *rootContext, QObject *parent): QObject(parent)
+{
+    qDebug()<<"New wrapper with context";
+    refreshModuleListModel(moduleListModel);
+    this->rootContext=rootContext;
+    rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
+}
+
+
+
 void swordWrapper::moduleNameChangedSlot(const QString &msg) {
-    //qDebug() << "Called the C++ slot with message:" << msg;
-    QList<QString> booklist=getBookList(msg);
+    qDebug() << "moduleNameChangedSlot slot with message:" << msg;
+    QStringList booklist=getBookList(msg);
+
     bookListModel=booklist;
-    //foreach(QString curBook, bookListModel) {
-    //    qDebug()<< "curBook="<<curBook;
-    //}
+    foreach(QString curBook, bookListModel) {
+        qDebug()<< "AHAH="<<curBook;
+    }
+
+    rootContext->setContextProperty("curBookModel",QVariant::fromValue(bookListModel));
 
 }
 
 void swordWrapper::bookNameChangedSlot(const QString &msg) {
-    qDebug()<<"Need to implement bookNameChangedSlot"<<msg;
+    qDebug()<<"Need to implement bookNameChangedSlot:"<<msg;
 }
 
-QList<QString> swordWrapper::getBookList(const QString &moduleName){
+QStringList swordWrapper::getBookList(const QString &moduleName){
     qDebug()<<"##########################\nWhat are the existing book for "<<moduleName;
     QList<QString> output;
 
@@ -82,6 +96,6 @@ QList<QObject*> swordWrapper::getModuleListModel(){
     return moduleListModel;
 }
 
-QList<QString> swordWrapper::getBookListModel(){
+QStringList swordWrapper::getBookListModel(){
     return bookListModel;
 }

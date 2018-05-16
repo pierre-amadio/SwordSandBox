@@ -2,21 +2,25 @@
 #define SWORDWRAPPER_H
 
 #include <QObject>
+#include <QQmlContext>
 
 class swordWrapper : public QObject
 {
     Q_OBJECT
 public:
     explicit swordWrapper(QObject *parent = nullptr);
+    swordWrapper(QQmlContext *rootContext, QObject *parent = nullptr);
+
     void refreshModuleListModel(QList<QObject*> &model);
     QList<QObject*> getModuleListModel();
-    QList<QString> getBookListModel();
+    QStringList getBookListModel();
 
-    QList<QString> getBookList(const QString & moduleName);
+    QStringList getBookList(const QString & moduleName);
 
 private:
     QList<QObject*> moduleListModel;
-    QList<QString> bookListModel;
+    QStringList bookListModel;
+    QQmlContext *rootContext;
     //int testString;
 
 signals:

@@ -73,7 +73,7 @@ Window {
                 snapMode:ListView.SnapToItem
                 highlightRangeMode:ListView.StrictlyEnforceRange
                 onCurrentItemChanged:{
-                    root.curBookName=curBookModel[currentIndex].text
+                    root.curBookName=curBookModel[currentIndex]
                 }
                 delegate:
                     Text{
