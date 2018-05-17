@@ -41,14 +41,28 @@ void swordWrapper::moduleNameChangedSlot(const QString &msg) {
     bookNameChangedSlot(booklist[0]);
 }
 
-void swordWrapper::bookNameChangedSlot(const QString &msg) {
-    qDebug()<<"bookNameChangedSlot:"<<msg;
-    //QQmlContext *rootContext = AppEngine->rootContext();
-
+void swordWrapper::bookNameChangedSlot(const QString &curBook) {
+    qDebug()<<"bookNameChangedSlot:"<<curBook;
 
     QObject *rootObject = AppEngine->rootObjects().first();
+    QString curModule=rootObject->property("curModuleName").toString();
+    qDebug()<<"Curmodule"<<curModule;
 
-    qDebug()<<"Curmodule"<<rootObject->property("curModuleName").toString();
+    //Lets find out how many chapter in this book for this module
+    //probably will need to use Versification=MT config setting.
+
+    SWMgr manager;
+    SWModule *bible = manager.getModule(curModule.toStdString().c_str());
+    if (!bible) {
+            qDebug() <<"Sword module "<< curModule << " not installed. This should not have happened...";
+    }
+
+
+    VerseKey *vk = (VerseKey *)bible->createKey();
+    vk->setBookName(curBook.toStdString().c_str());
+    qDebug()<<"Chapter MAx"<<vk->getChapterMax();
+
+
 
 }
 
