@@ -50,7 +50,7 @@ void swordWrapper::bookNameChangedSlot(const QString &curBook) {
     //rootContext->setContextProperty("maxChapter", QVariant::fromValue(getChapterMax()));
     QObject *rootObject = AppEngine->rootObjects().first();
     rootObject->setProperty("maxChapter", getChapterMax());
-    maxChapterChanged(getChapterMax());
+    //maxChapterChanged(getChapterMax());
 }
 
 QStringList swordWrapper::getBookList(const QString &moduleName){
