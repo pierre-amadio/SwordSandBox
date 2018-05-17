@@ -15,8 +15,10 @@ public:
     void refreshModuleListModel(QList<QObject*> &model);
     QList<QObject*> getModuleListModel();
     QStringList getBookListModel();
-
     QStringList getBookList(const QString & moduleName);
+
+    int getChapterMax();
+    int getVerseMax();
 
 private:
     QList<QObject*> moduleListModel;

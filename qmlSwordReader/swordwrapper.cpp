@@ -43,27 +43,7 @@ void swordWrapper::moduleNameChangedSlot(const QString &msg) {
 
 void swordWrapper::bookNameChangedSlot(const QString &curBook) {
     qDebug()<<"bookNameChangedSlot:"<<curBook;
-
-    QObject *rootObject = AppEngine->rootObjects().first();
-    QString curModule=rootObject->property("curModuleName").toString();
-    qDebug()<<"Curmodule"<<curModule;
-
-    //Lets find out how many chapter in this book for this module
-    //probably will need to use Versification=MT config setting.
-
-    SWMgr manager;
-    SWModule *bible = manager.getModule(curModule.toStdString().c_str());
-    if (!bible) {
-            qDebug() <<"Sword module "<< curModule << " not installed. This should not have happened...";
-    }
-
-
-    VerseKey *vk = (VerseKey *)bible->createKey();
-    vk->setBookName(curBook.toStdString().c_str());
-    qDebug()<<"Chapter MAx"<<vk->getChapterMax();
-
-
-
+    qDebug()<<"Chapter Max:"<<getChapterMax();
 }
 
 QStringList swordWrapper::getBookList(const QString &moduleName){
@@ -118,4 +98,20 @@ QList<QObject*> swordWrapper::getModuleListModel(){
 
 QStringList swordWrapper::getBookListModel(){
     return bookListModel;
+}
+
+int swordWrapper::getChapterMax(){
+    QObject *rootObject = AppEngine->rootObjects().first();
+    QString curModule=rootObject->property("curModuleName").toString();
+    QString curBook=rootObject->property("curBookName").toString();
+    //Lets find out how many chapter in this book for this module
+    //probably will need to use Versification=MT config setting.
+    SWMgr manager;
+    SWModule *bible = manager.getModule(curModule.toStdString().c_str());
+    if (!bible) {
+            qDebug() <<"Sword module "<< curModule << " not installed. This should not have happened...";
+    }
+    VerseKey *vk = (VerseKey *)bible->createKey();
+    vk->setBookName(curBook.toStdString().c_str());
+    return vk->getChapterMax();
 }
