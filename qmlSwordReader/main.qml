@@ -10,7 +10,7 @@ Window {
     //color: "#00EE00"
     //opacity: .9
     //onHeightChanged: console.log(curModuleName, curModuleLang)
-    onHeightChanged: fillChapterList(3)
+    onHeightChanged: console.log("max chapter",maxChapter)
     title:qsTr("Sword Reader")
 
     property string curModuleName: "none"
@@ -53,9 +53,10 @@ Window {
 
 
     Connections {
-           target: maxChapter
+           target: root
            onMaxChapterChanged: {
-               console.log("mach chapter changed", nbr)
+               console.log("mach chapter changed",maxChapter)
+               fillChapterList(maxChapter)
            }
        }
 
