@@ -28,6 +28,7 @@ private:
     //int testString;
 
 signals:
+    void maxChapterChanged(int nbrChapter);
 
 public slots:
     void moduleNameChangedSlot(const QString &msg);

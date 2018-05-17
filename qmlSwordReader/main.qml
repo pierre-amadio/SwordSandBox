@@ -9,13 +9,30 @@ Window {
     width: 800; height: 440
     //color: "#00EE00"
     //opacity: .9
-    onHeightChanged: console.log(curModuleName, curModuleLang)
+    //onHeightChanged: console.log(curModuleName, curModuleLang)
+    onHeightChanged: fillChapterList(3)
     title:qsTr("Sword Reader")
 
     property string curModuleName: "none"
     property string curModuleLang: "none"
-
     property string curBookName: "none"
+    property int curChapter: 1
+    property int maxChapter: 1
+    property int curVerse: 1
+
+
+    property variant chapterListModel: []
+
+
+    function fillChapterList(nbr){
+        //console.log("let's fill stuff:",nbr)
+        chapterListModel=[]
+        var tmpArray = new Array (0)
+        for (var i = 1; i <= nbr; i++){
+            tmpArray.push(i)
+        }
+        chapterListModel=tmpArray
+    }
 
     signal newModuleSelected(string msg)
     onCurModuleNameChanged: {
@@ -28,6 +45,22 @@ Window {
         //console.log("New book selected",curBookName)
         newBookSelected(curBookName)
     }
+
+    signal newChapterSelected(int chapter)
+    onCurChapterChanged: {
+        console.log("New chapter selected",curChapter)
+    }
+
+
+    Connections {
+           target: maxChapter
+           onMaxChapterChanged: {
+               console.log("mach chapter changed", nbr)
+           }
+       }
+
+
+
 
     Row {
         id: selectVerseRow
@@ -91,8 +124,32 @@ Window {
 
         MyListSelect {
             id:selectChapterView
-            Text {text:"b"}
             width:parent.width/4
+
+
+
+            ListView{
+                id:chapterView
+                anchors.fill:parent
+                model: chapterListModel
+                snapMode:ListView.SnapToItem
+                highlightRangeMode:ListView.StrictlyEnforceRange
+                onCurrentItemChanged:{
+                    root.curChapter=chapterListModel[currentIndex]
+                }
+                delegate:
+                    Text{
+                    id:chapterId
+                    font.pixelSize: 16
+                    height:selectVerseRow.height/1
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    width: parent.width
+                    text: modelData
+                }
+
+            }
+
         }
         MyListSelect {
             id:selectVerseView
