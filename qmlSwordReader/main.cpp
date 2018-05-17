@@ -34,10 +34,10 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
-    QQmlContext *rootContext = engine.rootContext();
+    //QQmlContext *rootContext = engine.rootContext();
 
 
-    swordWrapper * mySwordWrapper=new swordWrapper(rootContext);
+    swordWrapper * mySwordWrapper=new swordWrapper(&engine);
     //rootContext->setContextProperty("curModuleModel", QVariant::fromValue(mySwordWrapper->getModuleListModel()));
 
     /*

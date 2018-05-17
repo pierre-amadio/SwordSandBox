@@ -19,13 +19,13 @@ Window {
 
     signal newModuleSelected(string msg)
     onCurModuleNameChanged: {
-        console.log("New module selected",curModuleName)
+        //console.log("New module selected",curModuleName)
         newModuleSelected(curModuleName)
     }
 
     signal newBookSelected(string msg)
     onCurBookNameChanged: {
-        console.log("New book selected",curBookName)
+        //console.log("New book selected",curBookName)
         newBookSelected(curBookName)
     }
 

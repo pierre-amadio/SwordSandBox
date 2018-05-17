@@ -3,13 +3,14 @@
 
 #include <QObject>
 #include <QQmlContext>
+#include <QQmlApplicationEngine>
 
 class swordWrapper : public QObject
 {
     Q_OBJECT
 public:
     explicit swordWrapper(QObject *parent = nullptr);
-    swordWrapper(QQmlContext *rootContext, QObject *parent = nullptr);
+    swordWrapper(QQmlApplicationEngine  * engine, QObject *parent = nullptr);
 
     void refreshModuleListModel(QList<QObject*> &model);
     QList<QObject*> getModuleListModel();
@@ -20,7 +21,8 @@ public:
 private:
     QList<QObject*> moduleListModel;
     QStringList bookListModel;
-    QQmlContext *rootContext;
+    QQmlApplicationEngine * AppEngine;
+    //QQmlContext *rootContext
     //int testString;
 
 signals:

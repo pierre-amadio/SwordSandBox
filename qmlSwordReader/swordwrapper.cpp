@@ -13,17 +13,20 @@ using namespace::sword;
 
 swordWrapper::swordWrapper(QObject *parent) : QObject(parent)
 {
-    //qDebug()<<"New wrapper";
+    qDebug()<<"New wrapper should not be called without a context";
     //QList<QObject*>moduleListModel;
     refreshModuleListModel(moduleListModel);
     //this->moduleListModel=moduleListModel;
 }
 
-swordWrapper::swordWrapper(QQmlContext *rootContext, QObject *parent): QObject(parent)
+swordWrapper::swordWrapper(QQmlApplicationEngine *myEngine, QObject *parent): QObject(parent)
 {
-    qDebug()<<"New wrapper with context";
+    //qDebug()<<"New wrapper with context";
     refreshModuleListModel(moduleListModel);
-    this->rootContext=rootContext;
+    AppEngine=myEngine;
+    QQmlContext *rootContext = AppEngine->rootContext();
+
+    rootContext=rootContext;
     rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
 }
 
@@ -32,22 +35,25 @@ swordWrapper::swordWrapper(QQmlContext *rootContext, QObject *parent): QObject(p
 void swordWrapper::moduleNameChangedSlot(const QString &msg) {
     qDebug() << "moduleNameChangedSlot slot with message:" << msg;
     QStringList booklist=getBookList(msg);
-
     bookListModel=booklist;
-    foreach(QString curBook, bookListModel) {
-        qDebug()<< "AHAH="<<curBook;
-    }
-
+    QQmlContext *rootContext = AppEngine->rootContext();
     rootContext->setContextProperty("curBookModel",QVariant::fromValue(bookListModel));
-
+    bookNameChangedSlot(booklist[0]);
 }
 
 void swordWrapper::bookNameChangedSlot(const QString &msg) {
-    qDebug()<<"Need to implement bookNameChangedSlot:"<<msg;
+    qDebug()<<"bookNameChangedSlot:"<<msg;
+    //QQmlContext *rootContext = AppEngine->rootContext();
+
+
+    QObject *rootObject = AppEngine->rootObjects().first();
+
+    qDebug()<<"Curmodule"<<rootObject->property("curModuleName").toString();
+
 }
 
 QStringList swordWrapper::getBookList(const QString &moduleName){
-    qDebug()<<"##########################\nWhat are the existing book for "<<moduleName;
+    qDebug()<<"getBookList: "<<moduleName;
     QList<QString> output;
 
     SWMgr library(new MarkupFilterMgr(FMT_PLAIN));
