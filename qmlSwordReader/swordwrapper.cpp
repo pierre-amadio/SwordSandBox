@@ -136,5 +136,16 @@ int swordWrapper::getVerseMax(){
     QString curBook=rootObject->property("curBookName").toString();
     int curChapter=rootObject->property("curChapter").toInt();
     qDebug()<<"plop"<<curModule<<curBook<<curChapter;
-    return 3;
+    SWMgr manager;
+    SWModule *bible = manager.getModule(curModule.toStdString().c_str());
+    if (!bible) {
+            qDebug() <<"Sword module "<< curModule << " not installed. This should not have happened...";
+    }
+    VerseKey *vk = (VerseKey *)bible->createKey();
+    vk->setBookName(curBook.toStdString().c_str());
+    vk->setChapter(curChapter);
+    return vk->getVerseMax();
+
+
+
 }

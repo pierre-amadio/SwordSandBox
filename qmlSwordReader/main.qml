@@ -179,7 +179,6 @@ Window {
                 id:singleVerseView
                 anchors.fill:parent
                 model: verseListModel
-                //model: 10
                 snapMode:ListView.SnapToItem
                 highlightRangeMode:ListView.StrictlyEnforceRange
                 onCurrentItemChanged:{
