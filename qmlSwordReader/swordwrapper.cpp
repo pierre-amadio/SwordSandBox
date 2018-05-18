@@ -25,9 +25,12 @@ swordWrapper::swordWrapper(QQmlApplicationEngine *myEngine, QObject *parent): QO
     refreshModuleListModel(moduleListModel);
     AppEngine=myEngine;
     QQmlContext *rootContext = AppEngine->rootContext();
-
-    rootContext=rootContext;
+    QObject *rootObject = AppEngine->rootObjects().first();
+    qDebug()<<moduleListModel;
     rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
+    qDebug()<<"hey"<<rootObject->property("curModuleName").toString();
+    //mySwordWrapper->moduleNameChangedSlot(rootObject->property("curModuleName").toString());
+
 }
 
 
@@ -39,7 +42,7 @@ void swordWrapper::moduleNameChangedSlot(const QString &msg) {
     //qDebug()<<bookListModel;
     QQmlContext *rootContext = AppEngine->rootContext();
     rootContext->setContextProperty("curBookModel",QVariant::fromValue(bookListModel));
-    bookNameChangedSlot(booklist[0]);
+    //bookNameChangedSlot(booklist[0]);
 }
 
 void swordWrapper::bookNameChangedSlot(const QString &curBook) {
@@ -58,6 +61,10 @@ void swordWrapper::chapterChangedSlot(int chapterNbr) {
     QObject *rootObject = AppEngine->rootObjects().first();
     rootObject->setProperty("maxVerse", getVerseMax());
 
+}
+
+void swordWrapper::verseChangedSlot(int verseNbr){
+    qDebug()<<"verseChangedSlot"<<verseNbr;
 }
 
 QStringList swordWrapper::getBookList(const QString &moduleName){
@@ -135,7 +142,7 @@ int swordWrapper::getVerseMax(){
     QString curModule=rootObject->property("curModuleName").toString();
     QString curBook=rootObject->property("curBookName").toString();
     int curChapter=rootObject->property("curChapter").toInt();
-    qDebug()<<"plop"<<curModule<<curBook<<curChapter;
+    //qDebug()<<"plop"<<curModule<<curBook<<curChapter;
     SWMgr manager;
     SWModule *bible = manager.getModule(curModule.toStdString().c_str());
     if (!bible) {

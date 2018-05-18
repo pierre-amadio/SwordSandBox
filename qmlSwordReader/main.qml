@@ -13,13 +13,16 @@ Window {
     onHeightChanged: console.log("max chapter",maxChapter)
     title:qsTr("Sword Reader")
 
-    property string curModuleName: "none"
-    property string curModuleLang: "none"
-    property string curBookName: "none"
+    property string curModuleName: "none yet"
+    property string curModuleLang: "none yet"
+    property string curBookName: "none yet"
     property int curChapter: 1
     property int maxChapter: 1
     property int curVerse: 1
     property int maxVerse: 1
+
+    //property ListModel curModuleModel:({})
+    //property ListModel curBookModel:({})
 
     property variant chapterListModel: []
     property variant verseListModel: []
@@ -47,13 +50,13 @@ Window {
 
     signal newModuleSelected(string msg)
     onCurModuleNameChanged: {
-        //console.log("New module selected",curModuleName)
+        console.log("New module selected",curModuleName)
         newModuleSelected(curModuleName)
     }
 
     signal newBookSelected(string msg)
     onCurBookNameChanged: {
-        //console.log("New book selected",curBookName)
+        console.log("New book selected",curBookName)
         newBookSelected(curBookName)
     }
 
@@ -72,6 +75,7 @@ Window {
     signal newVerseSelected(int verse)
     onCurVerseChanged: {
         console.log("New verse selected",curVerse)
+        newVerseSelected(curVerse)
     }
 
     onMaxVerseChanged: {

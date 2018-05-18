@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
     //QQmlContext *rootContext = engine.rootContext();
 
 
-    swordWrapper * mySwordWrapper=new swordWrapper(&engine);
     //rootContext->setContextProperty("curModuleModel", QVariant::fromValue(mySwordWrapper->getModuleListModel()));
 
     /*
@@ -57,6 +56,11 @@ int main(int argc, char *argv[])
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     QObject *rootObject = engine.rootObjects().first();
+    //QQmlContext *rootContext = engine.rootContext();
+    //rootObject->setProperty("maxVerse", 0);
+    //rootObject->setProperty("maxChapter", 0);
+    //rootContext->setContextProperty("curBookModel",QVariant::fromValue(QStringList()));
+    swordWrapper * mySwordWrapper=new swordWrapper(&engine);
 
     //QObject *rootWindow = rootObject->findChild<QObject *>("rootWin");
     //qDebug()<<"rootWindw"<<rootWindow;
@@ -71,10 +75,15 @@ int main(int argc, char *argv[])
     QObject::connect(rootObject,SIGNAL(newChapterSelected(int)),
                      mySwordWrapper,SLOT(chapterChangedSlot(int))
                      );
+    QObject::connect(rootObject,SIGNAL(newVerseSelected(int)),
+                     mySwordWrapper,SLOT(verseChangedSlot(int))
+                     );
 
-    mySwordWrapper->moduleNameChangedSlot(rootObject->property("curModuleName").toString());
-    mySwordWrapper->bookNameChangedSlot(rootObject->property("curBookName").toString());
-    mySwordWrapper->chapterChangedSlot(rootObject->property("curChapter").toInt());
+
+    //mySwordWrapper->moduleNameChangedSlot(rootObject->property("curModuleName").toString());
+    //mySwordWrapper->bookNameChangedSlot(rootObject->property("curBookName").toString());
+    //mySwordWrapper->chapterChangedSlot(rootObject->property("curChapter").toInt());
+    //mySwordWrapper->verseChangedSlot(rootObject->property("curVerse").toInt());
 
 
 
