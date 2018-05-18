@@ -27,7 +27,7 @@ swordWrapper::swordWrapper(QQmlApplicationEngine *myEngine, QObject *parent): QO
     QQmlContext *rootContext = AppEngine->rootContext();
     QObject *rootObject = AppEngine->rootObjects().first();
     //qDebug()<<moduleListModel;
-    //rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
+    rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
 
 
     //qDebug()<<"hey"<<rootObject->property("curModuleName").toString();

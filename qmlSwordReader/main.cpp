@@ -53,17 +53,17 @@ int main(int argc, char *argv[])
 
 
 
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
+
+    QQmlContext *rootContext = engine.rootContext();
+    rootContext->setContextProperty("curModuleModel",QVariant::fromValue(QStringList()));
+    rootContext->setContextProperty("curBookModel",QVariant::fromValue(QStringList()));
+
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     QObject *rootObject = engine.rootObjects().first();
-    //QQmlContext *rootContext = engine.rootContext();
-    //rootObject->setProperty("maxVerse", 0);
-    //rootObject->setProperty("maxChapter", 0);
-    //rootContext->setContextProperty("curBookModel",QVariant::fromValue(QStringList()));
+
     swordWrapper * mySwordWrapper=new swordWrapper(&engine);
 
-    //QObject *rootWindow = rootObject->findChild<QObject *>("rootWin");
-    //qDebug()<<"rootWindw"<<rootWindow;
 
     QObject::connect(rootObject, SIGNAL(newModuleSelected(QString)),
                      mySwordWrapper, SLOT(moduleNameChangedSlot(QString)));
