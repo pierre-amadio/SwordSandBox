@@ -6,14 +6,14 @@
 #include <markupfiltmgr.h>
 #include "moduleinfo.h"
 #include <QQmlContext>
-
+#include <QDateTime>
 
 using namespace::sword;
 
 
 swordWrapper::swordWrapper(QObject *parent) : QObject(parent)
 {
-    qDebug()<<"New wrapper should not be called without a context";
+    //qDebug()<<"New wrapper should not be called without a context";
     //QList<QObject*>moduleListModel;
     refreshModuleListModel(moduleListModel);
     //this->moduleListModel=moduleListModel;
@@ -28,12 +28,12 @@ swordWrapper::swordWrapper(QQmlApplicationEngine *myEngine, QObject *parent): QO
 }
 
 void swordWrapper::refreshMenus(){
-    qDebug()<<"Let s refresh menu";
+    //qDebug()<<"Let s refresh menu";
     refreshModuleListModel(moduleListModel);
     QQmlContext *rootContext = AppEngine->rootContext();
     QObject *rootObject = AppEngine->rootObjects().first();
     rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
-    qDebug()<<"new wrapper cureModuleName"<<rootObject->property("curModuleName").toString();
+    //qDebug()<<"new wrapper cureModuleName"<<rootObject->property("curModuleName").toString();
     moduleNameChangedSlot(rootObject->property("curModuleName").toString());
 
 
@@ -48,7 +48,7 @@ void swordWrapper::refreshMenus(){
 }
 
 void swordWrapper::moduleNameChangedSlot(const QString &msg) {
-    qDebug() << "moduleNameChangedSlot slot with message:" << msg;
+    //qDebug() << "moduleNameChangedSlot slot with message:" << msg;
     QStringList booklist=getBookList(msg);
     bookListModel=booklist;
     //qDebug()<<bookListModel;
@@ -58,7 +58,7 @@ void swordWrapper::moduleNameChangedSlot(const QString &msg) {
 }
 
 void swordWrapper::bookNameChangedSlot(const QString &curBook) {
-    qDebug()<<"bookNameChangedSlot:"<<curBook;
+    //qDebug()<<"bookNameChangedSlot:"<<curBook;
     //qDebug()<<"Chapter Max:"<<getChapterMax();
     //QQmlContext *rootContext = AppEngine->rootContext();
     //qDebug()<<"max="<<getChapterMax();
@@ -69,18 +69,21 @@ void swordWrapper::bookNameChangedSlot(const QString &curBook) {
 }
 
 void swordWrapper::chapterChangedSlot(int chapterNbr) {
-    qDebug()<<"chapterChangedSlot; So chapter is now "<<chapterNbr;
+    //qDebug()<<"chapterChangedSlot; So chapter is now "<<chapterNbr;
     QObject *rootObject = AppEngine->rootObjects().first();
     rootObject->setProperty("maxVerse", getVerseMax());
 
 }
 
 void swordWrapper::verseChangedSlot(int verseNbr){
-    qDebug()<<"verseChangedSlot"<<verseNbr;
+
+    QString startTime=QDateTime::currentDateTime().toString();
+    uint curTime=  QDateTime::currentMSecsSinceEpoch();
+    qDebug()<< curTime <<"verseChangedSlot"<<verseNbr;
 }
 
 QStringList swordWrapper::getBookList(const QString &moduleName){
-    qDebug()<<"getBookList: "<<moduleName;
+    //qDebug()<<"getBookList: "<<moduleName;
     QList<QString> output;
 
     SWMgr library(new MarkupFilterMgr(FMT_PLAIN));

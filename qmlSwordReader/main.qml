@@ -40,23 +40,18 @@ Window {
         }
         chapterListModel=tmpArray
         chapterView.currentIndex=0
-        //console.log("cur chapter index",chapterView.currentIndex)
-        //console.log("model",chapterListModel)
-        //console.log("cur chapter",chapterListModel[chapterView.currentIndex])
         newChapterSelected(chapterListModel[chapterView.currentIndex])
     }
 
     function fillVerseList(nbr){
-        console.log("let's fill VerseList:",nbr)
+        //console.log("let's fill VerseList:",nbr)
         verseListModel=[]
         var tmpArray = new Array (0)
         for (var i = 1; i <= nbr; i++){
             tmpArray.push(i)
         }
         verseListModel=tmpArray
-        //console.log("verselist model",verseListModel)
         singleVerseView.currentIndex=0
-        //console.log("cur verse index",singleVerseView.currentIndex)
         newVerseSelected(verseListModel[singleVerseView.currentIndex])
 
     }
@@ -64,36 +59,36 @@ Window {
 
     signal newModuleSelected(string msg)
     onCurModuleNameChanged: {
-        console.log("New module selected",curModuleName)
+        //console.log("New module selected",curModuleName)
         newModuleSelected(curModuleName)
     }
 
     signal newBookSelected(string msg)
     onCurBookNameChanged: {
-        console.log("New book selected",curBookName)
+        //console.log("New book selected",curBookName)
         newBookSelected(curBookName)
     }
 
     signal newChapterSelected(int chapter)
     onCurChapterChanged: {
-        console.log("New chapter selected",curChapter)
+        //console.log("New chapter selected",curChapter)
         newChapterSelected(curChapter)
     }
 
 
     onMaxChapterChanged: {
-        console.log("mach chapter changed",maxChapter)
+        //console.log("mach chapter changed",maxChapter)
         fillChapterList(maxChapter)
     }
 
     signal newVerseSelected(int verse)
     onCurVerseChanged: {
-        console.log("New verse selected",curVerse)
+        //console.log("New verse selected",curVerse)
         newVerseSelected(curVerse)
     }
 
     onMaxVerseChanged: {
-        console.log("max verse changed",maxVerse)
+        //console.log("max verse changed",maxVerse)
         fillVerseList(maxVerse)
     }
 
