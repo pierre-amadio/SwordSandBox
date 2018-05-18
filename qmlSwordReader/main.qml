@@ -35,16 +35,26 @@ Window {
             tmpArray.push(i)
         }
         chapterListModel=tmpArray
+        chapterView.currentIndex=0
+        //console.log("cur chapter index",chapterView.currentIndex)
+        //console.log("model",chapterListModel)
+        //console.log("cur chapter",chapterListModel[chapterView.currentIndex])
+        newChapterSelected(chapterListModel[chapterView.currentIndex])
     }
 
     function fillVerseList(nbr){
-        //console.log("let's fill stuff:",nbr)
+        console.log("let's fill VerseList:",nbr)
         verseListModel=[]
         var tmpArray = new Array (0)
         for (var i = 1; i <= nbr; i++){
             tmpArray.push(i)
         }
         verseListModel=tmpArray
+        console.log("verselist model",verseListModel)
+        singleVerseView.currentIndex=0
+        console.log("cur verse index",singleVerseView.currentIndex)
+        newVerseSelected(verseListModel[singleVerseView.currentIndex])
+
     }
 
 

@@ -38,6 +38,7 @@ swordWrapper::swordWrapper(QQmlApplicationEngine *myEngine, QObject *parent): QO
     //why is bookNameChangedSlot not called  ? I m sure qml is running onCurBookNameChanged !!
     bookNameChangedSlot(rootObject->property("curBookName").toString());
 
+    qDebug()<<"PIKA cuChapter now"<<rootObject->property("curChapter").toString();
 
 
 
