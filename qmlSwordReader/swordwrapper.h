@@ -20,6 +20,7 @@ public:
     int getChapterMax();
     int getVerseMax();
 
+
 private:
     QList<QObject*> moduleListModel;
     QStringList bookListModel;

@@ -183,7 +183,7 @@ Window {
                 snapMode:ListView.SnapToItem
                 highlightRangeMode:ListView.StrictlyEnforceRange
                 onCurrentItemChanged:{
-                    root.curChapter=verseListModel[currentIndex]
+                    root.curVerse=verseListModel[currentIndex]
                 }
                 delegate:
                     Text{
