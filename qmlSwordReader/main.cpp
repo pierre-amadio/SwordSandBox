@@ -73,8 +73,8 @@ int main(int argc, char *argv[])
                      );
 
     mySwordWrapper->moduleNameChangedSlot(rootObject->property("curModuleName").toString());
-    //mySwordWrapper->bookNameChangedSlot(rootObject->property("curBookName").toString());
-
+    mySwordWrapper->bookNameChangedSlot(rootObject->property("curBookName").toString());
+    mySwordWrapper->chapterChangedSlot(rootObject->property("curChapter").toInt());
 
 
 
