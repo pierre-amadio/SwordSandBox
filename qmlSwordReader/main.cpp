@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
     //QQmlContext *rootContext = engine.rootContext();
 
 
-    swordWrapper * mySwordWrapper=new swordWrapper(&engine);
     //rootContext->setContextProperty("curModuleModel", QVariant::fromValue(mySwordWrapper->getModuleListModel()));
 
     /*
@@ -54,12 +53,17 @@ int main(int argc, char *argv[])
 
 
 
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
+
+    QQmlContext *rootContext = engine.rootContext();
+    rootContext->setContextProperty("curModuleModel",QVariant::fromValue(QStringList()));
+    rootContext->setContextProperty("curBookModel",QVariant::fromValue(QStringList()));
+
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     QObject *rootObject = engine.rootObjects().first();
 
-    //QObject *rootWindow = rootObject->findChild<QObject *>("rootWin");
-    //qDebug()<<"rootWindw"<<rootWindow;
+    swordWrapper * mySwordWrapper=new swordWrapper(&engine);
+
 
     QObject::connect(rootObject, SIGNAL(newModuleSelected(QString)),
                      mySwordWrapper, SLOT(moduleNameChangedSlot(QString)));
@@ -68,10 +72,19 @@ int main(int argc, char *argv[])
                      mySwordWrapper, SLOT(bookNameChangedSlot(const QString))
                      );
 
+    QObject::connect(rootObject,SIGNAL(newChapterSelected(int)),
+                     mySwordWrapper,SLOT(chapterChangedSlot(int))
+                     );
+    QObject::connect(rootObject,SIGNAL(newVerseSelected(int)),
+                     mySwordWrapper,SLOT(verseChangedSlot(int))
+                     );
 
-    mySwordWrapper->moduleNameChangedSlot(rootObject->property("curModuleName").toString());
-    mySwordWrapper->bookNameChangedSlot(rootObject->property("curBookName").toString());
+    mySwordWrapper->refreshMenus();
 
+    //mySwordWrapper->moduleNameChangedSlot(rootObject->property("curModuleName").toString());
+    //mySwordWrapper->bookNameChangedSlot(rootObject->property("curBookName").toString());
+    //mySwordWrapper->chapterChangedSlot(rootObject->property("curChapter").toInt());
+    //mySwordWrapper->verseChangedSlot(rootObject->property("curVerse").toInt());
 
 
 

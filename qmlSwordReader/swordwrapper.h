@@ -13,12 +13,14 @@ public:
     swordWrapper(QQmlApplicationEngine  * engine, QObject *parent = nullptr);
 
     void refreshModuleListModel(QList<QObject*> &model);
+    void refreshMenus();
     QList<QObject*> getModuleListModel();
     QStringList getBookListModel();
     QStringList getBookList(const QString & moduleName);
 
     int getChapterMax();
     int getVerseMax();
+
 
 private:
     QList<QObject*> moduleListModel;
@@ -28,13 +30,13 @@ private:
     //int testString;
 
 signals:
+    void maxChapterChanged(int nbrChapter);
 
 public slots:
     void moduleNameChangedSlot(const QString &msg);
     void bookNameChangedSlot(const QString &msg);
-
-
-
+    void chapterChangedSlot(int chapterNbr);
+    void verseChangedSlot(int verseNbr);
 };
 
 #endif // SWORDWRAPPER_H
