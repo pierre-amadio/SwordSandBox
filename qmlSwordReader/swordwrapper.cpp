@@ -22,12 +22,18 @@ swordWrapper::swordWrapper(QObject *parent) : QObject(parent)
 swordWrapper::swordWrapper(QQmlApplicationEngine *myEngine, QObject *parent): QObject(parent)
 {
     //qDebug()<<"New wrapper with context";
-    refreshModuleListModel(moduleListModel);
     AppEngine=myEngine;
+
+
+}
+
+void swordWrapper::refreshMenus(){
+    qDebug()<<"Let s refresh menu";
+    refreshModuleListModel(moduleListModel);
     QQmlContext *rootContext = AppEngine->rootContext();
     QObject *rootObject = AppEngine->rootObjects().first();
     rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
-        qDebug()<<"new wrapper cureModuleName"<<rootObject->property("curModuleName").toString();
+    qDebug()<<"new wrapper cureModuleName"<<rootObject->property("curModuleName").toString();
     moduleNameChangedSlot(rootObject->property("curModuleName").toString());
 
 
@@ -39,11 +45,7 @@ swordWrapper::swordWrapper(QQmlApplicationEngine *myEngine, QObject *parent): QO
     //bookNameChangedSlot(rootObject->property("curBookName").toString());
     //qDebug()<<"PIKA cuChapter now"<<rootObject->property("curChapter").toString();
 
-
-
 }
-
-
 
 void swordWrapper::moduleNameChangedSlot(const QString &msg) {
     qDebug() << "moduleNameChangedSlot slot with message:" << msg;
@@ -140,7 +142,7 @@ int swordWrapper::getChapterMax(){
     SWMgr manager;
     SWModule *bible = manager.getModule(curModule.toStdString().c_str());
     if (!bible) {
-            qDebug() <<"Sword module "<< curModule << " not installed. This should not have happened...";
+        qDebug() <<"Sword module "<< curModule << " not installed. This should not have happened...";
     }
     VerseKey *vk = (VerseKey *)bible->createKey();
     vk->setBookName(curBook.toStdString().c_str());
@@ -156,7 +158,7 @@ int swordWrapper::getVerseMax(){
     SWMgr manager;
     SWModule *bible = manager.getModule(curModule.toStdString().c_str());
     if (!bible) {
-            qDebug() <<"Sword module "<< curModule << " not installed. This should not have happened...";
+        qDebug() <<"Sword module "<< curModule << " not installed. This should not have happened...";
     }
     VerseKey *vk = (VerseKey *)bible->createKey();
     vk->setBookName(curBook.toStdString().c_str());

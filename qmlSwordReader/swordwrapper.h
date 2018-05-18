@@ -13,6 +13,7 @@ public:
     swordWrapper(QQmlApplicationEngine  * engine, QObject *parent = nullptr);
 
     void refreshModuleListModel(QList<QObject*> &model);
+    void refreshMenus();
     QList<QObject*> getModuleListModel();
     QStringList getBookListModel();
     QStringList getBookList(const QString & moduleName);

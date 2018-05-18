@@ -79,6 +79,7 @@ int main(int argc, char *argv[])
                      mySwordWrapper,SLOT(verseChangedSlot(int))
                      );
 
+    mySwordWrapper->refreshMenus();
 
     //mySwordWrapper->moduleNameChangedSlot(rootObject->property("curModuleName").toString());
     //mySwordWrapper->bookNameChangedSlot(rootObject->property("curBookName").toString());
