@@ -17,6 +17,7 @@ public:
     QList<QObject*> getModuleListModel();
     QStringList getBookListModel();
     QStringList getBookList(const QString & moduleName);
+    QString getVerse(QString module, QString book ,int chapter, int verse);
 
     int getChapterMax();
     int getVerseMax();

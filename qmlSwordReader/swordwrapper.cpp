@@ -56,6 +56,22 @@ void swordWrapper::verseChangedSlot(int verseNbr){
     QString startTime=QDateTime::currentDateTime().toString();
     uint curTime=  QDateTime::currentMSecsSinceEpoch();
     qDebug()<< curTime <<"verseChangedSlot"<<verseNbr;
+    QObject *rootObject = AppEngine->rootObjects().first();
+    /*
+     *
+    QString curModule=rootObject->property("curModuleName").toString();
+    QString curBook=rootObject->property("curBookName").toString();
+
+     * */
+
+
+
+    QString module=rootObject->property("curModuleName").toString();
+    QString book=rootObject->property("curBookName").toString();
+    int chapter=rootObject->property("curChapter").toInt();
+    int verse=rootObject->property("curVerse").toInt();
+
+    qDebug()<<getVerse(module,  book , chapter,  verse);
 }
 
 QStringList swordWrapper::getBookList(const QString &moduleName){
@@ -142,4 +158,35 @@ int swordWrapper::getVerseMax(){
     vk->setChapter(curChapter);
     return vk->getVerseMax();
 
+}
+
+QString swordWrapper::getVerse(QString module, QString book ,int chapter, int verse){
+    qDebug()<<"Let s get "<<module<<book<<chapter<<verse;
+    QString out="not done";
+
+    SWMgr library(new MarkupFilterMgr(FMT_HTML));
+    library.setGlobalOption("Morpheme Segmentation","On");
+    library.setGlobalOption("Lemmas","On");
+    library.setGlobalOption("Morphological Tags","On");
+    library.setGlobalOption("Strong's Numbers","On");
+    library.setGlobalOption("OSISStrongs","On");
+
+
+
+    SWModule *bible = library.getModule(module.toStdString().c_str());
+    if (!bible) {
+        qDebug() <<"In getVerse: Sword module "<< module << " not installed. This should not have happened...";
+    }
+    VerseKey *vk = (VerseKey *)bible->createKey();
+    vk->setBookName(book.toStdString().c_str());
+    vk->setChapter(chapter);
+    vk->setVerse(verse);
+
+    bible->setKey(vk);
+    //qDebug()<<"key is "<<vk->getShortText();
+    //qDebug()<<"key on module is"<<bible->getKeyText();
+    //qDebug()<<"so is it ok "<< bible->renderText();
+    out=bible->renderText();
+
+    return out;
 }
