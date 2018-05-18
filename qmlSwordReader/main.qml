@@ -19,10 +19,10 @@ Window {
     property int curChapter: 1
     property int maxChapter: 1
     property int curVerse: 1
-
+    property int maxVerse: 1
 
     property variant chapterListModel: []
-
+    property variant verseListModel: []
 
     function fillChapterList(nbr){
         //console.log("let's fill stuff:",nbr)
@@ -33,6 +33,17 @@ Window {
         }
         chapterListModel=tmpArray
     }
+
+    function fillVerseList(nbr){
+        //console.log("let's fill stuff:",nbr)
+        verseListModel=[]
+        var tmpArray = new Array (0)
+        for (var i = 1; i <= nbr; i++){
+            tmpArray.push(i)
+        }
+        verseListModel=tmpArray
+    }
+
 
     signal newModuleSelected(string msg)
     onCurModuleNameChanged: {
@@ -49,24 +60,31 @@ Window {
     signal newChapterSelected(int chapter)
     onCurChapterChanged: {
         console.log("New chapter selected",curChapter)
+        newChapterSelected(curChapter)
     }
 
 
-    Connections {
-           target: root
-           onMaxChapterChanged: {
-               console.log("mach chapter changed",maxChapter)
-               fillChapterList(maxChapter)
-           }
-       }
+    onMaxChapterChanged: {
+        console.log("mach chapter changed",maxChapter)
+        fillChapterList(maxChapter)
+    }
 
+    signal newVerseSelected(int verse)
+    onCurVerseChanged: {
+        console.log("New verse selected",curVerse)
+    }
+
+    onMaxVerseChanged: {
+        console.log("max verse changed",maxVerse)
+        fillVerseList(maxVerse)
+    }
 
 
 
     Row {
         id: selectVerseRow
         width:parent.width
-        spacing: 10
+        spacing: 0
 
         MyListSelect {
             id: selectModuleView
@@ -155,7 +173,33 @@ Window {
         MyListSelect {
             id:selectVerseView
             width:parent.width/4
-            Text {text:"c"}
+
+
+            ListView{
+                id:singleVerseView
+                anchors.fill:parent
+                model: verseListModel
+                //model: 10
+                snapMode:ListView.SnapToItem
+                highlightRangeMode:ListView.StrictlyEnforceRange
+                onCurrentItemChanged:{
+                    root.curChapter=verseListModel[currentIndex]
+                }
+                delegate:
+                    Text{
+                    id:verseId
+                    font.pixelSize: 16
+                    height:selectVerseRow.height/1
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    width: parent.width
+                    text: modelData
+                }
+
+            }
+
+
+
         }
 
 

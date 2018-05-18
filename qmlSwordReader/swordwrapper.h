@@ -33,9 +33,7 @@ signals:
 public slots:
     void moduleNameChangedSlot(const QString &msg);
     void bookNameChangedSlot(const QString &msg);
-
-
-
+    void chapterChangedSlot(int chapterNbr);
 };
 
 #endif // SWORDWRAPPER_H

@@ -53,6 +53,13 @@ void swordWrapper::bookNameChangedSlot(const QString &curBook) {
     //maxChapterChanged(getChapterMax());
 }
 
+void swordWrapper::chapterChangedSlot(int chapterNbr) {
+    qDebug()<<"chapterChangedSlot; So chapter is now "<<chapterNbr;
+    QObject *rootObject = AppEngine->rootObjects().first();
+    rootObject->setProperty("maxVerse", 15);
+
+}
+
 QStringList swordWrapper::getBookList(const QString &moduleName){
     qDebug()<<"getBookList: "<<moduleName;
     QList<QString> output;

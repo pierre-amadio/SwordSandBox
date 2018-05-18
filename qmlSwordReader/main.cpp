@@ -68,9 +68,12 @@ int main(int argc, char *argv[])
                      mySwordWrapper, SLOT(bookNameChangedSlot(const QString))
                      );
 
+    QObject::connect(rootObject,SIGNAL(newChapterSelected(int)),
+                     mySwordWrapper,SLOT(chapterChangedSlot(int))
+                     );
 
     mySwordWrapper->moduleNameChangedSlot(rootObject->property("curModuleName").toString());
-    mySwordWrapper->bookNameChangedSlot(rootObject->property("curBookName").toString());
+    //mySwordWrapper->bookNameChangedSlot(rootObject->property("curBookName").toString());
 
 
 
