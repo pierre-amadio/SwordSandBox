@@ -34,26 +34,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
-    //QQmlContext *rootContext = engine.rootContext();
-
-
-    //rootContext->setContextProperty("curModuleModel", QVariant::fromValue(mySwordWrapper->getModuleListModel()));
-
-    /*
-    QStringList dataList;
-    dataList.append("Item 1");
-    dataList.append("Item 2");
-    dataList.append("Item 3");
-    dataList.append("Item 4");
-
-
-    //rootContext->setContextProperty("curBookModel",QVariant::fromValue(mySwordWrapper->getBookListModel()));
-    rootContext->setContextProperty("curBookModel",QVariant::fromValue(dataList));
-    */
-
-
-
-
 
     QQmlContext *rootContext = engine.rootContext();
     rootContext->setContextProperty("curModuleModel",QVariant::fromValue(QStringList()));
@@ -80,12 +60,6 @@ int main(int argc, char *argv[])
                      );
 
     mySwordWrapper->refreshMenus();
-
-    //mySwordWrapper->moduleNameChangedSlot(rootObject->property("curModuleName").toString());
-    //mySwordWrapper->bookNameChangedSlot(rootObject->property("curBookName").toString());
-    //mySwordWrapper->chapterChangedSlot(rootObject->property("curChapter").toInt());
-    //mySwordWrapper->verseChangedSlot(rootObject->property("curVerse").toInt());
-
 
 
     if (engine.rootObjects().isEmpty())

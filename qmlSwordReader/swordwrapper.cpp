@@ -13,18 +13,13 @@ using namespace::sword;
 
 swordWrapper::swordWrapper(QObject *parent) : QObject(parent)
 {
-    //qDebug()<<"New wrapper should not be called without a context";
-    //QList<QObject*>moduleListModel;
-    refreshModuleListModel(moduleListModel);
-    //this->moduleListModel=moduleListModel;
+    qDebug()<<"New wrapper should not be called without an engine";
 }
 
 swordWrapper::swordWrapper(QQmlApplicationEngine *myEngine, QObject *parent): QObject(parent)
 {
     //qDebug()<<"New wrapper with context";
     AppEngine=myEngine;
-
-
 }
 
 void swordWrapper::refreshMenus(){
@@ -33,17 +28,7 @@ void swordWrapper::refreshMenus(){
     QQmlContext *rootContext = AppEngine->rootContext();
     QObject *rootObject = AppEngine->rootObjects().first();
     rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
-    //qDebug()<<"new wrapper cureModuleName"<<rootObject->property("curModuleName").toString();
     moduleNameChangedSlot(rootObject->property("curModuleName").toString());
-
-
-    //qDebug()<<"PIKA bookname"<<rootObject->property("curBookName").toString();
-    //qDebug()<<"PIKA curchatper"<<rootObject->property("curChapter").toString();
-    //qDebug()<<"PIKA maxchatper"<<rootObject->property("maxChapter").toString();
-
-    //why is bookNameChangedSlot not called  ? I m sure qml is running onCurBookNameChanged !!
-    //bookNameChangedSlot(rootObject->property("curBookName").toString());
-    //qDebug()<<"PIKA cuChapter now"<<rootObject->property("curChapter").toString();
 
 }
 
@@ -51,21 +36,13 @@ void swordWrapper::moduleNameChangedSlot(const QString &msg) {
     //qDebug() << "moduleNameChangedSlot slot with message:" << msg;
     QStringList booklist=getBookList(msg);
     bookListModel=booklist;
-    //qDebug()<<bookListModel;
     QQmlContext *rootContext = AppEngine->rootContext();
     rootContext->setContextProperty("curBookModel",QVariant::fromValue(bookListModel));
-    //bookNameChangedSlot(booklist[0]);
 }
 
 void swordWrapper::bookNameChangedSlot(const QString &curBook) {
-    //qDebug()<<"bookNameChangedSlot:"<<curBook;
-    //qDebug()<<"Chapter Max:"<<getChapterMax();
-    //QQmlContext *rootContext = AppEngine->rootContext();
-    //qDebug()<<"max="<<getChapterMax();
-    //rootContext->setContextProperty("maxChapter", QVariant::fromValue(getChapterMax()));
     QObject *rootObject = AppEngine->rootObjects().first();
     rootObject->setProperty("maxChapter", getChapterMax());
-    //maxChapterChanged(getChapterMax());
 }
 
 void swordWrapper::chapterChangedSlot(int chapterNbr) {
@@ -76,7 +53,6 @@ void swordWrapper::chapterChangedSlot(int chapterNbr) {
 }
 
 void swordWrapper::verseChangedSlot(int verseNbr){
-
     QString startTime=QDateTime::currentDateTime().toString();
     uint curTime=  QDateTime::currentMSecsSinceEpoch();
     qDebug()<< curTime <<"verseChangedSlot"<<verseNbr;
@@ -107,7 +83,6 @@ QStringList swordWrapper::getBookList(const QString &moduleName){
 void swordWrapper::refreshModuleListModel(QList<QObject*> &model){
     qDeleteAll(model.begin(), model.end());
     model.clear();
-    //qDebug()<<"Let s do this";
     SWMgr library;
     ModMap::iterator modIterator;
 
@@ -157,7 +132,6 @@ int swordWrapper::getVerseMax(){
     QString curModule=rootObject->property("curModuleName").toString();
     QString curBook=rootObject->property("curBookName").toString();
     int curChapter=rootObject->property("curChapter").toInt();
-    //qDebug()<<"plop"<<curModule<<curBook<<curChapter;
     SWMgr manager;
     SWModule *bible = manager.getModule(curModule.toStdString().c_str());
     if (!bible) {
@@ -167,7 +141,5 @@ int swordWrapper::getVerseMax(){
     vk->setBookName(curBook.toStdString().c_str());
     vk->setChapter(curChapter);
     return vk->getVerseMax();
-
-
 
 }
