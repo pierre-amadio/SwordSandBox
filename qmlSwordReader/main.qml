@@ -9,8 +9,15 @@ Window {
     width: 800; height: 440
     //color: "#00EE00"
     //opacity: .9
-    //onHeightChanged: console.log(curModuleName, curModuleLang)
-    onHeightChanged: console.log("max chapter",maxChapter)
+    onHeightChanged: {
+        console.log(" ")
+        console.log("curModuleName",curModuleName)
+        console.log("currBookName",curBookName)
+        console.log("curChapter",curChapter)
+        console.log("curVerse", curVerse)
+    }
+
+    //onHeightChanged: console.log("max chapter",maxChapter)
     title:qsTr("Sword Reader")
 
     property string curModuleName: "none yet"
@@ -20,9 +27,6 @@ Window {
     property int maxChapter: 156
     property int curVerse: 157
     property int maxVerse: 158
-
-    //property ListModel curModuleModel:({})
-    //property ListModel curBookModel:({})
 
     property variant chapterListModel: []
     property variant verseListModel: []
@@ -50,9 +54,9 @@ Window {
             tmpArray.push(i)
         }
         verseListModel=tmpArray
-        console.log("verselist model",verseListModel)
+        //console.log("verselist model",verseListModel)
         singleVerseView.currentIndex=0
-        console.log("cur verse index",singleVerseView.currentIndex)
+        //console.log("cur verse index",singleVerseView.currentIndex)
         newVerseSelected(verseListModel[singleVerseView.currentIndex])
 
     }

@@ -31,14 +31,13 @@ swordWrapper::swordWrapper(QQmlApplicationEngine *myEngine, QObject *parent): QO
     moduleNameChangedSlot(rootObject->property("curModuleName").toString());
 
 
-    qDebug()<<"PIKA bookname"<<rootObject->property("curBookName").toString();
-    qDebug()<<"PIKA curchatper"<<rootObject->property("curChapter").toString();
-    qDebug()<<"PIKA maxchatper"<<rootObject->property("maxChapter").toString();
+    //qDebug()<<"PIKA bookname"<<rootObject->property("curBookName").toString();
+    //qDebug()<<"PIKA curchatper"<<rootObject->property("curChapter").toString();
+    //qDebug()<<"PIKA maxchatper"<<rootObject->property("maxChapter").toString();
 
     //why is bookNameChangedSlot not called  ? I m sure qml is running onCurBookNameChanged !!
-    bookNameChangedSlot(rootObject->property("curBookName").toString());
-
-    qDebug()<<"PIKA cuChapter now"<<rootObject->property("curChapter").toString();
+    //bookNameChangedSlot(rootObject->property("curBookName").toString());
+    //qDebug()<<"PIKA cuChapter now"<<rootObject->property("curChapter").toString();
 
 
 
