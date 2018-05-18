@@ -26,12 +26,20 @@ swordWrapper::swordWrapper(QQmlApplicationEngine *myEngine, QObject *parent): QO
     AppEngine=myEngine;
     QQmlContext *rootContext = AppEngine->rootContext();
     QObject *rootObject = AppEngine->rootObjects().first();
-    //qDebug()<<moduleListModel;
     rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
+        qDebug()<<"new wrapper cureModuleName"<<rootObject->property("curModuleName").toString();
+    moduleNameChangedSlot(rootObject->property("curModuleName").toString());
 
 
-    //qDebug()<<"hey"<<rootObject->property("curModuleName").toString();
-    //mySwordWrapper->moduleNameChangedSlot(rootObject->property("curModuleName").toString());
+    qDebug()<<"PIKA bookname"<<rootObject->property("curBookName").toString();
+    qDebug()<<"PIKA curchatper"<<rootObject->property("curChapter").toString();
+    qDebug()<<"PIKA maxchatper"<<rootObject->property("maxChapter").toString();
+
+    //why is bookNameChangedSlot not called  ? I m sure qml is running onCurBookNameChanged !!
+    bookNameChangedSlot(rootObject->property("curBookName").toString());
+
+
+
 
 }
 

@@ -16,10 +16,10 @@ Window {
     property string curModuleName: "none yet"
     property string curModuleLang: "none yet"
     property string curBookName: "none yet"
-    property int curChapter: 1
-    property int maxChapter: 1
-    property int curVerse: 1
-    property int maxVerse: 1
+    property int curChapter: 155
+    property int maxChapter: 156
+    property int curVerse: 157
+    property int maxVerse: 158
 
     //property ListModel curModuleModel:({})
     //property ListModel curBookModel:({})
