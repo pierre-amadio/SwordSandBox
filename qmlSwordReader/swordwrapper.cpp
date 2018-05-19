@@ -7,6 +7,7 @@
 #include "moduleinfo.h"
 #include <QQmlContext>
 #include <QDateTime>
+#include <QListView>
 
 using namespace::sword;
 
@@ -33,14 +34,42 @@ void swordWrapper::refreshMenus(){
 }
 
 void swordWrapper::moduleNameChangedSlot(const QString &msg) {
-    //qDebug() << "moduleNameChangedSlot slot with message:" << msg;
-    QStringList booklist=getBookList(msg);
-    bookListModel=booklist;
+    qDebug() << "moduleNameChangedSlot slot with message:" << msg;
     QQmlContext *rootContext = AppEngine->rootContext();
+
+    //let s force the change of book name to be sure things are refreshed
+    //even if the previous selected book match the first book to show
+    //such as genesis.
+    //QObject *rootObject = AppEngine->rootObjects().first();
+    //rootObject->setProperty("curBookName", "Empty book");
+
+    //foreach(QObject * co, rootObject->children()){
+    //    qDebug()<<co;
+    //    qDebug()<<co->property("objectName").toString();
+
+    //}
+    //bookNameDelegate
+    //QObject *rect = rootObject->findChild<QObject *>("bookListView");
+    //QObject * obj = rootObject->findChild<QObject *>("bookListView");
+    //QListView * plop= rootObject->findChild<QListView *>("bookListView");
+    //qDebug()<<"obj="<<obj;
+    //qDebug()<<"plop="<<plop;
+
+
+    //QStringList booklist=getBookList(msg);
+
+    //bookListModel=booklist;
+    //qDebug()<<booklist;
+    bookListModel.clear();
+    foreach(QString c,getBookList(msg)){
+        //qDebug()<<c;
+        bookListModel.append(c);
+    }
     rootContext->setContextProperty("curBookModel",QVariant::fromValue(bookListModel));
 }
 
 void swordWrapper::bookNameChangedSlot(const QString &curBook) {
+    qDebug()<<"bookNameChangedSlot"<<curBook;
     QObject *rootObject = AppEngine->rootObjects().first();
     rootObject->setProperty("maxChapter", getChapterMax());
 }
@@ -71,7 +100,15 @@ void swordWrapper::verseChangedSlot(int verseNbr){
     int chapter=rootObject->property("curChapter").toInt();
     int verse=rootObject->property("curVerse").toInt();
 
-    qDebug()<<getVerse(module,  book , chapter,  verse);
+    //qDebug()<<getVerse(module,  book , chapter,  verse);
+
+    QString tmp=getVerse(module,  book , chapter,  verse);
+
+
+    //QObject *childObject = rootObject->findChild<QObject*>("bookListView");
+    //qDebug()<<"new object"<<childObject;
+    //rootObject->setProperty("selectVerseRow",QVariant("Change you text here..."));
+
 }
 
 QStringList swordWrapper::getBookList(const QString &moduleName){
@@ -161,7 +198,7 @@ int swordWrapper::getVerseMax(){
 }
 
 QString swordWrapper::getVerse(QString module, QString book ,int chapter, int verse){
-    qDebug()<<"Let s get "<<module<<book<<chapter<<verse;
+    //qDebug()<<"Let s get "<<module<<book<<chapter<<verse;
     QString out="not done";
 
     SWMgr library(new MarkupFilterMgr(FMT_HTML));

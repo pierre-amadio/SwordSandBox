@@ -1,4 +1,6 @@
 QT += quick
+QT += widgets
+
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -18,7 +20,6 @@ SOURCES += \
     swordwrapper.cpp
 
 RESOURCES += qml.qrc
-
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 

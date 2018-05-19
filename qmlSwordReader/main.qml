@@ -5,16 +5,18 @@ import QtQuick.Controls 1.4
 
 Window {
     id: root
+    objectName: "rootWindow"
     visible:true
     width: 800; height: 440
     //color: "#00EE00"
     //opacity: .9
     onHeightChanged: {
         console.log(" ")
-        console.log("curModuleName",curModuleName)
-        console.log("currBookName",curBookName)
-        console.log("curChapter",curChapter)
-        console.log("curVerse", curVerse)
+        //console.log("curModuleName",curModuleName)
+        //console.log("currBookName",curBookName)
+        //console.log("curChapter",curChapter)
+        //console.log("curVerse", curVerse)
+        cleanBookList()
     }
 
     //onHeightChanged: console.log("max chapter",maxChapter)
@@ -30,6 +32,30 @@ Window {
 
     property variant chapterListModel: []
     property variant verseListModel: []
+
+
+    function cleanBookList(){
+        console.log("Cleaning book list")
+        //curBookModel=new Array (0)
+        //curBookModel="none yet"
+        //bookListView.model=new Array(0)
+        var s=bookListView.model.lenght
+        var m=bookListView.model
+        //console.log(m[70])
+        //for(var i=0;i<70;i++) {
+        //    if (m[i]!==undefined){
+        //        console.log(m[i])
+        //    }
+        //}
+        while(m[0]!==undefined){
+            console.log(m[0])
+            m.pull(0)
+        }
+
+        //console.log(bookListView.model.count)
+        //newModuleSelected(curModuleName)
+
+    }
 
     function fillChapterList(nbr){
         //console.log("let's fill stuff:",nbr)
@@ -59,13 +85,24 @@ Window {
 
     signal newModuleSelected(string msg)
     onCurModuleNameChanged: {
-        //console.log("New module selected",curModuleName)
+        console.log("New module selected",curModuleName)
+        //console.log(curBookModel)
+        //curBookModel=new Array (0)
+        //bookListView.model=curBookModel
+
+        //curBookModel=tmpArray
+        //bookListView.model=tmpArray
+        //console.log("tmp array",tmpArray)
+        //console.log("curbookModel is now ",curBookModel)
+
+        //chapterListModel=[]
+
         newModuleSelected(curModuleName)
     }
 
     signal newBookSelected(string msg)
     onCurBookNameChanged: {
-        //console.log("New book selected",curBookName)
+        console.log("New book selected",curBookName)
         newBookSelected(curBookName)
     }
 
@@ -93,17 +130,19 @@ Window {
     }
 
 
-
     Row {
+        objectName: "selectVerseRow"
         id: selectVerseRow
         width:parent.width
         spacing: 0
 
         MyListSelect {
             id: selectModuleView
+            objectName: "selectModuleView"
             width: parent.width/4
             ListView{
                 id:moduleListView
+                objectName: "moduleListView"
                 anchors.fill:parent
                 model:curModuleModel
                 snapMode:ListView.SnapToItem
@@ -130,9 +169,11 @@ Window {
 
         MyListSelect {
             id: selectBookView
+            objectName: "selectBookView"
             width:parent.width/4
             ListView{
                 id:bookListView
+                objectName: "bookListView"
                 anchors.fill:parent
                 model:curBookModel
                 snapMode:ListView.SnapToItem
@@ -142,7 +183,8 @@ Window {
                 }
                 delegate:
                     Text{
-                    id:bookNameText
+                    id:bookNameDelegate
+                    objectName: "bookNameDelegate"
                     font.pixelSize: 16
                     height:selectVerseRow.height/1
                     verticalAlignment: Text.AlignVCenter
@@ -222,6 +264,7 @@ Window {
 
     Rectangle {
         id: verseView
+        objectName: "verseView"
         width:parent.width
         anchors.bottom: parent.bottom
         anchors.top:selectVerseRow.bottom
@@ -251,3 +294,5 @@ Window {
 
     }
 }
+
+
