@@ -114,7 +114,7 @@ Window {
 
 
     onMaxChapterChanged: {
-        //console.log("mach chapter changed",maxChapter)
+        console.log("mach chapter changed",maxChapter)
         fillChapterList(maxChapter)
     }
 
@@ -125,7 +125,7 @@ Window {
     }
 
     onMaxVerseChanged: {
-        //console.log("max verse changed",maxVerse)
+        console.log("max verse changed",maxVerse)
         fillVerseList(maxVerse)
     }
 

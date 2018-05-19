@@ -27,9 +27,9 @@ void swordWrapper::refreshMenus(){
     //qDebug()<<"Let s refresh menu";
     refreshModuleListModel(moduleListModel);
     QQmlContext *rootContext = AppEngine->rootContext();
-    QObject *rootObject = AppEngine->rootObjects().first();
+    //QObject *rootObject = AppEngine->rootObjects().first();
     rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
-    moduleNameChangedSlot(rootObject->property("curModuleName").toString());
+    //moduleNameChangedSlot(rootObject->property("curModuleName").toString());
 
 }
 
