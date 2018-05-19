@@ -16,7 +16,14 @@ Window {
         //console.log("currBookName",curBookName)
         //console.log("curChapter",curChapter)
         //console.log("curVerse", curVerse)
-        cleanBookList()
+        //cleanBookList()
+        var start=verseWindow.selectionStart
+        var end=verseWindow.selectionEnd
+        var curTxt=verseWindow.getText(start,end)
+        console.log("begin at",start)
+        console.log(verseWindow.selectedText)
+        console.log("end at",end)
+        console.log("\n",curTxt)
     }
 
     //onHeightChanged: console.log("max chapter",maxChapter)
@@ -32,6 +39,8 @@ Window {
 
     property variant chapterListModel: []
     property variant verseListModel: []
+
+    property string mainTextModel:"pika coin coin"
 
 
     function cleanBookList(){
@@ -271,26 +280,40 @@ Window {
         //color: "#22DDFF"
 
         focus: true
+        //ScrollView {
+            //id: scrollView
+            //anchors.fill:parent
+            //width:500
+            //height:500
+            TextArea{
+                id: verseWindow
+                textFormat: Text.RichText
+                //width:500
+                //height:250
+                anchors.fill:parent
+                //height: 10
+                //color: "#101010"
+                font {
+                    //family: "Ezra SIL"
+                    family: "Linux Libertine O"
+                    pixelSize: 40
+                }
+                wrapMode: Text.WordWrap
+                text:mainTextModel
 
-        Text {
-            id: verseWindow
-            anchors.fill:parent
-            //height: 10
-            //color: "#101010"
-            font {
-                //family: "Ezra SIL"
-                family: "Linux Libertine O"
-                pixelSize: 40
+                onLinkActivated:{
+                    console.log("cliketi")
+                }
+
+
+                //elide: Text.ElideMiddle
+                //style: Text.Sunken
+                //styleColor: '#FF4444'
+                //focus: true
+                //color: focus?"red":"black"
+                //text:"οὐδέν ἐστιν ἔξωθεν τοῦ ἀνθρώπου εἰσπορευόμενον εἰς αὐτὸν ὃ δύναται κοινῶσαι αὐτόν· ἀλλὰ τὰ ἐκ τοῦ ἀνθρώπου ἐκπορευόμενά ἐστιν τὰ κοινοῦντα τὸν ἄνθρωπον.\nblablablablablabla\nblablablablablabla\nblablablablablabla\nblablablablablabla\nblablablablablabla\nblablablablablabla\nblablablablablabla\nblablablablablabla\nblablablablablabla\nblablablablablabla\nblablablablablabla\nblablablablablabla"
             }
-            wrapMode: Text.WordWrap
-            //elide: Text.ElideMiddle
-            //style: Text.Sunken
-            //styleColor: '#FF4444'
-            //focus: true
-            //color: focus?"red":"black"
-            text:"οὐδέν ἐστιν ἔξωθεν τοῦ ἀνθρώπου εἰσπορευόμενον εἰς αὐτὸν ὃ δύναται κοινῶσαι αὐτόν· ἀλλὰ τὰ ἐκ τοῦ ἀνθρώπου ἐκπορευόμενά ἐστιν τὰ κοινοῦντα τὸν ἄνθρωπον."
-        }
-
+   //     }
 
     }
 }

@@ -103,8 +103,8 @@ void swordWrapper::verseChangedSlot(int verseNbr){
     //qDebug()<<getVerse(module,  book , chapter,  verse);
 
     QString tmp=getVerse(module,  book , chapter,  verse);
-
-
+    qDebug()<<tmp;
+    rootObject->setProperty("mainTextModel",tmp);
     //QObject *childObject = rootObject->findChild<QObject*>("bookListView");
     //qDebug()<<"new object"<<childObject;
     //rootObject->setProperty("selectVerseRow",QVariant("Change you text here..."));
