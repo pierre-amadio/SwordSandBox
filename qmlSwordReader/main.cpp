@@ -4,7 +4,7 @@
 #include "swordwrapper.h"
 #include <QQmlContext>
 #include <QString>
-
+#include <QtWebView>
 /*
 c++ and qml:
 https://doc.qt.io/qt-5/qtqml-tutorials-extending-qml-example.html
@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
+    QtWebView::initialize();
     QQmlApplicationEngine engine;
 
     QQmlContext *rootContext = engine.rootContext();

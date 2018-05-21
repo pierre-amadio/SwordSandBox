@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
-
+import QtWebView 1.1
 
 Window {
     id: root
@@ -17,13 +17,14 @@ Window {
         //console.log("curChapter",curChapter)
         //console.log("curVerse", curVerse)
         //cleanBookList()
-        var start=verseWindow.selectionStart
-        var end=verseWindow.selectionEnd
-        var curTxt=verseWindow.getText(start,end)
-        console.log("begin at",start)
-        console.log(verseWindow.selectedText)
-        console.log("end at",end)
-        console.log("\n",curTxt)
+        //var start=verseWindow.selectionStart
+        //var end=verseWindow.selectionEnd
+        //var curTxt=verseWindow.getText(start,end)
+        //console.log("begin at",start)
+        //console.log(verseWindow.selectedText)
+        //console.log("end at",end)
+        //console.log("\n",curTxt)
+        verseWindow.loadHtml("<b>kikoo</b>")
     }
 
     //onHeightChanged: console.log("max chapter",maxChapter)
@@ -41,8 +42,10 @@ Window {
     property variant verseListModel: []
 
     property string mainTextModel:"pika coin coin"
-
-
+    onMainTextModelChanged:{
+        console.log("new tex",mainTextModel)
+        verseWindow.loadHtml(mainTextModel)
+}
     function cleanBookList(){
         console.log("Cleaning book list")
         //curBookModel=new Array (0)
@@ -280,23 +283,26 @@ Window {
         //color: "#22DDFF"
 
         focus: true
-        TextArea{
+
+        WebView {
             id: verseWindow
-            textFormat: Text.RichText
+            objectName: "verseWindow"
+            //textFormat: Text.RichText
             anchors.fill:parent
+            //html:"<b>kikoo</b>"
             //height: 10
             //color: "#101010"
-            font {
+            //font {
                 //family: "Ezra SIL"
-                family: "Linux Libertine O"
-                pixelSize: 40
-            }
-            wrapMode: Text.WordWrap
-            text:mainTextModel
+            //    family: "Linux Libertine O"
+            //    pixelSize: 40
+            //}
+            //wrapMode: Text.WordWrap
+            //text:mainTextModel
 
-            onLinkActivated:{
-                console.log("cliketi")
-            }
+            //onLinkActivated:{
+              //  console.log("cliketi")
+            //}
 
         }
 
