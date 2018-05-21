@@ -118,9 +118,11 @@ void swordWrapper::verseChangedSlot(int verseNbr){
             "<script type=\"text/javascript\">"
             "function wordPointed(s,w) {alert('word pointed\\n'+s+'\\n'+w);}"
             "</script>"
-                  "</head><body><h1 style=\"background-color:#000 ;color:#FFF \"  >";
+                  "</head><body><h4 style=\"background-color:#000 ;color:#FFF \"  >";
     tmp.append(getVerse(module,  book , chapter,  verse));
     tmp.append("<br>coin <span onmouseover='javascript:wordPointed(\"a\",\"b\")'>coin</span> pikachu");
+    //Then, to send a signal to qml probably have to use a webchannel
+    //http://doc.qt.io/qt-5/qtwebchannel-javascript.html
     qDebug()<<tmp;
     rootObject->setProperty("mainTextModel",tmp);
     //QObject *childObject = rootObject->findChild<QObject*>("bookListView");
