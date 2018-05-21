@@ -116,12 +116,11 @@ void swordWrapper::verseChangedSlot(int verseNbr){
 
     QString tmp = "<html><head><title>Plop</title>"
             "<script type=\"text/javascript\">"
-            "var myVar=\"hello\";"
-            "function showAlert( msg) { alert('You triggered an alert!\\n'+msg); }"
-            "</script>\""
-                  "</head><body bgcolor=\"#E6E6FA\">";
+            "function wordPointed(s,w) {alert('word pointed\\n'+s+'\\n'+w);}"
+            "</script>"
+                  "</head><body><h1 style=\"background-color:#000 ;color:#FFF \"  >";
     tmp.append(getVerse(module,  book , chapter,  verse));
-    tmp.append("<a href='javascript:showAlert(\"hello world!\");'>coin</a>   </body></html>");
+    tmp.append("<br>coin <span onmouseover='javascript:wordPointed(\"a\",\"b\")'>coin</span> pikachu");
     qDebug()<<tmp;
     rootObject->setProperty("mainTextModel",tmp);
     //QObject *childObject = rootObject->findChild<QObject*>("bookListView");
