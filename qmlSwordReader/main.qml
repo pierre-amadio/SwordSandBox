@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
-
+import QtQuick.Controls.Styles 1.4
 
 Window {
     id: root
@@ -283,7 +283,16 @@ Window {
         TextArea{
             id: verseWindow
             textFormat: Text.RichText
+
+            style: TextAreaStyle {
+                backgroundColor: "green"
+                selectedTextColor: "blue"
+                selectionColor: "yellow"
+            }
+
+
             anchors.fill:parent
+            readOnly: true
             //height: 10
             //color: "#101010"
             font {
@@ -295,8 +304,14 @@ Window {
             text:mainTextModel
 
             onLinkActivated:{
-                console.log("cliketi")
+                console.log("cliketi:"+link)
             }
+
+            onLinkHovered: {
+                console.log("what to do with:"+link)
+            }
+
+
 
         }
 
