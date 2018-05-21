@@ -104,7 +104,7 @@ void swordWrapper::verseChangedSlot(int verseNbr){
 
     QString tmp=getVerse(module,  book , chapter,  verse);
     tmp.append("\n");
-    tmp.append("<a href=\"javascript:alert('pika')\" style=\"color:#000000\"  text-decoration=\"none\"   >coin coin</a>    ");
+    tmp.append("<a href=\"javascript:alert('pika')\" style=\" color:#000000; text-decoration:none;\"      >coin coin</a>    ");
     qDebug()<<tmp;
     rootObject->setProperty("mainTextModel",tmp);
     //QObject *childObject = rootObject->findChild<QObject*>("bookListView");

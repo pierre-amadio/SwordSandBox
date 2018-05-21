@@ -24,6 +24,7 @@ Window {
         console.log(verseWindow.selectedText)
         console.log("end at",end)
         console.log("\n",curTxt)
+        verseWindow.font.underline=false
     }
 
     //onHeightChanged: console.log("max chapter",maxChapter)
@@ -299,6 +300,7 @@ Window {
                 //family: "Ezra SIL"
                 family: "Linux Libertine O"
                 pixelSize: 40
+                //underline: false
             }
             wrapMode: Text.WordWrap
             text:mainTextModel
