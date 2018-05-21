@@ -102,7 +102,26 @@ void swordWrapper::verseChangedSlot(int verseNbr){
 
     //qDebug()<<getVerse(module,  book , chapter,  verse);
 
-    QString tmp=getVerse(module,  book , chapter,  verse);
+    /*
+    const char * vogon_poem = R"V0G0N(
+                 O freddled gruntbuggly thy micturations are to me
+                     As plured gabbleblochits on a lurgid bee.
+                  Groop, I implore thee my foonting turlingdromes.
+               And hooptiously drangle me with crinkly bindlewurdles,
+    Or I will rend thee in the gobberwarts with my blurlecruncheon, see if I don't.
+
+                    (by Prostetnic Vogon Jeltz; see p. 56/57)
+    )V0G0N";
+*/
+
+    QString tmp = "<html><head><title>Plop</title>"
+            "<script type=\"text/javascript\">"
+            "var myVar=\"hello\";"
+            "function showAlert( msg) { alert('You triggered an alert!\\n'+msg); }"
+            "</script>\""
+                  "</head><body bgcolor=\"#E6E6FA\">";
+    tmp.append(getVerse(module,  book , chapter,  verse));
+    tmp.append("<a href='javascript:showAlert(\"hello world!\");'>coin</a>   </body></html>");
     qDebug()<<tmp;
     rootObject->setProperty("mainTextModel",tmp);
     //QObject *childObject = rootObject->findChild<QObject*>("bookListView");
