@@ -113,7 +113,7 @@ void swordWrapper::verseChangedSlot(int verseNbr){
         qDebug()<<"#############";
 
         if (s.isXmlTag) {
- htmlText.append(QString("<a href=\"coin %1\" style=\" color:#FFF; text-decoration:none;\" >%2</a>").arg(QString::number(cnt),s.fullWord));
+ htmlText.append(QString("<a href=\"coin %1\" style=\" color:#000; text-decoration:none;\" >%2</a>").arg(QString::number(cnt),s.fullWord));
         } else {
         htmlText.append(s.fullWord);
         }
@@ -167,6 +167,10 @@ void swordWrapper::refreshModuleListModel(QList<QObject*> &model){
             moduleInfo * curMod;
             curMod=new moduleInfo();
             curMod->setName(swordModule->getName());
+
+            //Let s deal only with module with embedded grammar data.
+            if(curMod->getName()!="MorphGNT" && curMod->getName()!="OSHB") {continue;}
+
             curMod->setLang(swordModule->getLanguage());
             curMod->setType(swordModule->getType());
             model.append(curMod);

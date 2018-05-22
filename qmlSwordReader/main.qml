@@ -287,8 +287,8 @@ Window {
 
 
             style: TextAreaStyle {
-                backgroundColor: "black"
-                textColor: "white"
+                //backgroundColor: "black"
+                //textColor: "white"
                 selectedTextColor: "blue"
                 selectionColor: "yellow"
             }
