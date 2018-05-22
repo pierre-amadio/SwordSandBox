@@ -113,9 +113,12 @@ void swordWrapper::verseChangedSlot(int verseNbr){
         qDebug()<<"#############";
 
         if (s.isXmlTag) {
- htmlText.append(QString("<a href=\"coin %1\" style=\" color:#000; text-decoration:none;\" >%2</a>").arg(QString::number(cnt),s.fullWord));
+            QString indexSnt=QString::number(cnt);
+            QString tpl="<a href=\"coin %1\" style=\" color:#000; text-decoration:none;\" >%2</a>";
+            QString htmlBlob=QString (tpl).arg(indexSnt,s.fullWord);
+            htmlText.append(htmlBlob);
         } else {
-        htmlText.append(s.fullWord);
+            htmlText.append(s.fullWord);
         }
 
 
@@ -125,7 +128,7 @@ void swordWrapper::verseChangedSlot(int verseNbr){
     }
 
     //qDebug()<<"\n"<<rawVerse<<"\n";
-    qDebug()<<htmlText;
+    //qDebug()<<htmlText;
     rootObject->setProperty("mainTextModel",htmlText);
 
 }
