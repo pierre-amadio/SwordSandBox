@@ -1,6 +1,7 @@
 #include "swordwrapper.h"
 #include "wordinfo.h"
 #include "moduleinfo.h"
+#include "simpleosisverseparser.h"
 #include <QDebug>
 #include <swmgr.h>
 #include <swmodule.h>
@@ -9,6 +10,7 @@
 #include <QQmlContext>
 #include <QDateTime>
 #include <QListView>
+
 
 using namespace::sword;
 
@@ -83,38 +85,37 @@ void swordWrapper::chapterChangedSlot(int chapterNbr) {
 }
 
 void swordWrapper::verseChangedSlot(int verseNbr){
-    QString startTime=QDateTime::currentDateTime().toString();
     uint curTime=  QDateTime::currentMSecsSinceEpoch();
     qDebug()<< curTime <<"verseChangedSlot"<<verseNbr;
     QObject *rootObject = AppEngine->rootObjects().first();
-    /*
-     *
-    QString curModule=rootObject->property("curModuleName").toString();
-    QString curBook=rootObject->property("curBookName").toString();
-
-     * */
-
 
 
     QString module=rootObject->property("curModuleName").toString();
     QString book=rootObject->property("curBookName").toString();
     int chapter=rootObject->property("curChapter").toInt();
     int verse=rootObject->property("curVerse").toInt();
-
-    //qDebug()<<getVerse(module,  book , chapter,  verse);
-
-    QString tmp=getVerse(module,  book , chapter,  verse);
-    tmp.append("\n");
-    tmp.append("<a href=\"leline\" style=\" color:#FFF; text-decoration:none;\"      >coin coin</a>    ");
+    QString rawVerse=getVerse(module,  book , chapter,  verse);
+    //tmp.append("\n");
+    //tmp.append("<a href=\"leline\" style=\" color:#FFF; text-decoration:none;\"      >coin coin</a>    ");
 
     wordInfo * plop;
     plop=new wordInfo();
 
-    qDebug()<<tmp;
-    rootObject->setProperty("mainTextModel",tmp);
-    //QObject *childObject = rootObject->findChild<QObject*>("bookListView");
-    //qDebug()<<"new object"<<childObject;
-    //rootObject->setProperty("selectVerseRow",QVariant("Change you text here..."));
+
+    simpleOsisVerseParser simpleParser(rawVerse);
+    QList<verseChunk> list=simpleParser.getVerselist();
+
+    foreach( verseChunk s, list ) {
+        qDebug()<<"word ="<< s.fullWord;
+        qDebug()<<"root="<<s.rootValue;
+        qDebug()<<"tag="<<s.isXmlTag;
+        qDebug()<<"morph" << s.morph;
+        qDebug()<<"strong"<<s.strong;
+        qDebug()<<"#############";
+    }
+
+    qDebug()<<"\n"<<rawVerse<<"\n";
+    rootObject->setProperty("mainTextModel",rawVerse);
 
 }
 

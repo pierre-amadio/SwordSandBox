@@ -1,11 +1,18 @@
 #ifndef VERSECHUNK_H
 #define VERSECHUNK_H
+#include<QString>
 
-
-class versechunk
+class verseChunk
 {
 public:
-    versechunk();
+    verseChunk();
+    bool isXmlTag;
+    QString fullWord;
+    QString rootValue;
+    QString strong;
+    QString morph;
+    void setIsXmlTag(bool i);
+
 };
 
 #endif // VERSECHUNK_H

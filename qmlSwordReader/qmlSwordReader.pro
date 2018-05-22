@@ -18,7 +18,9 @@ SOURCES += \
         main.cpp \
     moduleinfo.cpp \
     swordwrapper.cpp \
-    wordinfo.cpp
+    wordinfo.cpp \
+    simpleosisverseparser.cpp \
+    versechunk.cpp
 
 RESOURCES += qml.qrc
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -35,7 +37,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     moduleinfo.h \
     swordwrapper.h \
-    wordinfo.h
+    wordinfo.h \
+    simpleosisverseparser.h \
+    versechunk.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/sword/lib/release/ -lsword-1.8.1
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/sword/lib/debug/ -lsword-1.8.1
