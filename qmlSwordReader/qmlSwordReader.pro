@@ -17,7 +17,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     moduleinfo.cpp \
-    swordwrapper.cpp
+    swordwrapper.cpp \
+    wordinfo.cpp
 
 RESOURCES += qml.qrc
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -33,7 +34,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     moduleinfo.h \
-    swordwrapper.h
+    swordwrapper.h \
+    wordinfo.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/sword/lib/release/ -lsword-1.8.1
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/sword/lib/debug/ -lsword-1.8.1

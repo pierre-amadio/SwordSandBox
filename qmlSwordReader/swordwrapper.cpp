@@ -1,10 +1,11 @@
 #include "swordwrapper.h"
+#include "wordinfo.h"
+#include "moduleinfo.h"
 #include <QDebug>
 #include <swmgr.h>
 #include <swmodule.h>
 #include <versekey.h>
 #include <markupfiltmgr.h>
-#include "moduleinfo.h"
 #include <QQmlContext>
 #include <QDateTime>
 #include <QListView>
@@ -105,6 +106,10 @@ void swordWrapper::verseChangedSlot(int verseNbr){
     QString tmp=getVerse(module,  book , chapter,  verse);
     tmp.append("\n");
     tmp.append("<a href=\"leline\" style=\" color:#FFF; text-decoration:none;\"      >coin coin</a>    ");
+
+    wordInfo * plop;
+    plop=new wordInfo();
+
     qDebug()<<tmp;
     rootObject->setProperty("mainTextModel",tmp);
     //QObject *childObject = rootObject->findChild<QObject*>("bookListView");
