@@ -98,13 +98,12 @@ void swordWrapper::verseChangedSlot(int verseNbr){
     //tmp.append("\n");
     //tmp.append("<a href=\"leline\" style=\" color:#FFF; text-decoration:none;\"      >coin coin</a>    ");
 
-    wordInfo * plop;
-    plop=new wordInfo();
 
 
     simpleOsisVerseParser simpleParser(rawVerse);
     QList<verseChunk> list=simpleParser.getVerselist();
-
+    QString htmlText;
+    int cnt=0;
     foreach( verseChunk s, list ) {
         qDebug()<<"word ="<< s.fullWord;
         qDebug()<<"root="<<s.rootValue;
@@ -112,10 +111,22 @@ void swordWrapper::verseChangedSlot(int verseNbr){
         qDebug()<<"morph" << s.morph;
         qDebug()<<"strong"<<s.strong;
         qDebug()<<"#############";
+
+        if (s.isXmlTag) {
+ htmlText.append(QString("<a href=\"coin %1\" style=\" color:#FFF; text-decoration:none;\" >%2</a>").arg(QString::number(cnt),s.fullWord));
+        } else {
+        htmlText.append(s.fullWord);
+        }
+
+
+        wordInfo * cwi;
+        cwi=new wordInfo();
+        cnt++;
     }
 
-    qDebug()<<"\n"<<rawVerse<<"\n";
-    rootObject->setProperty("mainTextModel",rawVerse);
+    //qDebug()<<"\n"<<rawVerse<<"\n";
+    qDebug()<<htmlText;
+    rootObject->setProperty("mainTextModel",htmlText);
 
 }
 
