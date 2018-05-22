@@ -13,8 +13,10 @@ public:
     swordWrapper(QQmlApplicationEngine  * engine, QObject *parent = nullptr);
 
     void refreshModuleListModel(QList<QObject*> &model);
+    void refreshWordInfoListModel(QString vsnt);
     void refreshMenus();
     QList<QObject*> getModuleListModel();
+    QList<QObject*> getWordInfoListModel();
     QStringList getBookListModel();
     QStringList getBookList(const QString & moduleName);
     QString getVerse(QString module, QString book ,int chapter, int verse);
@@ -26,6 +28,7 @@ public:
 private:
     QList<QObject*> moduleListModel;
     QStringList bookListModel;
+    QList<QObject*> wordInfoListModel;
     QQmlApplicationEngine * AppEngine;
     //QQmlContext *rootContext
     //int testString;

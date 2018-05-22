@@ -21,7 +21,7 @@ public:
     QString morphCode;
     QString morphDesciption;
     QString StrongId;
-    QString StronDescription;
+    QString StrongDescription;
 
 signals:
 

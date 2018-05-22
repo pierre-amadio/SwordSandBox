@@ -88,63 +88,13 @@ void swordWrapper::verseChangedSlot(int verseNbr){
     uint curTime=  QDateTime::currentMSecsSinceEpoch();
     qDebug()<< curTime <<"verseChangedSlot"<<verseNbr;
     QObject *rootObject = AppEngine->rootObjects().first();
-
-
     QString module=rootObject->property("curModuleName").toString();
     QString book=rootObject->property("curBookName").toString();
     int chapter=rootObject->property("curChapter").toInt();
     int verse=rootObject->property("curVerse").toInt();
     QString rawVerse=getVerse(module,  book , chapter,  verse);
-    //tmp.append("\n");
-    //tmp.append("<a href=\"leline\" style=\" color:#FFF; text-decoration:none;\"      >coin coin</a>    ");
 
-
-
-    simpleOsisVerseParser simpleParser(rawVerse);
-    QList<verseChunk> list=simpleParser.getVerselist();
-    QString htmlText;
-    int cnt=0;
-    foreach( verseChunk s, list ) {
-        qDebug()<<"word ="<< s.fullWord;
-        qDebug()<<"root="<<s.rootValue;
-        qDebug()<<"tag="<<s.isXmlTag;
-        qDebug()<<"morph" << s.morph;
-        qDebug()<<"strong"<<s.strong;
-        qDebug()<<"#############";
-
-        wordInfo  * cwi;
-        cwi=new wordInfo();
-
-        if (s.isXmlTag) {
-            QString indexSnt=QString::number(cnt);
-            QString tpl="<a href=\"coin %1\" style=\" color:#000; text-decoration:none;\" >%2</a>";
-            QString htmlBlob=QString (tpl).arg(indexSnt,s.fullWord);
-            htmlText.append(htmlBlob);
-            cwi->displayWord=s.fullWord;
-            //cwi->rootWord=s.rootValue;
-            //cwi->morphCode=s.morph;
-            //cwi->StrongId=s.strong;
-
-            //cwi->morphDesciption="TODO";
-            //cwi->StronDescription="TODO";
-
-            //cwi->hasInfo=true;
-        } else {
-            htmlText.append(s.fullWord);
-
-
-
-            //cwi->hasInfo=false;
-        }
-
-
-        cwi=new wordInfo();
-        cnt++;
-    }
-
-    //qDebug()<<"\n"<<rawVerse<<"\n";
-    //qDebug()<<htmlText;
-    rootObject->setProperty("mainTextModel",htmlText);
+    refreshWordInfoListModel(rawVerse);
 
 }
 
@@ -168,6 +118,7 @@ QStringList swordWrapper::getBookList(const QString &moduleName){
     return output;
 
 }
+
 
 
 void swordWrapper::refreshModuleListModel(QList<QObject*> &model){
@@ -196,9 +147,61 @@ void swordWrapper::refreshModuleListModel(QList<QObject*> &model){
     }
 }
 
+void swordWrapper::refreshWordInfoListModel(QString vsnt){
+    qDeleteAll(wordInfoListModel.begin(),wordInfoListModel.end());
+    wordInfoListModel.clear();
+    QObject *rootObject = AppEngine->rootObjects().first();
+
+
+    simpleOsisVerseParser simpleParser(vsnt);
+    QList<verseChunk> list=simpleParser.getVerselist();
+    QString htmlText;
+    int cnt=0;
+    foreach( verseChunk s, list ) {
+        //qDebug()<<"word ="<< s.fullWord;
+        //qDebug()<<"root="<<s.rootValue;
+        //qDebug()<<"tag="<<s.isXmlTag;
+        //qDebug()<<"morph" << s.morph;
+        //qDebug()<<"strong"<<s.strong;
+        //qDebug()<<"#############";
+
+        wordInfo  * cwi;
+        cwi=new wordInfo();
+
+        if (s.isXmlTag) {
+            QString indexSnt=QString::number(cnt);
+            QString tpl="<a href=\"coin %1\" style=\" color:#000; text-decoration:none;\" >%2</a>";
+            QString htmlBlob=QString (tpl).arg(indexSnt,s.fullWord);
+            htmlText.append(htmlBlob);
+            cwi->displayWord=s.fullWord;
+            cwi->rootWord=s.rootValue;
+            cwi->morphCode=s.morph;
+            cwi->StrongId=s.strong;
+
+            cwi->morphDesciption="TODO";
+            cwi->StrongDescription="TODO";
+
+            cwi->hasInfo=true;
+        } else {
+            htmlText.append(s.fullWord);
+            cwi->displayWord=s.fullWord;
+            cwi->hasInfo=false;
+        }
+
+        wordInfoListModel.append(cwi);
+        cnt++;
+    }
+    rootObject->setProperty("mainTextModel",htmlText);
+
+}
+
 QList<QObject*> swordWrapper::getModuleListModel(){
 
     return moduleListModel;
+}
+
+QList<QObject*> swordWrapper::getWordInfoListModel(){
+    return wordInfoListModel;
 }
 
 QStringList swordWrapper::getBookListModel(){

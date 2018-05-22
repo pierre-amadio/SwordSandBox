@@ -4,7 +4,7 @@
 wordInfo::wordInfo(QObject *parent)
  : QObject(parent)
 {
-    qDebug()<<"A new wordInfo";
+    //qDebug()<<"A new wordInfo";
 }
 
 
