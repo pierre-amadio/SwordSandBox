@@ -285,8 +285,10 @@ Window {
             id: verseWindow
             textFormat: Text.RichText
 
+
             style: TextAreaStyle {
-                backgroundColor: "green"
+                backgroundColor: "black"
+                textColor: "white"
                 selectedTextColor: "blue"
                 selectionColor: "yellow"
             }
@@ -294,8 +296,6 @@ Window {
 
             anchors.fill:parent
             readOnly: true
-            //height: 10
-            //color: "#101010"
             font {
                 //family: "Ezra SIL"
                 family: "Linux Libertine O"

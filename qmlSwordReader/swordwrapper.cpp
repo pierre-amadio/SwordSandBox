@@ -104,7 +104,7 @@ void swordWrapper::verseChangedSlot(int verseNbr){
 
     QString tmp=getVerse(module,  book , chapter,  verse);
     tmp.append("\n");
-    tmp.append("<a href=\"javascript:alert('pika')\" style=\" color:#000000; text-decoration:none;\"      >coin coin</a>    ");
+    tmp.append("<a href=\"leline\" style=\" color:#FFF; text-decoration:none;\"      >coin coin</a>    ");
     qDebug()<<tmp;
     rootObject->setProperty("mainTextModel",tmp);
     //QObject *childObject = rootObject->findChild<QObject*>("bookListView");
@@ -201,9 +201,17 @@ int swordWrapper::getVerseMax(){
 
 QString swordWrapper::getVerse(QString module, QString book ,int chapter, int verse){
     //qDebug()<<"Let s get "<<module<<book<<chapter<<verse;
+
+    /*
+     *
+     * MorphGNT <w lemma=\"lemma.Strong:βίβλος strong:G0976\" morph=\"robinson:N-NSF\">Βίβλος</w>
+     * OSHB     <w lemma=\"strong:H07225\" morph=\"oshm:HR/Ncfsa\" n=\"1.0\">בְּרֵאשִׁית</w>
+     *
+*/
+
     QString out="not done";
 
-    SWMgr library(new MarkupFilterMgr(FMT_HTML));
+    SWMgr library(new MarkupFilterMgr(FMT_OSIS));
     library.setGlobalOption("Morpheme Segmentation","On");
     library.setGlobalOption("Lemmas","On");
     library.setGlobalOption("Morphological Tags","On");
