@@ -112,17 +112,32 @@ void swordWrapper::verseChangedSlot(int verseNbr){
         qDebug()<<"strong"<<s.strong;
         qDebug()<<"#############";
 
+        wordInfo  * cwi;
+        cwi=new wordInfo();
+
         if (s.isXmlTag) {
             QString indexSnt=QString::number(cnt);
             QString tpl="<a href=\"coin %1\" style=\" color:#000; text-decoration:none;\" >%2</a>";
             QString htmlBlob=QString (tpl).arg(indexSnt,s.fullWord);
             htmlText.append(htmlBlob);
+            cwi->displayWord=s.fullWord;
+            //cwi->rootWord=s.rootValue;
+            //cwi->morphCode=s.morph;
+            //cwi->StrongId=s.strong;
+
+            //cwi->morphDesciption="TODO";
+            //cwi->StronDescription="TODO";
+
+            //cwi->hasInfo=true;
         } else {
             htmlText.append(s.fullWord);
+
+
+
+            //cwi->hasInfo=false;
         }
 
 
-        wordInfo * cwi;
         cwi=new wordInfo();
         cnt++;
     }

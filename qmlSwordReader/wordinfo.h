@@ -8,13 +8,13 @@ class wordInfo : public QObject
     Q_OBJECT
 
 
-
 public:
     wordInfo(QObject *parent=0);
 
-signals:
+    QString getDisplayWord() const;
+    void setDisplayWord(const QString cn);
 
-private:
+
     QString displayWord;
     bool hasInfo;
     QString rootWord;
@@ -22,6 +22,10 @@ private:
     QString morphDesciption;
     QString StrongId;
     QString StronDescription;
+
+signals:
+
+
 };
 
 #endif // WORDINFO_H

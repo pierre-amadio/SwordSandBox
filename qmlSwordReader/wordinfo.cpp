@@ -6,3 +6,5 @@ wordInfo::wordInfo(QObject *parent)
 {
     qDebug()<<"A new wordInfo";
 }
+
+
