@@ -4,7 +4,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 
 Window {
-    id: root
+    id: rootWindow
     objectName: "rootWindow"
     visible:true
     width: 800; height: 440
@@ -158,8 +158,8 @@ Window {
                 snapMode:ListView.SnapToItem
                 highlightRangeMode:ListView.StrictlyEnforceRange
                 onCurrentItemChanged:{
-                    root.curModuleName=curModuleModel[currentIndex].name
-                    root.curModuleLang=curModuleModel[currentIndex].lang
+                    rootWindow.curModuleName=curModuleModel[currentIndex].name
+                    rootWindow.curModuleLang=curModuleModel[currentIndex].lang
                 }
                 delegate:
                     Text{
@@ -189,7 +189,7 @@ Window {
                 snapMode:ListView.SnapToItem
                 highlightRangeMode:ListView.StrictlyEnforceRange
                 onCurrentItemChanged:{
-                    root.curBookName=curBookModel[currentIndex]
+                    rootWindow.curBookName=curBookModel[currentIndex]
                 }
                 delegate:
                     Text{
@@ -219,7 +219,7 @@ Window {
                 snapMode:ListView.SnapToItem
                 highlightRangeMode:ListView.StrictlyEnforceRange
                 onCurrentItemChanged:{
-                    root.curChapter=chapterListModel[currentIndex]
+                    rootWindow.curChapter=chapterListModel[currentIndex]
                 }
                 delegate:
                     Text{
@@ -247,7 +247,7 @@ Window {
                 snapMode:ListView.SnapToItem
                 highlightRangeMode:ListView.StrictlyEnforceRange
                 onCurrentItemChanged:{
-                    root.curVerse=verseListModel[currentIndex]
+                    rootWindow.curVerse=verseListModel[currentIndex]
                 }
                 delegate:
                     Text{
