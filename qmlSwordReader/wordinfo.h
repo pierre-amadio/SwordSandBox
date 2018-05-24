@@ -7,6 +7,7 @@ class wordInfo : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString displayW READ getDisplayWord WRITE setDisplayWord NOTIFY notifyDisplayWord  )
 
 public:
     wordInfo(QObject *parent=0);
@@ -24,6 +25,7 @@ public:
     QString StrongDescription;
 
 signals:
+    void notifyDisplayWord();
 
 
 };

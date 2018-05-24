@@ -24,15 +24,27 @@ swordWrapper::swordWrapper(QQmlApplicationEngine *myEngine, QObject *parent): QO
 {
     //qDebug()<<"New wrapper with context";
     AppEngine=myEngine;
+
+
+
 }
 
 void swordWrapper::refreshMenus(){
     //qDebug()<<"Let s refresh menu";
     refreshModuleListModel(moduleListModel);
+
+
     QQmlContext *rootContext = AppEngine->rootContext();
-    //QObject *rootObject = AppEngine->rootObjects().first();
     rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
+
+    //QQmlContext *rootContext = AppEngine->rootContext();
+    //rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
+
+    //QObject *rootObject = AppEngine->rootObjects().first();
+    //rootContext->setContextProperty("curVerseWordInfoModel", QVariant::fromValue(wordInfoListModel));
     //moduleNameChangedSlot(rootObject->property("curModuleName").toString());
+    //rootContext->setContextProperty("curVerseWordInfoModel", QVariant::fromValue(wordInfoListModel));
+
 
 }
 
@@ -95,6 +107,11 @@ void swordWrapper::verseChangedSlot(int verseNbr){
     QString rawVerse=getVerse(module,  book , chapter,  verse);
 
     refreshWordInfoListModel(rawVerse);
+    QQmlContext *rootContext = AppEngine->rootContext();
+    //qDebug()<<wordInfoListModel;
+    //rootContext->setContextProperty("curVerseWordInfoModel", QVariant::fromValue(wordInfoListModel));
+
+    //qDebug()<<wordInfoListModel;
 
 }
 
@@ -173,7 +190,7 @@ void swordWrapper::refreshWordInfoListModel(QString vsnt){
             QString tpl="<a href=\"coin %1\" style=\" color:#000; text-decoration:none;\" >%2</a>";
             QString htmlBlob=QString (tpl).arg(indexSnt,s.fullWord);
             htmlText.append(htmlBlob);
-            cwi->displayWord=s.fullWord;
+            cwi->setDisplayWord(s.fullWord);
             cwi->rootWord=s.rootValue;
             cwi->morphCode=s.morph;
             cwi->StrongId=s.strong;

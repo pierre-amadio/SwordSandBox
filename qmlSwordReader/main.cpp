@@ -12,6 +12,7 @@ https://doc.qt.io/qt-5/qtqml-tutorials-extending-qml-example.html
 implementing models in c++
 http://doc.qt.io/qt-5/qtquick-modelviewsdata-cppmodels.html
 http://doc.qt.io/qt-5/qtquick-models-objectlistmodel-example.html
+http://doc.qt.io/qt-5/qtqml-cppintegration-exposecppattributes.html#exposing-properties
 
 signal and stuff:
 http://doc.qt.io/archives/qt-4.8/qtbinding.html

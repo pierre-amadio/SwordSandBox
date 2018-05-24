@@ -7,4 +7,11 @@ wordInfo::wordInfo(QObject *parent)
     //qDebug()<<"A new wordInfo";
 }
 
+QString wordInfo::getDisplayWord() const{
+    return displayWord;
+}
 
+void wordInfo::setDisplayWord(const QString cn){
+    displayWord=cn;
+    emit notifyDisplayWord();
+}
