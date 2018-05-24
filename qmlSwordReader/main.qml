@@ -144,7 +144,17 @@ Window {
         objectName: "selectVerseRow"
         id: selectVerseRow
         width:parent.width
+        opacity: .5
+        height:50
         spacing: 0
+
+        anchors {
+            top:rootWindow.top
+            bottom:selectVerseView.top
+            left:rootWindow.left
+            right:rootWindow.right
+        }
+
 
         MyListSelect {
             id: selectModuleView
@@ -271,19 +281,41 @@ Window {
 
 
 
-
     Rectangle {
         id: verseView
         objectName: "verseView"
-        width:parent.width
-        anchors.bottom: parent.bottom
-        anchors.top:selectVerseRow.bottom
-        //color: "#22DDFF"
+        width:rootWindow.width
+        //height:2*(rootWindow.height-selectVerseRow.height)/3
+        height:400
+        color:"blue"
+        opacity: .4
+        //anchors.bottom: parent.bottom
+        //anchors.top:selectVerseRow.bottom
+
+
+        anchors {
+            top:selectVerseRow.bottom
+            bottom:grammarView.top
+            left:rootWindow.left
+            right:rootWindow.right
+        }
+
+
+
 
         focus: true
         TextArea{
             id: verseWindow
             textFormat: Text.RichText
+            //anchors.fill:parent
+            anchors {
+                top:verseView.top
+                bottom:verseView.bottom
+                left:verseView.left
+                right:verseView.right
+            }
+
+
 
 
             style: TextAreaStyle {
@@ -294,7 +326,6 @@ Window {
             }
 
 
-            anchors.fill:parent
             readOnly: true
             font {
                 //family: "Ezra SIL"
@@ -318,6 +349,62 @@ Window {
         }
 
     }
+
+    Rectangle {
+        id:grammarView
+        width:rootWindow.width
+        opacity: .5
+        height:2*(rootWindow.height-selectVerseRow.height)/10
+
+        color:"yellow"
+
+        anchors {
+            top:verseView.bottom
+            bottom:rootWindow.bottom
+            left:rootWindow.left
+            right:rootWindow.right
+        }
+
+
+        TextArea {
+            id: strongView
+            width:rootWindow.width/2
+            height:parent.height
+
+            anchors{
+                top:parent.top
+                left:rootWindow.left
+                right:morphView.left
+                bottom: parent.bottom
+            }
+
+
+            text:"coin"
+        }
+
+
+        TextArea {
+            id: morphView
+            width:rootWindow.width/2
+            height:parent.height
+
+            anchors{
+                top:parent.top
+                left:strongView.right
+                right:rootWindow.right
+                bottom: rootWindow.bottom
+            }
+
+
+
+            text:"pika"
+        }
+
+
+
+
+    }
+
 }
 
 
