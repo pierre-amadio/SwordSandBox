@@ -8,7 +8,8 @@
 # https://groups.google.com/forum/#!topic/openscriptures-hb/iF6ek80sKb8
 # https://github.com/openscriptures/morphhb/issues/47
 #
-# 
+# sword modules bug:
+# http://tracker.crosswire.org/projects/MOD/issues/MOD-259?filter=allopenissues
 #
 mkdir -p ~/tmp
 cd ~/tmp
