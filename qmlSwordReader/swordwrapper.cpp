@@ -37,44 +37,12 @@ void swordWrapper::refreshMenus(){
     QQmlContext *rootContext = AppEngine->rootContext();
     rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
 
-    //QQmlContext *rootContext = AppEngine->rootContext();
-    //rootContext->setContextProperty("curModuleModel", QVariant::fromValue(moduleListModel));
-
-    //QObject *rootObject = AppEngine->rootObjects().first();
-    //rootContext->setContextProperty("curVerseWordInfoModel", QVariant::fromValue(wordInfoListModel));
-    //moduleNameChangedSlot(rootObject->property("curModuleName").toString());
-    //rootContext->setContextProperty("curVerseWordInfoModel", QVariant::fromValue(wordInfoListModel));
-
-
 }
 
 void swordWrapper::moduleNameChangedSlot(const QString &msg) {
     qDebug() << "moduleNameChangedSlot slot with message:" << msg;
     QQmlContext *rootContext = AppEngine->rootContext();
 
-    //let s force the change of book name to be sure things are refreshed
-    //even if the previous selected book match the first book to show
-    //such as genesis.
-    //QObject *rootObject = AppEngine->rootObjects().first();
-    //rootObject->setProperty("curBookName", "Empty book");
-
-    //foreach(QObject * co, rootObject->children()){
-    //    qDebug()<<co;
-    //    qDebug()<<co->property("objectName").toString();
-
-    //}
-    //bookNameDelegate
-    //QObject *rect = rootObject->findChild<QObject *>("bookListView");
-    //QObject * obj = rootObject->findChild<QObject *>("bookListView");
-    //QListView * plop= rootObject->findChild<QListView *>("bookListView");
-    //qDebug()<<"obj="<<obj;
-    //qDebug()<<"plop="<<plop;
-
-
-    //QStringList booklist=getBookList(msg);
-
-    //bookListModel=booklist;
-    //qDebug()<<booklist;
     bookListModel.clear();
     foreach(QString c,getBookList(msg)){
         //qDebug()<<c;
@@ -110,12 +78,6 @@ void swordWrapper::verseChangedSlot(int verseNbr){
     rootObject->setProperty("strongViewText","");
     rootObject->setProperty("morphViewText","");
 
-    //QQmlContext *rootContext = AppEngine->rootContext();
-    //qDebug()<<wordInfoListModel;
-    //rootContext->setContextProperty("curVerseWordInfoModel", QVariant::fromValue(wordInfoListModel));
-
-    //qDebug()<<wordInfoListModel;
-
 }
 
 void  swordWrapper::wordInfoRequested(int wordIndex){
@@ -133,8 +95,6 @@ void  swordWrapper::wordInfoRequested(int wordIndex){
     qDebug()<<cw->StrongId;
     qDebug()<<cw->rootWord;
     qDebug()<<curModule;
-
-
 
     rootObject->setProperty("strongViewText","TODO");
     rootObject->setProperty("morphViewText","TOTO");
@@ -201,12 +161,6 @@ void swordWrapper::refreshWordInfoListModel(QString vsnt){
     QString htmlText;
     int cnt=0;
     foreach( verseChunk s, list ) {
-        //qDebug()<<"word ="<< s.fullWord;
-        //qDebug()<<"root="<<s.rootValue;
-        //qDebug()<<"tag="<<s.isXmlTag;
-        //qDebug()<<"morph" << s.morph;
-        //qDebug()<<"strong"<<s.strong;
-        //qDebug()<<"#############";
 
         wordInfo  * cwi;
         cwi=new wordInfo();
