@@ -40,7 +40,7 @@ void swordWrapper::refreshMenus(){
 }
 
 void swordWrapper::moduleNameChangedSlot(const QString &msg) {
-    qDebug() << "moduleNameChangedSlot slot with message:" << msg;
+    //qDebug() << "moduleNameChangedSlot slot with message:" << msg;
     QQmlContext *rootContext = AppEngine->rootContext();
 
     bookListModel.clear();
@@ -52,7 +52,7 @@ void swordWrapper::moduleNameChangedSlot(const QString &msg) {
 }
 
 void swordWrapper::bookNameChangedSlot(const QString &curBook) {
-    qDebug()<<"bookNameChangedSlot"<<curBook;
+    //qDebug()<<"bookNameChangedSlot"<<curBook;
     QObject *rootObject = AppEngine->rootObjects().first();
     rootObject->setProperty("maxChapter", getChapterMax());
 }
@@ -66,7 +66,7 @@ void swordWrapper::chapterChangedSlot(int chapterNbr) {
 
 void swordWrapper::verseChangedSlot(int verseNbr){
     uint curTime=  QDateTime::currentMSecsSinceEpoch();
-    qDebug()<< curTime <<"verseChangedSlot"<<verseNbr;
+    //qDebug()<< curTime <<"verseChangedSlot"<<verseNbr;
     QObject *rootObject = AppEngine->rootObjects().first();
     QString module=rootObject->property("curModuleName").toString();
     QString book=rootObject->property("curBookName").toString();
@@ -81,16 +81,16 @@ void swordWrapper::verseChangedSlot(int verseNbr){
 }
 
 void  swordWrapper::wordInfoRequested(int wordIndex){
-    qDebug()<<"Let s fetch info for word"<<wordIndex;
+    //qDebug()<<"Let s fetch info for word"<<wordIndex;
     QObject *rootObject = AppEngine->rootObjects().first();
     QString curModule=rootObject->property("curModuleName").toString();
 
     wordInfo * cw=wordInfoListModel[wordIndex];
-    qDebug()<< cw->getDisplayWord();
-    qDebug()<<cw->morphCode;
-    qDebug()<<cw->StrongId;
-    qDebug()<<cw->rootWord;
-    qDebug()<<curModule;
+    //qDebug()<< cw->getDisplayWord();
+    //qDebug()<<cw->morphCode;
+    //qDebug()<<cw->StrongId;
+    //qDebug()<<cw->rootWord;
+    //qDebug()<<curModule;
 
 
     QString strongText=getStrongInfo(curModule,cw);
@@ -279,7 +279,7 @@ QString swordWrapper::getVerse(QString module, QString book ,int chapter, int ve
 
 QString swordWrapper::getStrongInfo(QString module, wordInfo * src){
     QString out="none";
-    qDebug()<<"What are the info for "<<src->StrongId;
+    //qDebug()<<"What are the info for "<<src->StrongId;
     SWMgr library(new MarkupFilterMgr(FMT_HTML));
     SWModule * target;
 
@@ -295,7 +295,7 @@ QString swordWrapper::getStrongInfo(QString module, wordInfo * src){
         QString q=src->StrongId.mid(8,src->StrongId.length()-8);
         //qDebug()<<"q"<<q;
         target = library.getModule("StrongsGreek");
-        if (!target) {qDebug()<<"Ooops some stronf module not found"; }
+        if (!target) {qDebug()<<"Ooops StrongsGreek module not found"; }
         target->setKey(q.toStdString().c_str());
 
         QString tmpRaw=QString(target->renderText());
@@ -309,7 +309,7 @@ QString swordWrapper::getStrongInfo(QString module, wordInfo * src){
 }
 
 QString swordWrapper::getMorphInfo(QString module, wordInfo * src){
-    qDebug()<<"Morph info for "<<src->morphCode;
+    //qDebug()<<"Morph info for "<<src->morphCode;
     QString out="non";
 
     SWMgr library(new MarkupFilterMgr(FMT_PLAIN));
@@ -317,15 +317,13 @@ QString swordWrapper::getMorphInfo(QString module, wordInfo * src){
 
     //qDebug()<<"root"<<src->rootWord;
     if(module=="MorphGNT") {
-        qDebug()<<"YES";
+        //qDebug()<<"YES";
         //"robinson:N-GSM"
         QString q=src->morphCode.mid(9,src->morphCode.length()-9);
-        qDebug()<<src->morphCode<<q;
+        //qDebug()<<src->morphCode<<q;
         target = library.getModule("Robinson");
         if (!target) {qDebug()<<"Ooops Robinson strong module not found"; }
         target->setKey(q.toStdString().c_str());
-
-
         out=target->renderText();
 
     }
