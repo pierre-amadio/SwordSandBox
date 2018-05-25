@@ -6,6 +6,7 @@
 # hebrew morphology code:
 # http://openscriptures.github.io/morphhb/parsing/HebrewMorphologyCodes.html
 # https://groups.google.com/forum/#!topic/openscriptures-hb/iF6ek80sKb8
+# https://github.com/openscriptures/morphhb/issues/47
 #
 # 
 #
