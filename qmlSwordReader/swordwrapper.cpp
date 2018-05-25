@@ -282,19 +282,24 @@ QString swordWrapper::getStrongInfo(QString module, wordInfo * src){
     SWMgr library(new MarkupFilterMgr(FMT_HTML));
     SWModule * target;
 
-
+    //qDebug()<<"root"<<src->rootWord;
     if(module=="MorphGNT") {
-        qDebug()<<"YES";
         //So the stringId should looks like "strong:G2532"
+        //And the rootWord something like "lemma.Strong:βίβλος"
+        out="<b>";
+        out.append(src->rootWord.mid(13,src->rootWord.length()-13));
+        out.append("</b>");
         qDebug()<< "id is "<<src->StrongId;
         //QString q=src->StrongId.remove(0,8);
         QString q=src->StrongId.mid(8,src->StrongId.length()-8);
-        qDebug()<<"q"<<q;
+        //qDebug()<<"q"<<q;
         target = library.getModule("StrongsGreek");
         if (!target) {qDebug()<<"Ooops some stronf module not found"; }
         target->setKey(q.toStdString().c_str());
-        //qDebug()<<"coin coin "<<target->renderText();
-        out=target->renderText();
+
+        QString tmpRaw=QString(target->renderText());
+        tmpRaw.replace("\n","<br>");
+        out.append(tmpRaw);
     }
 
 

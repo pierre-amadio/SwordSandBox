@@ -375,7 +375,7 @@ Window {
             id: strongView
             width:rootWindow.width/2
             height:parent.height
-
+            textFormat: Text.RichText
             anchors{
                 top:parent.top
                 left:rootWindow.left
