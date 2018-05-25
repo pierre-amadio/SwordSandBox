@@ -1,20 +1,30 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
-
+import QtQuick.Controls.Styles 1.4
 
 Window {
-    id: root
+    id: rootWindow
+    objectName: "rootWindow"
     visible:true
     width: 800; height: 440
     //color: "#00EE00"
     //opacity: .9
     onHeightChanged: {
         console.log(" ")
-        console.log("curModuleName",curModuleName)
-        console.log("currBookName",curBookName)
-        console.log("curChapter",curChapter)
-        console.log("curVerse", curVerse)
+        //console.log("curModuleName",curModuleName)
+        //console.log("currBookName",curBookName)
+        //console.log("curChapter",curChapter)
+        //console.log("curVerse", curVerse)
+        //cleanBookList()
+        var start=verseWindow.selectionStart
+        var end=verseWindow.selectionEnd
+        var curTxt=verseWindow.getText(start,end)
+        console.log("begin at",start)
+        console.log(verseWindow.selectedText)
+        console.log("end at",end)
+        console.log("\n",curTxt)
+        verseWindow.font.underline=false
     }
 
     //onHeightChanged: console.log("max chapter",maxChapter)
@@ -30,6 +40,34 @@ Window {
 
     property variant chapterListModel: []
     property variant verseListModel: []
+
+    property string mainTextModel:"pika coin coin"
+    property string strongViewText:"le strong"
+    property string morphViewText:"le moprh"
+
+
+    function cleanBookList(){
+        console.log("Cleaning book list")
+        //curBookModel=new Array (0)
+        //curBookModel="none yet"
+        //bookListView.model=new Array(0)
+        var s=bookListView.model.lenght
+        var m=bookListView.model
+        //console.log(m[70])
+        //for(var i=0;i<70;i++) {
+        //    if (m[i]!==undefined){
+        //        console.log(m[i])
+        //    }
+        //}
+        while(m[0]!==undefined){
+            console.log(m[0])
+            m.pull(0)
+        }
+
+        //console.log(bookListView.model.count)
+        //newModuleSelected(curModuleName)
+
+    }
 
     function fillChapterList(nbr){
         //console.log("let's fill stuff:",nbr)
@@ -58,14 +96,27 @@ Window {
 
 
     signal newModuleSelected(string msg)
+    signal newWordInfoRequested(int wordIndex)
+
     onCurModuleNameChanged: {
-        //console.log("New module selected",curModuleName)
+        console.log("New module selected",curModuleName)
+        //console.log(curBookModel)
+        //curBookModel=new Array (0)
+        //bookListView.model=curBookModel
+
+        //curBookModel=tmpArray
+        //bookListView.model=tmpArray
+        //console.log("tmp array",tmpArray)
+        //console.log("curbookModel is now ",curBookModel)
+
+        //chapterListModel=[]
+
         newModuleSelected(curModuleName)
     }
 
     signal newBookSelected(string msg)
     onCurBookNameChanged: {
-        //console.log("New book selected",curBookName)
+        console.log("New book selected",curBookName)
         newBookSelected(curBookName)
     }
 
@@ -77,7 +128,7 @@ Window {
 
 
     onMaxChapterChanged: {
-        //console.log("mach chapter changed",maxChapter)
+        console.log("mach chapter changed",maxChapter)
         fillChapterList(maxChapter)
     }
 
@@ -88,29 +139,41 @@ Window {
     }
 
     onMaxVerseChanged: {
-        //console.log("max verse changed",maxVerse)
+        console.log("max verse changed",maxVerse)
         fillVerseList(maxVerse)
     }
 
 
-
     Row {
+        objectName: "selectVerseRow"
         id: selectVerseRow
         width:parent.width
+        opacity: .5
+        height:50
         spacing: 0
+
+        anchors {
+            top:rootWindow.top
+            bottom:selectVerseView.top
+            left:rootWindow.left
+            right:rootWindow.right
+        }
+
 
         MyListSelect {
             id: selectModuleView
+            objectName: "selectModuleView"
             width: parent.width/4
             ListView{
                 id:moduleListView
+                objectName: "moduleListView"
                 anchors.fill:parent
                 model:curModuleModel
                 snapMode:ListView.SnapToItem
                 highlightRangeMode:ListView.StrictlyEnforceRange
                 onCurrentItemChanged:{
-                    root.curModuleName=curModuleModel[currentIndex].name
-                    root.curModuleLang=curModuleModel[currentIndex].lang
+                    rootWindow.curModuleName=curModuleModel[currentIndex].name
+                    rootWindow.curModuleLang=curModuleModel[currentIndex].lang
                 }
                 delegate:
                     Text{
@@ -130,19 +193,22 @@ Window {
 
         MyListSelect {
             id: selectBookView
+            objectName: "selectBookView"
             width:parent.width/4
             ListView{
                 id:bookListView
+                objectName: "bookListView"
                 anchors.fill:parent
                 model:curBookModel
                 snapMode:ListView.SnapToItem
                 highlightRangeMode:ListView.StrictlyEnforceRange
                 onCurrentItemChanged:{
-                    root.curBookName=curBookModel[currentIndex]
+                    rootWindow.curBookName=curBookModel[currentIndex]
                 }
                 delegate:
                     Text{
-                    id:bookNameText
+                    id:bookNameDelegate
+                    objectName: "bookNameDelegate"
                     font.pixelSize: 16
                     height:selectVerseRow.height/1
                     verticalAlignment: Text.AlignVCenter
@@ -167,7 +233,7 @@ Window {
                 snapMode:ListView.SnapToItem
                 highlightRangeMode:ListView.StrictlyEnforceRange
                 onCurrentItemChanged:{
-                    root.curChapter=chapterListModel[currentIndex]
+                    rootWindow.curChapter=chapterListModel[currentIndex]
                 }
                 delegate:
                     Text{
@@ -195,7 +261,7 @@ Window {
                 snapMode:ListView.SnapToItem
                 highlightRangeMode:ListView.StrictlyEnforceRange
                 onCurrentItemChanged:{
-                    root.curVerse=verseListModel[currentIndex]
+                    rootWindow.curVerse=verseListModel[currentIndex]
                 }
                 delegate:
                     Text{
@@ -219,35 +285,132 @@ Window {
 
 
 
-
     Rectangle {
         id: verseView
-        width:parent.width
-        anchors.bottom: parent.bottom
-        anchors.top:selectVerseRow.bottom
-        //color: "#22DDFF"
+        objectName: "verseView"
+        width:rootWindow.width
+        //height:2*(rootWindow.height-selectVerseRow.height)/3
+        height:400
+        color:"blue"
+        opacity: .4
+        //anchors.bottom: parent.bottom
+        //anchors.top:selectVerseRow.bottom
+
+
+        anchors {
+            top:selectVerseRow.bottom
+            bottom:grammarView.top
+            left:rootWindow.left
+            right:rootWindow.right
+        }
+
+
+
 
         focus: true
-
-        Text {
+        TextArea{
             id: verseWindow
-            anchors.fill:parent
-            //height: 10
-            //color: "#101010"
+            textFormat: Text.RichText
+            //anchors.fill:parent
+            anchors {
+                top:verseView.top
+                bottom:verseView.bottom
+                left:verseView.left
+                right:verseView.right
+            }
+
+
+
+
+            style: TextAreaStyle {
+                //backgroundColor: "black"
+                //textColor: "white"
+                selectedTextColor: "blue"
+                selectionColor: "yellow"
+            }
+
+
+            readOnly: true
             font {
                 //family: "Ezra SIL"
                 family: "Linux Libertine O"
                 pixelSize: 40
+                //underline: false
             }
             wrapMode: Text.WordWrap
-            //elide: Text.ElideMiddle
-            //style: Text.Sunken
-            //styleColor: '#FF4444'
-            //focus: true
-            //color: focus?"red":"black"
-            text:"οὐδέν ἐστιν ἔξωθεν τοῦ ἀνθρώπου εἰσπορευόμενον εἰς αὐτὸν ὃ δύναται κοινῶσαι αὐτόν· ἀλλὰ τὰ ἐκ τοῦ ἀνθρώπου ἐκπορευόμενά ἐστιν τὰ κοινοῦντα τὸν ἄνθρωπον."
+            text:mainTextModel
+
+            onLinkActivated:{
+                //console.log("cliketi:"+link)
+                 newWordInfoRequested(parseInt(link))
+            }
+
+            onLinkHovered: {
+                //console.log("what to do with:"+link)
+            }
+
+
+
+        }
+
+    }
+
+    Rectangle {
+        id:grammarView
+        width:rootWindow.width
+        opacity: .5
+        height:2*(rootWindow.height-selectVerseRow.height)/10
+
+        color:"yellow"
+
+        anchors {
+            top:verseView.bottom
+            bottom:rootWindow.bottom
+            left:rootWindow.left
+            right:rootWindow.right
         }
 
 
+        TextArea {
+            id: strongView
+            width:rootWindow.width/2
+            height:parent.height
+            textFormat: Text.RichText
+            anchors{
+                top:parent.top
+                left:rootWindow.left
+                right:morphView.left
+                bottom: parent.bottom
+            }
+
+
+            text:strongViewText
+        }
+
+
+        TextArea {
+            id: morphView
+            width:rootWindow.width/2
+            height:parent.height
+            //textFormat: Text.RichText
+
+            anchors{
+                top:parent.top
+                left:strongView.right
+                right:rootWindow.right
+                bottom: rootWindow.bottom
+            }
+
+
+
+            text:morphViewText
+        }
+
+
+
+
     }
+
 }
+
+

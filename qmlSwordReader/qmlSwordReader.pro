@@ -1,4 +1,6 @@
 QT += quick
+QT += widgets
+
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -14,12 +16,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    swordutils.cpp \
     moduleinfo.cpp \
-    swordwrapper.cpp
+    swordwrapper.cpp \
+    wordinfo.cpp \
+    simpleosisverseparser.cpp \
+    versechunk.cpp
 
 RESOURCES += qml.qrc
-
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
@@ -32,9 +35,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    swordutils.h \
     moduleinfo.h \
-    swordwrapper.h
+    swordwrapper.h \
+    wordinfo.h \
+    simpleosisverseparser.h \
+    versechunk.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/sword/lib/release/ -lsword-1.8.1
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/sword/lib/debug/ -lsword-1.8.1
