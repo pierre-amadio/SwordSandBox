@@ -60,6 +60,10 @@ int main(int argc, char *argv[])
                      mySwordWrapper,SLOT(verseChangedSlot(int))
                      );
 
+    QObject::connect(rootObject,SIGNAL(newWordInfoRequested(int)),
+                      mySwordWrapper,SLOT(wordInfoRequested(int))
+                      );
+
     mySwordWrapper->refreshMenus();
 
 

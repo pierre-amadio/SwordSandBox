@@ -41,6 +41,7 @@ public slots:
     void bookNameChangedSlot(const QString &msg);
     void chapterChangedSlot(int chapterNbr);
     void verseChangedSlot(int verseNbr);
+    void wordInfoRequested(int wordIndex);
 };
 
 #endif // SWORDWRAPPER_H

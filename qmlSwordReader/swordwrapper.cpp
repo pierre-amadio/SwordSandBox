@@ -115,6 +115,10 @@ void swordWrapper::verseChangedSlot(int verseNbr){
 
 }
 
+void  swordWrapper::wordInfoRequested(int wordIndex){
+    qDebug()<<"Let s fetch info for word"<<wordIndex;
+}
+
 QStringList swordWrapper::getBookList(const QString &moduleName){
     //qDebug()<<"getBookList: "<<moduleName;
     QList<QString> output;
@@ -187,7 +191,7 @@ void swordWrapper::refreshWordInfoListModel(QString vsnt){
 
         if (s.isXmlTag) {
             QString indexSnt=QString::number(cnt);
-            QString tpl="<a href=\"coin %1\" style=\" color:#000; text-decoration:none;\" >%2</a>";
+            QString tpl="<a href=\"%1\" style=\" color:#000; text-decoration:none;\" >%2</a>";
             QString htmlBlob=QString (tpl).arg(indexSnt,s.fullWord);
             htmlText.append(htmlBlob);
             cwi->setDisplayWord(s.fullWord);

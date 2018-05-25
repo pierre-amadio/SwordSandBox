@@ -94,6 +94,8 @@ Window {
 
 
     signal newModuleSelected(string msg)
+    signal newWordInfoRequested(int wordIndex)
+
     onCurModuleNameChanged: {
         console.log("New module selected",curModuleName)
         //console.log(curBookModel)
@@ -338,10 +340,11 @@ Window {
 
             onLinkActivated:{
                 console.log("cliketi:"+link)
+                 newWordInfoRequested(parseInt(link))
             }
 
             onLinkHovered: {
-                console.log("what to do with:"+link)
+                //console.log("what to do with:"+link)
             }
 
 
