@@ -148,7 +148,7 @@ Window {
         objectName: "selectVerseRow"
         id: selectVerseRow
         width:parent.width
-        opacity: .5
+        //opacity: .5
         height:50
         spacing: 0
 
@@ -290,9 +290,8 @@ Window {
         objectName: "verseView"
         width:rootWindow.width
         //height:2*(rootWindow.height-selectVerseRow.height)/3
-        height:400
-        color:"blue"
-        opacity: .4
+        height:275
+        //opacity: .4
         //anchors.bottom: parent.bottom
         //anchors.top:selectVerseRow.bottom
 
@@ -358,10 +357,10 @@ Window {
     Rectangle {
         id:grammarView
         width:rootWindow.width
-        opacity: .5
-        height:2*(rootWindow.height-selectVerseRow.height)/10
-
-        color:"yellow"
+        //opacity: .5
+        //height:2*(rootWindow.height-selectVerseRow.height)/10
+        height:225
+        //color:"yellow"
 
         anchors {
             top:verseView.bottom
@@ -383,6 +382,12 @@ Window {
                 bottom: parent.bottom
             }
 
+            font {
+                //family: "Ezra SIL"
+                family: "Linux Libertine O"
+                pixelSize: 20
+                //underline: false
+            }
 
             text:strongViewText
         }
@@ -401,12 +406,16 @@ Window {
                 bottom: rootWindow.bottom
             }
 
+            font {
+                //family: "Ezra SIL"
+                family: "Linux Libertine O"
+                pixelSize: 20
+                //underline: false
+            }
 
 
             text:morphViewText
         }
-
-
 
 
     }
