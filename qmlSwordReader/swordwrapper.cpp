@@ -107,7 +107,10 @@ void swordWrapper::verseChangedSlot(int verseNbr){
     QString rawVerse=getVerse(module,  book , chapter,  verse);
 
     refreshWordInfoListModel(rawVerse);
-    QQmlContext *rootContext = AppEngine->rootContext();
+    rootObject->setProperty("strongViewText","");
+    rootObject->setProperty("morphViewText","");
+
+    //QQmlContext *rootContext = AppEngine->rootContext();
     //qDebug()<<wordInfoListModel;
     //rootContext->setContextProperty("curVerseWordInfoModel", QVariant::fromValue(wordInfoListModel));
 
@@ -117,6 +120,12 @@ void swordWrapper::verseChangedSlot(int verseNbr){
 
 void  swordWrapper::wordInfoRequested(int wordIndex){
     qDebug()<<"Let s fetch info for word"<<wordIndex;
+    QObject *rootObject = AppEngine->rootObjects().first();
+
+
+    rootObject->setProperty("strongViewText","TODO");
+    rootObject->setProperty("morphViewText","TOTO");
+
 }
 
 QStringList swordWrapper::getBookList(const QString &moduleName){

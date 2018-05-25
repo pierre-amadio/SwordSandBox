@@ -42,6 +42,8 @@ Window {
     property variant verseListModel: []
 
     property string mainTextModel:"pika coin coin"
+    property string strongViewText:"le strong"
+    property string morphViewText:"le moprh"
 
 
     function cleanBookList(){
@@ -339,7 +341,7 @@ Window {
             text:mainTextModel
 
             onLinkActivated:{
-                console.log("cliketi:"+link)
+                //console.log("cliketi:"+link)
                  newWordInfoRequested(parseInt(link))
             }
 
@@ -382,7 +384,7 @@ Window {
             }
 
 
-            text:"coin"
+            text:strongViewText
         }
 
 
@@ -400,7 +402,7 @@ Window {
 
 
 
-            text:"pika"
+            text:morphViewText
         }
 
 
