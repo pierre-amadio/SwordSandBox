@@ -1,16 +1,12 @@
 #ifndef WORDINFO_H
 #define WORDINFO_H
 #include <QString>
-#include <QObject>
 
-class wordInfo : public QObject
+class wordInfo
 {
-    Q_OBJECT
-
-    Q_PROPERTY(QString displayW READ getDisplayWord WRITE setDisplayWord NOTIFY notifyDisplayWord  )
 
 public:
-    wordInfo(QObject *parent=0);
+    wordInfo();
 
     QString getDisplayWord() const;
     void setDisplayWord(const QString cn);
@@ -24,8 +20,6 @@ public:
     QString StrongId;
     QString StrongDescription;
 
-signals:
-    void notifyDisplayWord();
 
 
 };

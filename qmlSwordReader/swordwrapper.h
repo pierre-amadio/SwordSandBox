@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QQmlContext>
 #include <QQmlApplicationEngine>
+#include "wordinfo.h"
 
 class swordWrapper : public QObject
 {
@@ -16,7 +17,7 @@ public:
     void refreshWordInfoListModel(QString vsnt);
     void refreshMenus();
     QList<QObject*> getModuleListModel();
-    QList<QObject*> getWordInfoListModel();
+    QList<wordInfo*> getWordInfoListModel();
     QStringList getBookListModel();
     QStringList getBookList(const QString & moduleName);
     QString getVerse(QString module, QString book ,int chapter, int verse);
@@ -28,7 +29,7 @@ public:
 private:
     QList<QObject*> moduleListModel;
     QStringList bookListModel;
-    QList<QObject*> wordInfoListModel;
+    QList<wordInfo*> wordInfoListModel;
     QQmlApplicationEngine * AppEngine;
     //QQmlContext *rootContext
     //int testString;

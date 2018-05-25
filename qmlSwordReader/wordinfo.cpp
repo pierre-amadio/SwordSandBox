@@ -1,8 +1,7 @@
 #include "wordinfo.h"
 #include <QDebug>
 
-wordInfo::wordInfo(QObject *parent)
- : QObject(parent)
+wordInfo::wordInfo()
 {
     //qDebug()<<"A new wordInfo";
 }
@@ -13,5 +12,4 @@ QString wordInfo::getDisplayWord() const{
 
 void wordInfo::setDisplayWord(const QString cn){
     displayWord=cn;
-    emit notifyDisplayWord();
 }

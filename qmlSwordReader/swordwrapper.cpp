@@ -123,6 +123,19 @@ void  swordWrapper::wordInfoRequested(int wordIndex){
     QObject *rootObject = AppEngine->rootObjects().first();
 
 
+    QString curModule=rootObject->property("curModuleName").toString();
+
+
+
+    wordInfo * cw=wordInfoListModel[wordIndex];
+    qDebug()<< cw->getDisplayWord();
+    qDebug()<<cw->morphCode;
+    qDebug()<<cw->StrongId;
+    qDebug()<<cw->rootWord;
+    qDebug()<<curModule;
+
+
+
     rootObject->setProperty("strongViewText","TODO");
     rootObject->setProperty("morphViewText","TOTO");
 
@@ -230,7 +243,7 @@ QList<QObject*> swordWrapper::getModuleListModel(){
     return moduleListModel;
 }
 
-QList<QObject*> swordWrapper::getWordInfoListModel(){
+QList<wordInfo*> swordWrapper::getWordInfoListModel(){
     return wordInfoListModel;
 }
 
