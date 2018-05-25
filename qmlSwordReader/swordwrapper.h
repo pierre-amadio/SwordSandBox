@@ -31,6 +31,7 @@ private:
     QStringList bookListModel;
     QList<wordInfo*> wordInfoListModel;
     QQmlApplicationEngine * AppEngine;
+    QString getStrongInfo(QString module, wordInfo * src);
     //QQmlContext *rootContext
     //int testString;
 

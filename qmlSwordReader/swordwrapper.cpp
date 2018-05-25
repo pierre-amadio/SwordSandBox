@@ -83,11 +83,7 @@ void swordWrapper::verseChangedSlot(int verseNbr){
 void  swordWrapper::wordInfoRequested(int wordIndex){
     qDebug()<<"Let s fetch info for word"<<wordIndex;
     QObject *rootObject = AppEngine->rootObjects().first();
-
-
     QString curModule=rootObject->property("curModuleName").toString();
-
-
 
     wordInfo * cw=wordInfoListModel[wordIndex];
     qDebug()<< cw->getDisplayWord();
@@ -96,7 +92,10 @@ void  swordWrapper::wordInfoRequested(int wordIndex){
     qDebug()<<cw->rootWord;
     qDebug()<<curModule;
 
-    rootObject->setProperty("strongViewText","TODO");
+
+    QString strongText=getStrongInfo(curModule,cw);
+
+    rootObject->setProperty("strongViewText",strongText);
     rootObject->setProperty("morphViewText","TOTO");
 
 }
@@ -275,4 +274,32 @@ QString swordWrapper::getVerse(QString module, QString book ,int chapter, int ve
     out=bible->renderText();
 
     return out;
+}
+
+QString swordWrapper::getStrongInfo(QString module, wordInfo * src){
+    QString out="none";
+    qDebug()<<"What are the info for "<<src->StrongId;
+    SWMgr library(new MarkupFilterMgr(FMT_HTML));
+    SWModule * target;
+
+
+    if(module=="MorphGNT") {
+        qDebug()<<"YES";
+        //So the stringId should looks like "strong:G2532"
+        qDebug()<< "id is "<<src->StrongId;
+        //QString q=src->StrongId.remove(0,8);
+        QString q=src->StrongId.mid(8,src->StrongId.length()-8);
+        qDebug()<<"q"<<q;
+        target = library.getModule("StrongsGreek");
+        if (!target) {qDebug()<<"Ooops some stronf module not found"; }
+        target->setKey(q.toStdString().c_str());
+        //qDebug()<<"coin coin "<<target->renderText();
+        out=target->renderText();
+    }
+
+
+
+    return out;
+
+
 }
