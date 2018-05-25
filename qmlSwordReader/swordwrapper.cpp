@@ -94,9 +94,10 @@ void  swordWrapper::wordInfoRequested(int wordIndex){
 
 
     QString strongText=getStrongInfo(curModule,cw);
+    QString morphText=getMorphInfo(curModule,cw);
 
     rootObject->setProperty("strongViewText",strongText);
-    rootObject->setProperty("morphViewText","TOTO");
+    rootObject->setProperty("morphViewText",morphText);
 
 }
 
@@ -289,7 +290,7 @@ QString swordWrapper::getStrongInfo(QString module, wordInfo * src){
         out="<b>";
         out.append(src->rootWord.mid(13,src->rootWord.length()-13));
         out.append("</b>");
-        qDebug()<< "id is "<<src->StrongId;
+        //qDebug()<< "id is "<<src->StrongId;
         //QString q=src->StrongId.remove(0,8);
         QString q=src->StrongId.mid(8,src->StrongId.length()-8);
         //qDebug()<<"q"<<q;
@@ -302,9 +303,33 @@ QString swordWrapper::getStrongInfo(QString module, wordInfo * src){
         out.append(tmpRaw);
     }
 
+    src->StrongDescription=out;
+    return out;
+
+}
+
+QString swordWrapper::getMorphInfo(QString module, wordInfo * src){
+    qDebug()<<"Morph info for "<<src->morphCode;
+    QString out="non";
+
+    SWMgr library(new MarkupFilterMgr(FMT_PLAIN));
+    SWModule * target;
+
+    //qDebug()<<"root"<<src->rootWord;
+    if(module=="MorphGNT") {
+        qDebug()<<"YES";
+        //"robinson:N-GSM"
+        QString q=src->morphCode.mid(9,src->morphCode.length()-9);
+        qDebug()<<src->morphCode<<q;
+        target = library.getModule("Robinson");
+        if (!target) {qDebug()<<"Ooops Robinson strong module not found"; }
+        target->setKey(q.toStdString().c_str());
+
+
+        out=target->renderText();
+
+    }
 
 
     return out;
-
-
 }
