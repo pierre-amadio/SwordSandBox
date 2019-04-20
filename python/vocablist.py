@@ -5,35 +5,6 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
-def getAllBooks():
-    """
-     Return an array:
-     [{'testament': 1, 'bookCount': 1, 'name': 'Genesis', 'abbr': 'Gen'},
-     {'testament': 1, 'bookCount': 2, 'name': 'Exodus', 'abbr': 'Exod'},
-    """
-    vk=Sword.VerseKey()
-    out=[]
-    for i in range(1,3):
-      vk.setTestament(i)
-      for j in range(1,vk.bookCount(i)+1):
-         vk.setBook(j)
-         tmp={}
-         tmp['name']=vk.bookName(i,j)
-         tmp['abbr']=vk.getBookAbbrev()
-         tmp['testament']=i
-         tmp['bookCount']=j
-         out.append(tmp)
-    return out
-
-def getInfoBasedOnAbbr(abbr):
-    """
-    Return info related to a book based on its abbreviation (ie 'Gen')
-    """
-    for cur in getAllBooks():
-        if cur['abbr']==abbr:
-            return cur
-    sys.exit("no such book : %s"%abbr)
-
 def getVerseMax(moduleName,bookName,chapterNbr):
     mgr = Sword.SWMgr()
     mod=mgr.getModule(moduleName)
@@ -41,11 +12,6 @@ def getVerseMax(moduleName,bookName,chapterNbr):
     vk.setBookName(bookName)
     vk.setChapter(chapterNbr)
     return vk.getVerseMax()
-
-def show_available_modules():
-    mgr = Sword.SWMgr()   
-    for m in mgr.getModules().values():
-        print "%s -> %s "%(m.Name(),m.Description())
 
 def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
     vk=Sword.VerseKey(key)
