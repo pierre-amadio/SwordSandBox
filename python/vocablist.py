@@ -151,11 +151,17 @@ for verseNbr in range(1,1+getVerseMax(moduleStr,bookStr,chapterInt)):
             nameDic[strKey].append(fullWord)
 
 
-
-
+'''
 for strKey in nameDic:
     print strKey,nameTotalCnt[strKey]
     for c in nameDic[strKey]:
+        print c.encode('utf-8').strip()," "
+'''
+
+for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
+    print "%s occurence of %s"%(nameTotalCnt[strK], strK )  
+    print "Variants:"
+    for c in nameDic[strK]:
         print c.encode('utf-8').strip()," "
 
 
