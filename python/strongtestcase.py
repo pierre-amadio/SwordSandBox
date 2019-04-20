@@ -2,11 +2,8 @@
 # -*- coding: utf-8 -*-
 import Sword
 import sys
-import re
-from bs4 import BeautifulSoup
 
 swordDir="/usr/local/sword/share/sword/"
-
 
 markup=Sword.MarkupFilterMgr(Sword.FMT_HTML)
 markup.thisown=False
