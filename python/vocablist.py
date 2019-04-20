@@ -37,7 +37,9 @@ nameTotalCnt={}
 
 for verseNbr in range(1,1+getVerseMax(moduleStr,bookStr,chapterInt)):
     keySnt="%s %s:%s"%(bookStr,chapterInt,verseNbr)
+    #print keySnt
     rawVerse=display_verse(keySnt,moduleStr,Sword.FMT_HTML).getRawData()
+    #print display_verse(keySnt,moduleStr,Sword.FMT_PLAIN).getRawData() 
     soup=BeautifulSoup(rawVerse)
     for w in soup.find_all(savlm=re.compile('strong')):
        strKeyGroup=re.match("strong:(.*)",w.get('savlm'))

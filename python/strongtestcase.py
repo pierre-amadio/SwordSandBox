@@ -12,6 +12,6 @@ if not target:
     print "No module found"
     sys.exit()
 
-vk=Sword.VerseKey("05975")
+vk=Sword.SWKey("05975")
 target.setKey(vk)
 print target.renderText()
