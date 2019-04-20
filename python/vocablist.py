@@ -7,6 +7,52 @@ from bs4 import BeautifulSoup
 
 #swordDir="/usr/local/sword/share/sword/"
 
+def getAllBooks():
+    """
+     Return an array:
+     [{'testament': 1, 'bookCount': 1, 'name': 'Genesis', 'abbr': 'Gen'},
+     {'testament': 1, 'bookCount': 2, 'name': 'Exodus', 'abbr': 'Exod'},
+    """
+    vk=Sword.VerseKey()
+    out=[]
+    for i in range(1,3):
+      vk.setTestament(i)
+      for j in range(1,vk.bookCount(i)+1):
+         vk.setBook(j)
+         tmp={}
+         tmp['name']=vk.bookName(i,j)
+         tmp['abbr']=vk.getBookAbbrev()
+         tmp['testament']=i
+         tmp['bookCount']=j
+         out.append(tmp)
+    return out
+
+def getInfoBasedOnAbbr(abbr):
+    """
+    Return info related to a book based on its abbreviation (ie 'Gen')
+    """
+    for cur in getAllBooks():
+        if cur['abbr']==abbr:
+            return cur
+    sys.exit("no such book : %s"%abbr)
+
+def getVerseMax(moduleName,bookName,chapterNbr):
+    mgr = Sword.SWMgr()
+    mod=mgr.getModule(moduleName)
+    vk=Sword.VerseKey()
+    vk.setBookName(bookName)
+    vk.setChapter(chapterNbr)
+    return vk.getVerseMax()
+
+
+swordDir="/usr/local/sword/share/sword/"
+#book=getInfoBasedOnAbbr("Josh")
+#book=getInfoBasedOnAbbr("John")
+#book=getInfoBasedOnAbbr("Mark")
+#book=getInfoBasedOnAbbr("Luke")
+#book=getInfoBasedOnAbbr("Gen")
+book=getInfoBasedOnAbbr("Ps")
+chapterNbr=1
 
 
 def show_available_modules():
@@ -70,6 +116,9 @@ moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
 chapterInt=1
 
+print getVerseMax("OSHB",bookStr,chapterInt)
+
+'''
 rawVerse=display_verse("Ps 1:1",moduleStr,Sword.FMT_HTML).getRawData()
 soup=BeautifulSoup(rawVerse)
 for w in soup.find_all(savlm=re.compile('strong')):
@@ -84,3 +133,4 @@ for w in soup.find_all(savlm=re.compile('strong')):
 	test=find_strong("03808",strongModuleStr,Sword.FMT_HTML).getRawData()	
 	print "test", test
 	print "#############"
+'''
