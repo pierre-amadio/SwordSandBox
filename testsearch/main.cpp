@@ -64,19 +64,20 @@ int main()
 
 
     //for indexed, search lemma:G1234
-    //searchType=-3;
-    //searchQuery="H07225";
+    searchType=-3;
+    searchQuery="H07225";
 
     //This works to search for strong number.
-    //searchType=3
-    //searchQuery="Word//Lemma./G2531/";
+    //searchType=-3;
+    //searchQuery="Word//Lemma./H2916/";
 
     //And this wokrs for clucene search as well.
     //searchType=-4;
     //searchQuery="lemma:G2531";
 
-    searchType=-4;
-    searchQuery="lemma:H0835";
+    //searchType=-4;
+    //searchQuery="lemma:H0835";
+
 
     targetModule="OSHB";
     //targetModule="LXX";
@@ -86,7 +87,7 @@ int main()
 
     //manager.setGlobalOption("Greek Accents", "Off");
     //manager.setGlobalOption("Strong's Numbers", "Off");
-    //manager.setGlobalOption("Hebrew Vowel Points", "Off");
+    manager.setGlobalOption("Hebrew Vowel Points", "Off");
     //manager.filterText("Greek Accents", searchTerm);
 
 
