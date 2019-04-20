@@ -3,13 +3,10 @@
 import Sword
 import sys
 
-swordDir="/usr/local/sword/share/sword/"
 
 markup=Sword.MarkupFilterMgr(Sword.FMT_HTML)
 markup.thisown=False
 library = Sword.SWMgr(markup)
-library.prefixPath = "/usr/local/sword/share/sword/"
-library.configPath = "/usr/local/sword/share/sword/mods.d"
 target=library.getModule("StrongsHebrew")
 if not target:
     print "No module found"
