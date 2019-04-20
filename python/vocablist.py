@@ -45,7 +45,7 @@ def getVerseMax(moduleName,bookName,chapterNbr):
     return vk.getVerseMax()
 
 
-swordDir="/usr/local/sword/share/sword/"
+#swordDir="/usr/local/sword/share/sword/"
 #book=getInfoBasedOnAbbr("Josh")
 #book=getInfoBasedOnAbbr("John")
 #book=getInfoBasedOnAbbr("Mark")
@@ -73,6 +73,7 @@ def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
     #mgr.configPath = "%s/mods.d" % swordDir
     mod=mgr.getModule(moduleName)
     mod.setKey(vk)
+    mgr.setGlobalOption("Hebrew Vowel Points", "On")
     #mgr.setGlobalOption("Strong's Numbers","Off")
     #mgr.setGlobalOption("Cross-references","Off")
     #mgr.setGlobalOption("Morpheme Segmentation","Off")
@@ -116,7 +117,47 @@ moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
 chapterInt=1
 
-print getVerseMax("OSHB",bookStr,chapterInt)
+#print getVerseMax("OSHB",bookStr,chapterInt)
+
+nameDic={}
+nameTotalCnt={}
+
+for verseNbr in range(1,1+getVerseMax(moduleStr,bookStr,chapterInt)):
+    #print verseNbr
+    keySnt="%s %s:%s"%(bookStr,chapterInt,verseNbr)
+    #print keySnt
+    rawVerse=display_verse(keySnt,moduleStr,Sword.FMT_HTML).getRawData()
+    #print rawVerse
+    soup=BeautifulSoup(rawVerse)
+    for w in soup.find_all(savlm=re.compile('strong')):
+       #print "w=",w
+       #print "savlm",w.get('savlm')
+       #print "get ", w.get_text().encode('utf-8').strip()
+       strKeyGroup=re.match("strong:(.*)",w.get('savlm'))
+       strKey=strKeyGroup.group(1)
+       #fullWord=w.get_text().encode('utf-8').strip()
+       fullWord=w.get_text()
+       #print "strKey,",strKey
+       #print "############" 
+       if strKey not in nameDic.keys():
+        #print strKey
+        #print fullWord.encode('utf-8').strip()
+        nameTotalCnt[strKey]=1
+        nameDic[strKey]=[]
+        nameDic[strKey].append(fullWord)
+       else:
+        nameTotalCnt[strKey]=nameTotalCnt[strKey]+1
+        if fullWord not in nameDic[strKey]:
+            nameDic[strKey].append(fullWord)
+
+
+
+
+for strKey in nameDic:
+    print strKey,nameTotalCnt[strKey]
+    for c in nameDic[strKey]:
+        print c.encode('utf-8').strip()," "
+
 
 '''
 rawVerse=display_verse("Ps 1:1",moduleStr,Sword.FMT_HTML).getRawData()
