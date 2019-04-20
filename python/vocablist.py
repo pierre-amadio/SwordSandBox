@@ -64,7 +64,7 @@ def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
 bookStr="II Sam"
 moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
-chapterInt=8
+chapterInt=9
 
 nameDic={}
 nameTotalCnt={}
@@ -88,7 +88,7 @@ for verseNbr in range(1,1+getVerseMax(moduleStr,bookStr,chapterInt)):
 
 
 for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
-    print "%s occurence of %s"%(nameTotalCnt[strK], strK )  
+    print "%s occurence of https://studybible.info/strongs/%s"%(nameTotalCnt[strK], strK )  
     allVariants="Variants: "
     for c in nameDic[strK]:
         allVariants+=c.encode('utf-8').strip()+" "
