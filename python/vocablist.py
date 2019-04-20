@@ -30,8 +30,8 @@ def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
 bookStr="II Sam"
 moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
-chapterInt=9
-
+chapterInt=8
+print "Vocabulary for %s %s\n\n"%(bookStr,chapterInt)
 nameDic={}
 nameTotalCnt={}
 
@@ -56,10 +56,22 @@ for verseNbr in range(1,1+getVerseMax(moduleStr,bookStr,chapterInt)):
 
 
 for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
-    print "%s occurence of https://studybible.info/strongs/%s"%(nameTotalCnt[strK], strK )  
+    print 
+    print "%s occurence in total"%nameTotalCnt[strK]
     allVariants="Variants: "
     for c in nameDic[strK]:
         allVariants+=c.encode('utf-8').strip()+" "
     print allVariants
-    print " "
+    markup=Sword.MarkupFilterMgr(Sword.FMT_HTML)
+    markup.thisown=False
+    library = Sword.SWMgr(markup)
+    target=library.getModule(strongModuleStr)        
+    if not target:
+        print "No module found"
+        sys.exit()
+    vk=Sword.SWKey(strK[1:])
+    target.setKey(vk)
+    print target.renderText()
+
+    print "################"
 
