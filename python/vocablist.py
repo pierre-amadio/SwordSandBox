@@ -5,12 +5,14 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
-swordDir="/usr/local/sword/share/sword/"
+#swordDir="/usr/local/sword/share/sword/"
+
+
 
 def show_available_modules():
     mgr = Sword.SWMgr()   
-    mgr.prefixPath = swordDir
-    mgr.configPath = "%s/mods.d" % swordDir
+    #mgr.prefixPath = swordDir
+    #mgr.configPath = "%s/mods.d" % swordDir
  
     for m in mgr.getModules().values():
         print "%s -> %s "%(m.Name(),m.Description())
@@ -21,8 +23,8 @@ def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
     #markup=Sword.MarkupFilterMgr(Sword.FMT_HTML)
     markup.thisown=False
     mgr = Sword.SWMgr(markup)
-    mgr.prefixPath = swordDir
-    mgr.configPath = "%s/mods.d" % swordDir
+    #mgr.prefixPath = swordDir
+    #mgr.configPath = "%s/mods.d" % swordDir
     mod=mgr.getModule(moduleName)
     mod.setKey(vk)
     #mgr.setGlobalOption("Strong's Numbers","Off")
@@ -47,8 +49,8 @@ def find_strong(key,moduleName,outputType=Sword.FMT_PLAIN):
     markup=Sword.MarkupFilterMgr(outputType)
     markup.thisown=False
     mgr = Sword.SWMgr(markup)
-    mgr.prefixPath = swordDir
-    mgr.configPath = "%s/mods.d" % swordDir
+    #mgr.prefixPath = swordDir
+    #mgr.configPath = "%s/mods.d" % swordDir
     mod=mgr.getModule(moduleName)
     if not mod:
         print "No module"
