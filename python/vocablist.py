@@ -5,8 +5,6 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
-#swordDir="/usr/local/sword/share/sword/"
-
 def getAllBooks():
     """
      Return an array:
@@ -44,17 +42,6 @@ def getVerseMax(moduleName,bookName,chapterNbr):
     vk.setChapter(chapterNbr)
     return vk.getVerseMax()
 
-
-#swordDir="/usr/local/sword/share/sword/"
-#book=getInfoBasedOnAbbr("Josh")
-#book=getInfoBasedOnAbbr("John")
-#book=getInfoBasedOnAbbr("Mark")
-#book=getInfoBasedOnAbbr("Luke")
-#book=getInfoBasedOnAbbr("Gen")
-book=getInfoBasedOnAbbr("Ps")
-chapterNbr=1
-
-
 def show_available_modules():
     mgr = Sword.SWMgr()   
     #mgr.prefixPath = swordDir
@@ -90,32 +77,10 @@ def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
     
     return mod.renderText()
 
-def find_strong(key,moduleName,outputType=Sword.FMT_PLAIN):
-    #vk=Sword.VerseKey(key)
-    vk=Sword.VerseKey("03808")
-    markup=Sword.MarkupFilterMgr(outputType)
-    markup.thisown=False
-    mgr = Sword.SWMgr(markup)
-    #mgr.prefixPath = swordDir
-    #mgr.configPath = "%s/mods.d" % swordDir
-    mod=mgr.getModule(moduleName)
-    if not mod:
-        print "No module"
-        sys.exit()
-    vk.setText("03808")
-    print "vk",vk.getText()
-    mod.setKey(vk)
-    #help(mod)
-    mod.setKey(vk)
-    mod.getKeyText()
-    return mod.renderText()
-
-
-
-bookStr="Ps"
+bookStr="II Sam"
 moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
-chapterInt=1
+chapterInt=8
 
 #print getVerseMax("OSHB",bookStr,chapterInt)
 
@@ -151,19 +116,13 @@ for verseNbr in range(1,1+getVerseMax(moduleStr,bookStr,chapterInt)):
             nameDic[strKey].append(fullWord)
 
 
-'''
-for strKey in nameDic:
-    print strKey,nameTotalCnt[strKey]
-    for c in nameDic[strKey]:
-        print c.encode('utf-8').strip()," "
-'''
-
 for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
     print "%s occurence of %s"%(nameTotalCnt[strK], strK )  
-    print "Variants:"
+    allVariants="Variants: "
     for c in nameDic[strK]:
-        print c.encode('utf-8').strip()," "
-
+        allVariants+=c.encode('utf-8').strip()+" "
+    print allVariants
+    print " "
 
 '''
 rawVerse=display_verse("Ps 1:1",moduleStr,Sword.FMT_HTML).getRawData()
