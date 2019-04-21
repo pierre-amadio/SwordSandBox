@@ -8,6 +8,36 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
+
+def getAllBooks():
+    """
+     Return an array:
+     [{'testament': 1, 'bookCount': 1, 'name': 'Genesis', 'abbr': 'Gen'},
+     {'testament': 1, 'bookCount': 2, 'name': 'Exodus', 'abbr': 'Exod'},
+    """
+    vk=Sword.VerseKey()
+    out=[]
+    for i in range(1,3):
+      vk.setTestament(i)
+      for j in range(1,vk.bookCount(i)+1):
+         vk.setBook(j)
+         tmp={}
+         tmp['name']=vk.bookName(i,j)
+         tmp['abbr']=vk.getBookAbbrev()
+         tmp['testament']=i
+         tmp['bookCount']=j
+         out.append(tmp)
+    return out
+
+def getInfoBasedOnAbbr(abbr):
+    """
+    Return info related to a book based on its abbreviation (ie 'Gen')
+    """
+    for cur in getAllBooks():
+        if cur['abbr']==abbr:
+            return cur
+    sys.exit("no such book : %s"%abbr)
+
 def getVerseMax(moduleName,bookName,chapterNbr):
     mgr = Sword.SWMgr()
     mod=mgr.getModule(moduleName)
@@ -30,7 +60,7 @@ def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
     return mod.renderText()
 
 
-bookStr="Psalm"
+bookStr="1Sam"
 moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
 chapterInt=1 
@@ -111,8 +141,35 @@ def fillDicForBookChapter(moduleStr,bookStr,chapterInt):
     print("returing out")
     return out
 
+"""
+For a given Sword module, book return the following structure:
 
+{
+  'moduleName':'OSHB',
+  'bookName':'Gen',
+  'nameDic': {'strongKey':["a word","another variation","yet another one"]},
+  'nameTotalCnt':{"strongKey": integer}
+}
+"""
+def fillDicForBook(moduleStr,bookStr):
+    out={}
+    nameDic={}
+    nameTotalCnt={}
+    print("how many chapter for {}".format(bookStr))
+    myBook=None
+    nbrChapter=0
+    for curBook in getAllBooks():
+        if curBook["name"]==bookStr or curBook["abbr"]==bookStr:
+            myBook=curBook["abbr"]
+            vk=Sword.VerseKey()
+            nbrChapter=vk.chapterCount(curBook['testament'],curBook['bookCount'])
 
+    print("{} chapter".format(nbrChapter))
+
+    nbrChapter=getInfoBasedOnAbbr(bookStr)['bookCount']
+    return out
+
+pika=fillDicForBook(moduleStr,bookStr)
 
 sys.exit()
 plop=fillDicForBookChapter(moduleStr,bookStr,chapterInt)
