@@ -138,7 +138,6 @@ def fillDicForBookChapter(moduleStr,bookStr,chapterInt):
     out["chapter"]=chapterInt
     out["nameDic"]=nameDic
     out["nameTotalCnt"]=nameTotalCnt
-    print("returing out")
     return out
 
 """
@@ -164,18 +163,34 @@ def fillDicForBook(moduleStr,bookStr):
             vk=Sword.VerseKey()
             nbrChapter=vk.chapterCount(curBook['testament'],curBook['bookCount'])
 
-    print("{} chapter".format(nbrChapter))
+    #print("{} chapter".format(nbrChapter))
 
-    nbrChapter=getInfoBasedOnAbbr(bookStr)['bookCount']
     for i in range (nbrChapter):
-        print("chap {}".format(i))
+        curChapter=i+1
+        #print("chap {}".format(curChapter))
+        curChapterInfo=fillDicForBookChapter(moduleStr,myBook,curChapter)
+        #print(curChapterInfo)
+        for curKey in curChapterInfo['nameDic']:
+            #print(curKey)
+            if curKey not in nameDic.keys():
+                nameDic[curKey]=curChapterInfo['nameDic'][curKey]
+                nameTotalCnt[curKey]=curChapterInfo['nameTotalCnt'][curKey]
+            else:
+                nameTotalCnt[curKey]+=curChapterInfo['nameTotalCnt'][curKey]
+                for word in curChapterInfo['nameDic'][curKey]:
+                    #print(word)
+                    if not word in nameDic[curKey]:
+                        nameDic[curKey].append(word)
 
+    out['moduleName']=moduleStr
+    out['bookName']=myBook
+    out['nameDic']=nameDic
+    out['nameTotalCnt']=nameTotalCnt
     return out
 
-pika=fillDicForBook(moduleStr,bookStr)
+plop=fillDicForBook(moduleStr,bookStr)
 
-sys.exit()
-plop=fillDicForBookChapter(moduleStr,bookStr,chapterInt)
+#plop=fillDicForBookChapter(moduleStr,bookStr,chapterInt)
 nameDic=plop["nameDic"]
 nameTotalCnt=plop["nameTotalCnt"]
 
@@ -185,10 +200,10 @@ for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
     print("{} occurence in total".format(nameTotalCnt[strK]))
     allVariants="Variants: "
     for c in nameDic[strK]:
-        print(c)
         allVariants+=c
         allVariants+=" "
         #allVariants+=c.encode('utf-8').strip()+" "
+    print(allVariants)
     markup=Sword.MarkupFilterMgr(Sword.FMT_HTML)
     markup.thisown=False
     library = Sword.SWMgr(markup)
