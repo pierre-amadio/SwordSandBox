@@ -202,7 +202,7 @@ my_deck = genanki.Deck(
 for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
     print(strK)
     print("{} occurence in total".format(nameTotalCnt[strK]))
-    allVariants="Variants: "
+    allVariants=""
     for c in nameDic[strK]:
         allVariants+=c
         allVariants+=" "
@@ -217,16 +217,17 @@ for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
         sys.exit()
     vk=Sword.SWKey(strK[1:])
     target.setKey(vk)
-    strongEntry=target.renderText()
+    strongEntry=target.renderText().getRawData()
+    strongEntry=strongEntry.replace("\n","<br />\n")
     print(strongEntry)
-    if not isinstance(strongEntry.getRawData(),str):
+    if not isinstance(strongEntry,str):
         print("ke passa")
         help(strongEntry)
         sys.exit()
 
     my_note = genanki.Note(
         model=my_model,
-        fields=[allVariants,strongEntry.getRawData()]
+        fields=[allVariants,strongEntry]
         )
 
     my_deck.add_note(my_note)
