@@ -23,15 +23,15 @@ def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
     mgr.setGlobalOption("Hebrew Vowel Points", "On")
 
     if not mod:
-        print "No module"
+        print("No module")
         sys.exit()
     return mod.renderText()
 
-bookStr="II Sam"
+bookStr="Psalm"
 moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
-chapterInt=8
-print "Vocabulary for %s %s\n\n"%(bookStr,chapterInt)
+chapterInt=70
+print("Vocabulary for {} {}\n\n".format(bookStr,chapterInt))
 nameDic={}
 nameTotalCnt={}
 
@@ -57,21 +57,21 @@ for verseNbr in range(1,1+getVerseMax(moduleStr,bookStr,chapterInt)):
 
 for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
     print 
-    print "%s occurence in total"%nameTotalCnt[strK]
+    print("{} occurence in total").format(nameTotalCnt[strK])
     allVariants="Variants: "
     for c in nameDic[strK]:
         allVariants+=c.encode('utf-8').strip()+" "
-    print allVariants
+    print(allVariants)
     markup=Sword.MarkupFilterMgr(Sword.FMT_HTML)
     markup.thisown=False
     library = Sword.SWMgr(markup)
     target=library.getModule(strongModuleStr)        
     if not target:
-        print "No module found"
+        print("No module found")
         sys.exit()
     vk=Sword.SWKey(strK[1:])
     target.setKey(vk)
-    print target.renderText()
+    print(target.renderText())
 
-    print "################"
+    print("################")
 
