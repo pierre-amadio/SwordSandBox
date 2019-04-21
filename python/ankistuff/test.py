@@ -8,12 +8,12 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
-bookStr="Psalms"
-moduleStr="OSHB"
-strongModuleStr="StrongsHebrew"
-#bookStr="John"
-#moduleStr="MorphGNT"
-#strongModuleStr="StrongsGreek"
+#bookStr="Psalms"
+#moduleStr="OSHB"
+#strongModuleStr="StrongsHebrew"
+bookStr="John"
+moduleStr="MorphGNT"
+strongModuleStr="StrongsGreek"
 print("Vocabulary for {} \n".format(bookStr))
 #nameDic={}
 #nameTotalCnt={}
@@ -189,7 +189,7 @@ my_model = genanki.Model(
       'afmt': "{{FrontSide}} <hr id='answer'><div style='font-size: 30px;'>{{Answer}}</id>",
     },
   ],
-  css=".card{font-family: 'Ezra SIL';font-size: 80px; color:black; text-align: center}"
+  css=".card{font-family: 'Linux Libertine O';font-size: 80px; color:black; text-align: center}"
   )
 
 
