@@ -8,9 +8,12 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
-bookStr="Gen"
+bookStr="Psalms"
 moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
+#bookStr="John"
+#moduleStr="MorphGNT"
+#strongModuleStr="StrongsGreek"
 print("Vocabulary for {} \n".format(bookStr))
 #nameDic={}
 #nameTotalCnt={}
@@ -61,6 +64,7 @@ def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
     mod=mgr.getModule(moduleName)
     mod.setKey(vk)
     mgr.setGlobalOption("Hebrew Vowel Points", "On")
+    mgr.setGlobalOption("Textual Variants", "Off")
     if not mod:
         print("No module")
         sys.exit()
@@ -89,7 +93,7 @@ def fillDicForBookChapter(moduleStr,bookStr,chapterInt):
         rawVerse=display_verse(keySnt,moduleStr,Sword.FMT_HTML).getRawData()
         soup=BeautifulSoup(rawVerse, features="html.parser")
         for w in soup.find_all(savlm=re.compile('strong')):
-            strKeyGroup=re.match("strong:(.*)",w.get('savlm'))
+            strKeyGroup=re.match(".*strong:(.*)",w.get('savlm'))
             strKey=strKeyGroup.group(1)
             fullWord=w.get_text()
             if strKey not in nameDic.keys():
@@ -164,6 +168,10 @@ nameTotalCnt=plop["nameTotalCnt"]
 modelID=random.randrange(1 << 30, 1 << 31)
 deckID=random.randrange(1 << 30, 1 << 31)
 
+"""
+cool hebrew font "Ezra SIL" 
+cool greek font  "Linux Libertine O"
+"""
 
 my_model = genanki.Model(
   modelID, 
