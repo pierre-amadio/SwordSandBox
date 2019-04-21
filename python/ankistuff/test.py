@@ -167,6 +167,9 @@ def fillDicForBook(moduleStr,bookStr):
     print("{} chapter".format(nbrChapter))
 
     nbrChapter=getInfoBasedOnAbbr(bookStr)['bookCount']
+    for i in range (nbrChapter):
+        print("chap {}".format(i))
+
     return out
 
 pika=fillDicForBook(moduleStr,bookStr)
