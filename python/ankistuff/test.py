@@ -8,11 +8,10 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
-bookStr="1Sam"
+bookStr="Gen"
 moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
-#chapterInt=1 
-#print("Vocabulary for {} {}\n\n".format(bookStr,chapterInt))
+print("Vocabulary for {} \n".format(bookStr))
 #nameDic={}
 #nameTotalCnt={}
 
@@ -123,7 +122,6 @@ def fillDicForBook(moduleStr,bookStr):
     out={}
     nameDic={}
     nameTotalCnt={}
-    print("how many chapter for {}".format(bookStr))
     myBook=None
     nbrChapter=0
     for curBook in getAllBooks():
@@ -136,7 +134,7 @@ def fillDicForBook(moduleStr,bookStr):
 
     for i in range (nbrChapter):
         curChapter=i+1
-        #print("chap {}".format(curChapter))
+        print("chap {}".format(curChapter))
         curChapterInfo=fillDicForBookChapter(moduleStr,myBook,curChapter)
         #print(curChapterInfo)
         for curKey in curChapterInfo['nameDic']:
@@ -157,8 +155,8 @@ def fillDicForBook(moduleStr,bookStr):
     out['nameTotalCnt']=nameTotalCnt
     return out
 
-#plop=fillDicForBook(moduleStr,bookStr)
-plop=fillDicForBookChapter(moduleStr,bookStr,1)
+plop=fillDicForBook(moduleStr,bookStr)
+#plop=fillDicForBookChapter(moduleStr,bookStr,1)
 nameDic=plop["nameDic"]
 nameTotalCnt=plop["nameTotalCnt"]
 
@@ -204,7 +202,7 @@ for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
         allVariants+=c
         allVariants+=" "
         #allVariants+=c.encode('utf-8').strip()+" "
-    print(allVariants)
+    #print(allVariants)
     markup=Sword.MarkupFilterMgr(Sword.FMT_HTML)
     markup.thisown=False
     library = Sword.SWMgr(markup)
@@ -216,7 +214,7 @@ for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
     target.setKey(vk)
     strongEntry=target.renderText().getRawData()
     strongEntry=strongEntry.replace("\n","<br />\n")
-    print(strongEntry)
+    #print(strongEntry)
     if not isinstance(strongEntry,str):
         print("ke passa")
         help(strongEntry)
@@ -229,7 +227,7 @@ for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
 
     my_deck.add_note(my_note)
 
-    print("################")
+    #print("################")
 
 
 genanki.Package(my_deck).write_to_file('{}.apkg'.format(bookStr))
