@@ -8,12 +8,12 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
-#bookStr="Psalms"
-#moduleStr="OSHB"
-#strongModuleStr="StrongsHebrew"
-bookStr="John"
-moduleStr="MorphGNT"
-strongModuleStr="StrongsGreek"
+bookStr="Psalms"
+moduleStr="OSHB"
+strongModuleStr="StrongsHebrew"
+#bookStr="John"
+#moduleStr="MorphGNT"
+#strongModuleStr="StrongsGreek"
 print("Vocabulary for {} \n".format(bookStr))
 #nameDic={}
 #nameTotalCnt={}
@@ -120,12 +120,14 @@ For a given Sword module, book return the following structure:
   'bookName':'Gen',
   'nameDic': {'strongKey':["a word","another variation","yet another one"]},
   'nameTotalCnt':{"strongKey": integer}
+  'chapterDic':{'strongKey':[int,int,int]}
 }
 """
 def fillDicForBook(moduleStr,bookStr):
     out={}
     nameDic={}
     nameTotalCnt={}
+    chapterDic={}
     myBook=None
     nbrChapter=0
     for curBook in getAllBooks():
@@ -146,6 +148,7 @@ def fillDicForBook(moduleStr,bookStr):
             if curKey not in nameDic.keys():
                 nameDic[curKey]=curChapterInfo['nameDic'][curKey]
                 nameTotalCnt[curKey]=curChapterInfo['nameTotalCnt'][curKey]
+                chapterDic[curKey]=[]
             else:
                 nameTotalCnt[curKey]+=curChapterInfo['nameTotalCnt'][curKey]
                 for word in curChapterInfo['nameDic'][curKey]:
@@ -153,17 +156,20 @@ def fillDicForBook(moduleStr,bookStr):
                     if not word in nameDic[curKey]:
                         nameDic[curKey].append(word)
 
+            chapterDic[curKey].append(curChapter)
     out['moduleName']=moduleStr
     out['bookName']=myBook
     out['nameDic']=nameDic
     out['nameTotalCnt']=nameTotalCnt
+    out['chapterDic']=chapterDic
     return out
 
 plop=fillDicForBook(moduleStr,bookStr)
 #plop=fillDicForBookChapter(moduleStr,bookStr,1)
 nameDic=plop["nameDic"]
 nameTotalCnt=plop["nameTotalCnt"]
-
+chapterDic=plop["chapterDic"]
+shortBookName=plop["bookName"]
 
 modelID=random.randrange(1 << 30, 1 << 31)
 deckID=random.randrange(1 << 30, 1 << 31)
@@ -197,7 +203,6 @@ my_deck = genanki.Deck(
   deckID,
   'Vocab for {}'.format(bookStr))
 
-#my_deck.add_note(my_note)
 
 
 
@@ -228,9 +233,15 @@ for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
         help(strongEntry)
         sys.exit()
 
+    curTag=[]
+    for c  in chapterDic[strK]:
+        print(str(c))
+        curTag.append("{}-chapter-{}".format(shortBookName,str(c)))
+
     my_note = genanki.Note(
         model=my_model,
-        fields=[allVariants,strongEntry,strK,str(nameTotalCnt[strK])]
+        fields=[allVariants,strongEntry,strK,str(nameTotalCnt[strK])],
+        tags=curTag
         )
 
     my_deck.add_note(my_note)
