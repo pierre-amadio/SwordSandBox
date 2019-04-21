@@ -8,6 +8,14 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
+bookStr="1Sam"
+moduleStr="OSHB"
+strongModuleStr="StrongsHebrew"
+#chapterInt=1 
+#print("Vocabulary for {} {}\n\n".format(bookStr,chapterInt))
+#nameDic={}
+#nameTotalCnt={}
+
 
 def getAllBooks():
     """
@@ -60,45 +68,6 @@ def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
     return mod.renderText()
 
 
-bookStr="1Sam"
-moduleStr="OSHB"
-strongModuleStr="StrongsHebrew"
-chapterInt=1 
-print("Vocabulary for {} {}\n\n".format(bookStr,chapterInt))
-#nameDic={}
-#nameTotalCnt={}
-
-
-modelID=random.randrange(1 << 30, 1 << 31)
-
-my_model = genanki.Model(
-  modelID, 
-  'Simple Model',
-  fields=[
-    {'name': 'Question'},
-    {'name': 'Answer'},
-  ],
-  templates=[
-    {
-      'name': 'Card 1',
-      'qfmt': '{{Question}}',
-      'afmt': '{{FrontSide}}<hr id="answer">{{Answer}}',
-    },
-  ])
-
-
-my_note = genanki.Note(
-  model=my_model,
-  fields=['Capital of Argentina', 'Buenos Aires']
-  )
-
-
-my_deck = genanki.Deck(
-  2059400110,
-  'Country Capitals')
-
-my_deck.add_note(my_note)
-genanki.Package(my_deck).write_to_file('output.apkg')
 
 """
 For a given Sword module, book and chapter, return the following structure:
@@ -188,11 +157,46 @@ def fillDicForBook(moduleStr,bookStr):
     out['nameTotalCnt']=nameTotalCnt
     return out
 
-plop=fillDicForBook(moduleStr,bookStr)
-
-#plop=fillDicForBookChapter(moduleStr,bookStr,chapterInt)
+#plop=fillDicForBook(moduleStr,bookStr)
+plop=fillDicForBookChapter(moduleStr,bookStr,1)
 nameDic=plop["nameDic"]
 nameTotalCnt=plop["nameTotalCnt"]
+
+
+modelID=random.randrange(1 << 30, 1 << 31)
+deckID=random.randrange(1 << 30, 1 << 31)
+
+
+my_model = genanki.Model(
+  modelID, 
+  'Simple Model',
+  fields=[
+    {'name': 'Question'},
+    {'name': 'Answer'},
+  ],
+  templates=[
+    {
+      'name': 'Card 1',
+      'qfmt': '{{Question}}',
+      'afmt': '{{FrontSide}}<hr id="answer">{{Answer}}',
+    },
+  ])
+
+
+"""
+my_note = genanki.Note(
+  model=my_model,
+  fields=['Capital of Argentina', 'Buenos Aires']
+  )
+"""
+
+my_deck = genanki.Deck(
+  deckID,
+  'Vocab for {}'.format(bookStr))
+
+#my_deck.add_note(my_note)
+
+
 
 
 for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
@@ -213,7 +217,21 @@ for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
         sys.exit()
     vk=Sword.SWKey(strK[1:])
     target.setKey(vk)
-    print(target.renderText())
+    strongEntry=target.renderText()
+    print(strongEntry)
+    if not isinstance(strongEntry.getRawData(),str):
+        print("ke passa")
+        help(strongEntry)
+        sys.exit()
+
+    my_note = genanki.Note(
+        model=my_model,
+        fields=[allVariants,strongEntry.getRawData()]
+        )
+
+    my_deck.add_note(my_note)
 
     print("################")
 
+
+genanki.Package(my_deck).write_to_file('output.apkg')
