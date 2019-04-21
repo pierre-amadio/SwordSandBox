@@ -1,0 +1,61 @@
+#Genanki python stuff
+
+git checkout https://github.com/kerrickstaley/genanki.git
+mkdir ~/dev/ankiswordstuff
+virtualenv -p /usr/bin/python3 ~/dev/ankiswordstuff
+. ~/dev/ankiswordstuff/bin/activate
+
+cd genanki
+python setup.py install
+
+#sword stuff
+
+cd ~/tmp
+wget http://www.crosswire.org/ftpmirror/pub/sword/source/v1.8/sword-1.8.1.tar.gz
+tar xvzf sword-1.8.1.tar.gz
+
+#as root
+mkdir /usr/local/sword
+chown melmoth /usr/local/sword
+
+cd sword-1.8.1
+./autogen.sh
+./configure --prefix=/usr/local/sword --with-clucene --with-curl_sftp --enable-examples
+make
+make install
+make install_config
+
+cat >> ~/dev/ankiswordstuff/env-sword-anki.sh <<EOF
+export PATH=$PATH:/usr/local/sword/bin/
+export LD_LIBRARY_PATH=/usr/local/sword/lib
+export PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig
+export CPPFLAGS="-I/usr/local/sword/include/sword"
+EOF
+
+. ~/dev/ankiswordstuff/env-sword-anki.sh
+
+#####################
+Now, let s build the python module.
+
+cd ~/tmp/sword-1.8.1/bindings/swig/package
+./autogen.sh
+
+./configure PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/"
+
+
+
+make pythonswig
+PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/" make python_make
+cd python
+#Put the modified setup.py
+python setup.py install
+
+##########################
+Now let s use https://github.com/kerrickstaley/genanki
+
+. ~/dev/ankiswordstuff/bin/activate
+. ~/dev/ankiswordstuff/env-sword-anki.sh
+
+pip install bs4
+
+
