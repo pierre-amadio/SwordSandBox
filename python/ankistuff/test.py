@@ -179,11 +179,11 @@ my_model = genanki.Model(
   templates=[
     {
       'name': 'Card 1',
-      'qfmt': "<div style='font-size: 30px; color:black; text-align: center; font-name='Ezra SIL'> {{Question}}</div>",
-      'afmt': '{{FrontSide}}<hr id="answer">{{Answer}}',
+      'qfmt': "{{Question}}",
+      'afmt': "{{FrontSide}} <hr id='answer'><div style='font-size: 30px;'>{{Answer}}</id>",
     },
   ],
-  css=".card{font-family: 'Ezra SIL';}"
+  css=".card{font-family: 'Ezra SIL';font-size: 80px; color:black; text-align: center}"
   )
 
 
@@ -232,4 +232,4 @@ for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
     print("################")
 
 
-genanki.Package(my_deck).write_to_file('output.apkg')
+genanki.Package(my_deck).write_to_file('{}.apkg'.format(bookStr))
