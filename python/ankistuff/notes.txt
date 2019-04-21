@@ -58,4 +58,12 @@ Now let s use https://github.com/kerrickstaley/genanki
 
 pip install bs4
 
+##################
+
+TODO: how to put the following in styling ? 
+
+
+.card {
+ font-family: 'Ezra SIL';
+ }
 

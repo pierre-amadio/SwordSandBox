@@ -173,22 +173,19 @@ my_model = genanki.Model(
   fields=[
     {'name': 'Question'},
     {'name': 'Answer'},
+    {'name': 'StrongID'},
+    {'name': 'NbrOccurence'}
   ],
   templates=[
     {
       'name': 'Card 1',
-      'qfmt': '{{Question}}',
+      'qfmt': "<div style='font-size: 30px; color:black; text-align: center; font-name='Ezra SIL'> {{Question}}</div>",
       'afmt': '{{FrontSide}}<hr id="answer">{{Answer}}',
     },
-  ])
-
-
-"""
-my_note = genanki.Note(
-  model=my_model,
-  fields=['Capital of Argentina', 'Buenos Aires']
+  ],
+  css=".card{font-family: 'Ezra SIL';}"
   )
-"""
+
 
 my_deck = genanki.Deck(
   deckID,
@@ -227,7 +224,7 @@ for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
 
     my_note = genanki.Note(
         model=my_model,
-        fields=[allVariants,strongEntry]
+        fields=[allVariants,strongEntry,strK,str(nameTotalCnt[strK])]
         )
 
     my_deck.add_note(my_note)
