@@ -88,5 +88,5 @@ Now let s use https://github.com/kerrickstaley/genanki
 
 pip install bs4
 
-
+#Just to remember the url where i posted stuff: http://cocreator.byethost22.com/ankisword/
 
