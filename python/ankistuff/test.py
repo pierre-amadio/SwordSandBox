@@ -33,10 +33,10 @@ def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
 bookStr="Psalm"
 moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
-chapterInt=70
+chapterInt=1 
 print("Vocabulary for {} {}\n\n".format(bookStr,chapterInt))
-nameDic={}
-nameTotalCnt={}
+#nameDic={}
+#nameTotalCnt={}
 
 
 modelID=random.randrange(1 << 30, 1 << 31)
@@ -70,24 +70,54 @@ my_deck = genanki.Deck(
 my_deck.add_note(my_note)
 genanki.Package(my_deck).write_to_file('output.apkg')
 
+"""
+For a given Sword module, book and chapter, return the following structure:
+
+{
+  'moduleName':'OSHB',
+  'bookName':'Gen',
+  'chapter':1,
+  'nameDic': {'strongKey':["a word","another variation","yet another one"]},
+  'nameTotalCnt':{"strongKey": integer}
+}
+"""
+def fillDicForBookChapter(moduleStr,bookStr,chapterInt):
+    out={}
+    nameDic={}
+    nameTotalCnt={}
+    
+    for verseNbr in range(1,1+getVerseMax(moduleStr,bookStr,chapterInt)):
+        keySnt="%s %s:%s"%(bookStr,chapterInt,verseNbr)
+        rawVerse=display_verse(keySnt,moduleStr,Sword.FMT_HTML).getRawData()
+        soup=BeautifulSoup(rawVerse, features="html.parser")
+        for w in soup.find_all(savlm=re.compile('strong')):
+            strKeyGroup=re.match("strong:(.*)",w.get('savlm'))
+            strKey=strKeyGroup.group(1)
+            fullWord=w.get_text()
+            if strKey not in nameDic.keys():
+                nameTotalCnt[strKey]=1
+                nameDic[strKey]=[]
+                nameDic[strKey].append(fullWord)
+            else:
+                nameTotalCnt[strKey]=nameTotalCnt[strKey]+1
+                if fullWord not in nameDic[strKey]:
+                    nameDic[strKey].append(fullWord)
+
+    out["moduleName"]=moduleStr
+    out["bookName"]=bookStr
+    out["chapter"]=chapterInt
+    out["nameDic"]=nameDic
+    out["nameTotalCnt"]=nameTotalCnt
+    print("returing out")
+    return out
+
+
+
+
 sys.exit()
-for verseNbr in range(1,1+getVerseMax(moduleStr,bookStr,chapterInt)):
-    keySnt="%s %s:%s"%(bookStr,chapterInt,verseNbr)
-    rawVerse=display_verse(keySnt,moduleStr,Sword.FMT_HTML).getRawData()
-    #print display_verse(keySnt,moduleStr,Sword.FMT_PLAIN).getRawData()
-    soup=BeautifulSoup(rawVerse, features="html.parser")
-    for w in soup.find_all(savlm=re.compile('strong')):
-       strKeyGroup=re.match("strong:(.*)",w.get('savlm'))
-       strKey=strKeyGroup.group(1)
-       fullWord=w.get_text()
-       if strKey not in nameDic.keys():
-        nameTotalCnt[strKey]=1
-        nameDic[strKey]=[]
-        nameDic[strKey].append(fullWord)
-       else:
-        nameTotalCnt[strKey]=nameTotalCnt[strKey]+1
-        if fullWord not in nameDic[strKey]:
-            nameDic[strKey].append(fullWord)
+plop=fillDicForBookChapter(moduleStr,bookStr,chapterInt)
+nameDic=plop["nameDic"]
+nameTotalCnt=plop["nameTotalCnt"]
 
 
 for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
