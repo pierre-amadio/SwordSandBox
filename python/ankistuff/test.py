@@ -8,7 +8,7 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
-bookStr="Psalms"
+bookStr="Gen"
 moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
 #bookStr="John"
@@ -138,7 +138,8 @@ def fillDicForBook(moduleStr,bookStr):
 
     #print("{} chapter".format(nbrChapter))
 
-    for i in range (nbrChapter):
+    #for i in range (nbrChapter):
+    for i in [0]:
         curChapter=i+1
         print("chap {}".format(curChapter))
         curChapterInfo=fillDicForBookChapter(moduleStr,myBook,curChapter)
@@ -191,11 +192,30 @@ my_model = genanki.Model(
   templates=[
     {
       'name': 'Card 1',
-      'qfmt': "{{Question}}",
-      'afmt': "{{FrontSide}} <hr id='answer'><div style='font-size: 30px;'>{{Answer}}</id>",
+      'qfmt': "<div id='questionDiv' class=question>{{Question}}</div>",
+      'afmt': "{{FrontSide}} <hr id='answer'><div class=text>{{Answer}}</id>",
     },
   ],
-  css=".card{font-family: 'Linux Libertine O';font-size: 80px; color:black; text-align: center}"
+  css="""
+
+.card{
+font-size: 12px; 
+color:red; 
+text-align: center}
+
+.text {
+font-family: arial;
+font-size: 12px;
+color: black;
+text-align: left;
+}
+
+.question{
+font-family: 'Linux Libertine O';
+font-size: 80px; 
+color:black; 
+text-align: center}
+"""
   )
 
 
