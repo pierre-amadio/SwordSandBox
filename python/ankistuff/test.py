@@ -8,12 +8,39 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
-bookStr="Gen"
+bookStr="Ruth"
 moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
+bibleFont="Ezra SIL"
 #bookStr="John"
 #moduleStr="MorphGNT"
 #strongModuleStr="StrongsGreek"
+#bibleFont="Linux Libertine O"
+
+my_css="""
+.card{
+font-size: 12px; 
+color:red; 
+text-align: center}
+
+.text {
+font-family: arial;
+font-size: 22px;
+color: black;
+text-align: left;
+}
+
+.question{
+font-family: 'QUOTEFONT';
+font-size: 60px; 
+color:black; 
+text-align: center}
+""".replace("QUOTEFONT",bibleFont)
+
+
+
+
+
 print("Vocabulary for {} \n".format(bookStr))
 #nameDic={}
 #nameTotalCnt={}
@@ -196,26 +223,7 @@ my_model = genanki.Model(
       'afmt': "{{FrontSide}} <hr id='answer'><div class=text>{{Answer}}</id>",
     },
   ],
-  css="""
-
-.card{
-font-size: 12px; 
-color:red; 
-text-align: center}
-
-.text {
-font-family: arial;
-font-size: 12px;
-color: black;
-text-align: left;
-}
-
-.question{
-font-family: 'Linux Libertine O';
-font-size: 80px; 
-color:black; 
-text-align: center}
-"""
+  css=my_css
   )
 
 
