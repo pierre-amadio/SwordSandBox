@@ -8,14 +8,15 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
-bookStr="Eccl"
-moduleStr="OSHB"
-strongModuleStr="StrongsHebrew"
-bibleFont="Ezra SIL"
-#bookStr="John"
-#moduleStr="MorphGNT"
-#strongModuleStr="StrongsGreek"
-#bibleFont="Linux Libertine O"
+#bookStr="Eccl"
+#moduleStr="OSHB"
+#strongModuleStr="StrongsHebrew"
+#bibleFont="Ezra SIL"
+
+bookStr="Rom"
+moduleStr="MorphGNT"
+strongModuleStr="StrongsGreek"
+bibleFont="Linux Libertine O"
 
 my_css="""
 .card{
@@ -38,12 +39,6 @@ text-align: center}
 """.replace("QUOTEFONT",bibleFont)
 
 
-
-
-
-print("Vocabulary for {} \n".format(bookStr))
-#nameDic={}
-#nameTotalCnt={}
 
 
 def getAllBooks():
@@ -165,8 +160,8 @@ def fillDicForBook(moduleStr,bookStr):
 
     #print("{} chapter".format(nbrChapter))
 
-    #for i in range (nbrChapter):
-    for i in [0]:
+    for i in range (nbrChapter):
+    #for i in [0]:
         curChapter=i+1
         print("chap {}".format(curChapter))
         curChapterInfo=fillDicForBookChapter(moduleStr,myBook,curChapter)
@@ -192,87 +187,84 @@ def fillDicForBook(moduleStr,bookStr):
     out['chapterDic']=chapterDic
     return out
 
-plop=fillDicForBook(moduleStr,bookStr)
-#plop=fillDicForBookChapter(moduleStr,bookStr,1)
-nameDic=plop["nameDic"]
-nameTotalCnt=plop["nameTotalCnt"]
-chapterDic=plop["chapterDic"]
-shortBookName=plop["bookName"]
-deckBookName=getInfoBasedOnAbbr(shortBookName)["name"]
 
-modelID=random.randrange(1 << 30, 1 << 31)
-deckID=random.randrange(1 << 30, 1 << 31)
+def getNewAnkiModel(modelID):
+    m = genanki.Model( modelID, 
+        'Simple Model',
+        fields=[
+            {'name': 'Question'},
+            {'name': 'Answer'},
+            {'name': 'StrongID'},
+            {'name': 'NbrOccurence'}
+        ],
+        templates=[
+        {
+          'name': 'Card 1',
+          'qfmt': "<div id='questionDiv' class=question>{{Question}}</div>",
+          'afmt': "{{FrontSide}} <hr id='answer'><div class=text>{{Answer}}</id>",
+        },
+      ],
+        css=my_css
+      )
+    return m
 
-"""
-cool hebrew font "Ezra SIL" 
-cool greek font  "Linux Libertine O"
-"""
+def getNewAnkiDeck(deckID,deckBookName):
+    title="Vocab for {}".format(deckBookName)
+    return genanki.Deck( deckID,title)
 
-my_model = genanki.Model(
-  modelID, 
-  'Simple Model',
-  fields=[
-    {'name': 'Question'},
-    {'name': 'Answer'},
-    {'name': 'StrongID'},
-    {'name': 'NbrOccurence'}
-  ],
-  templates=[
-    {
-      'name': 'Card 1',
-      'qfmt': "<div id='questionDiv' class=question>{{Question}}</div>",
-      'afmt': "{{FrontSide}} <hr id='answer'><div class=text>{{Answer}}</id>",
-    },
-  ],
-  css=my_css
-  )
+def prepareDeckfor(bookStr,moduleStr,strongModuleStr,bibleFont):
+    print("Vocabulary for {} \n".format(bookStr))
+    infos=fillDicForBook(moduleStr,bookStr)
+    
+    nameDic=infos["nameDic"]
+    nameTotalCnt=infos["nameTotalCnt"]
+    chapterDic=infos["chapterDic"]
+    shortBookName=infos["bookName"]
+    deckBookName=getInfoBasedOnAbbr(shortBookName)["name"]
+    modelID=random.randrange(1 << 30, 1 << 31)
+    deckID=random.randrange(1 << 30, 1 << 31)
+    my_model=getNewAnkiModel(modelID)
+    my_deck=getNewAnkiDeck(deckID,deckBookName)
 
+    for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
+        print(strK)
+        print("{} occurence in total".format(nameTotalCnt[strK]))
+        allVariants=""
+        for c in nameDic[strK]:
+            allVariants+=c
+            allVariants+=" "
+            #allVariants+=c.encode('utf-8').strip()+" "
+        #print(allVariants)
+        markup=Sword.MarkupFilterMgr(Sword.FMT_HTML)
+        markup.thisown=False
+        library = Sword.SWMgr(markup)
+        target=library.getModule(strongModuleStr)
+        if not target:
+            print("No module found")
+            sys.exit()
+        vk=Sword.SWKey(strK[1:])
+        target.setKey(vk)
+        strongEntry=target.renderText().getRawData()
+        strongEntry=strongEntry.replace("\n","<br />\n")
+        #print(strongEntry)
+        if not isinstance(strongEntry,str):
+            print("ke passa")
+            help(strongEntry)
+            sys.exit()
 
-my_deck = genanki.Deck(
-  deckID,
-  'Vocab for {}'.format(deckBookName))
+        curTag=[]
+        for c  in chapterDic[strK]:
+            print(str(c))
+            curTag.append("{}-chapter-{}".format(shortBookName,str(c)))
 
+        my_note = genanki.Note(
+            model=my_model,
+            fields=[allVariants,strongEntry,strK,str(nameTotalCnt[strK])],
+            tags=curTag
+            )
 
-for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
-    print(strK)
-    print("{} occurence in total".format(nameTotalCnt[strK]))
-    allVariants=""
-    for c in nameDic[strK]:
-        allVariants+=c
-        allVariants+=" "
-        #allVariants+=c.encode('utf-8').strip()+" "
-    #print(allVariants)
-    markup=Sword.MarkupFilterMgr(Sword.FMT_HTML)
-    markup.thisown=False
-    library = Sword.SWMgr(markup)
-    target=library.getModule(strongModuleStr)
-    if not target:
-        print("No module found")
-        sys.exit()
-    vk=Sword.SWKey(strK[1:])
-    target.setKey(vk)
-    strongEntry=target.renderText().getRawData()
-    strongEntry=strongEntry.replace("\n","<br />\n")
-    #print(strongEntry)
-    if not isinstance(strongEntry,str):
-        print("ke passa")
-        help(strongEntry)
-        sys.exit()
+        my_deck.add_note(my_note)
 
-    curTag=[]
-    for c  in chapterDic[strK]:
-        print(str(c))
-        curTag.append("{}-chapter-{}".format(shortBookName,str(c)))
+    genanki.Package(my_deck).write_to_file('{}.apkg'.format(bookStr))
 
-    my_note = genanki.Note(
-        model=my_model,
-        fields=[allVariants,strongEntry,strK,str(nameTotalCnt[strK])],
-        tags=curTag
-        )
-
-    my_deck.add_note(my_note)
-
-    #print("################")
-
-
-genanki.Package(my_deck).write_to_file('{}.apkg'.format(bookStr))
+prepareDeckfor(bookStr,moduleStr,strongModuleStr,bibleFont)
