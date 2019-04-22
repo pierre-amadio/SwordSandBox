@@ -273,7 +273,6 @@ def prepareDeckfor(bookStr,moduleStr,strongModuleStr,bibleFont):
 
 
 for b in  getAllBooks():
-    print(b)
     if b['testament']==1:
         moduleStr="OSHB"
         strongModuleStr="StrongsHebrew"
@@ -284,3 +283,4 @@ for b in  getAllBooks():
         bibleFont="Linux Libertine O"
 
     prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont)
+    #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
