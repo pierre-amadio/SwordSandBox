@@ -8,15 +8,6 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
-#bookStr="Eccl"
-#moduleStr="OSHB"
-#strongModuleStr="StrongsHebrew"
-#bibleFont="Ezra SIL"
-
-bookStr="Rom"
-moduleStr="MorphGNT"
-strongModuleStr="StrongsGreek"
-bibleFont="Linux Libertine O"
 
 my_css="""
 .card{
@@ -36,8 +27,7 @@ font-family: 'QUOTEFONT';
 font-size: 60px; 
 color:black; 
 text-align: center}
-""".replace("QUOTEFONT",bibleFont)
-
+"""
 
 
 
@@ -204,7 +194,8 @@ def getNewAnkiModel(modelID):
           'afmt': "{{FrontSide}} <hr id='answer'><div class=text>{{Answer}}</id>",
         },
       ],
-        css=my_css
+        css=my_css.replace("QUOTEFONT",bibleFont)
+
       )
     return m
 
@@ -267,4 +258,29 @@ def prepareDeckfor(bookStr,moduleStr,strongModuleStr,bibleFont):
 
     genanki.Package(my_deck).write_to_file('{}.apkg'.format(bookStr))
 
-prepareDeckfor(bookStr,moduleStr,strongModuleStr,bibleFont)
+#prepareDeckfor(bookStr,moduleStr,strongModuleStr,bibleFont)
+
+#bookStr="Eccl"
+#moduleStr="OSHB"
+#strongModuleStr="StrongsHebrew"
+#bibleFont="Ezra SIL"
+
+#bookStr="Rom"
+#moduleStr="MorphGNT"
+#strongModuleStr="StrongsGreek"
+#bibleFont="Linux Libertine O"
+
+
+
+for b in  getAllBooks():
+    print(b)
+    if b['testament']==1:
+        moduleStr="OSHB"
+        strongModuleStr="StrongsHebrew"
+        bibleFont="Ezra SIL"
+    else:
+        moduleStr="MorphGNT"
+        strongModuleStr="StrongsGreek"
+        bibleFont="Linux Libertine O"
+
+    prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont)
