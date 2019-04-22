@@ -8,7 +8,7 @@ import sys
 import re
 from bs4 import BeautifulSoup
 
-bookStr="Ruth"
+bookStr="Eccl"
 moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
 bibleFont="Ezra SIL"
@@ -198,6 +198,7 @@ nameDic=plop["nameDic"]
 nameTotalCnt=plop["nameTotalCnt"]
 chapterDic=plop["chapterDic"]
 shortBookName=plop["bookName"]
+deckBookName=getInfoBasedOnAbbr(shortBookName)["name"]
 
 modelID=random.randrange(1 << 30, 1 << 31)
 deckID=random.randrange(1 << 30, 1 << 31)
@@ -229,10 +230,7 @@ my_model = genanki.Model(
 
 my_deck = genanki.Deck(
   deckID,
-  'Vocab for {}'.format(bookStr))
-
-
-
+  'Vocab for {}'.format(deckBookName))
 
 
 for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
