@@ -64,10 +64,19 @@ int main()
 
 
 /*
+    //Morph search.
+    targetModule="OSHB";
+    searchType=-3;
+    //<w morph="oshm:HVqp3ms" n="1.1" savlm="strong:H02421">חַי</w>
+    searchQuery="Word//Morph./HVqp3ms/";
+*/
+
+/*
     //Why does this not work ?
     targetModule="MorphGNT";
     searchType=-3;
-    searchQuery="Word//Morph./V-FAI-3S/";  
+    //<w morph="robinson:V-AAP-GPM" savlm="lemma.Strong:εξερχομαι strong:G1831">εξελθοντων</w>
+    searchQuery="Word//Morph./V-AAP-GPM/";  
 */
     //Working example
 
@@ -81,11 +90,11 @@ int main()
     searchQuery="Word//Lemma./G5547/";
 */
 
-/*
+
     targetModule="KJV";
     searchType=-1;
     searchQuery="heaven";
-*/
+
 
 /*
     //Do not forget to "mkfastmod KJV" first
@@ -120,9 +129,16 @@ int main()
     searchQuery="Word//Morph./HVqp3ms/";
 */
 
-
+/*
+    //Search with hebrew accent. Does not work with -4, clucene search.
+    targetModule="OSHB";
+    searchType=-1;
+    searchQuery="תְּבַקְשֶׁנָּה";
+    manager.setGlobalOption("Hebrew Vowel Points", "On");
+*/
 
 /*
+    //Search without hebrew accent. Works with -1 and -4 search type.
     targetModule="OSHB";
     searchType=-1;
     searchQuery="בקשׁ";
