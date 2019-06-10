@@ -66,23 +66,23 @@ int main()
     //for indexed, search lemma:G1234
     //searchType=-3;
     //searchQuery="H8064";
-
+    
     //This works to search for strong number.
+
     //searchType=-3;
     //searchQuery="Word//Lemma./H2916/";
 
     //And this wokrs for clucene search as well.
-    //searchType=-4;
-    //searchQuery="lemma:G2531";
+    
     
     //do not forget to "mkfastmod OSHB"
     //searchType=-4;
     //searchQuery="lemma:H0835";
     //searchQuery="strong:H0835";
 
-    targetModule="KJV";
+    //targetModule="KJV";
 
-    searchType=-4;
+    //searchType=-4;
     //searchQuery="strong:H08064";
 
 
@@ -110,7 +110,21 @@ int main()
 */
 
 /*
-    /Do not forget to "mkfastmod KJV" first
+    //Do not forget to "mkfastmod KJV" first
+    targetModule="KJV";
+    searchType=-4;
+    searchQuery="lemma:G2531";
+*/  
+
+/*
+    //Do not forget to "mkfastmod OSHB" first
+    targetModule="OSHB";
+    searchType=-4;
+    searchQuery="lemma:H08064";
+*/
+
+/*
+    //Do not forget to "mkfastmod KJV" first
     targetModule="KJV";
     searchType=-4;
     searchQuery="heaven";
