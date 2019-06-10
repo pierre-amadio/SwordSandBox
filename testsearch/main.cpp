@@ -63,44 +63,22 @@ int main()
              */
 
 
-    //for indexed, search lemma:G1234
-    //searchType=-3;
-    //searchQuery="H8064";
-    
-    //This works to search for strong number.
-
-    //searchType=-3;
-    //searchQuery="Word//Lemma./H2916/";
-
-    //And this wokrs for clucene search as well.
-    
-    
-    //do not forget to "mkfastmod OSHB"
-    //searchType=-4;
-    //searchQuery="lemma:H0835";
-    //searchQuery="strong:H0835";
-
-    //targetModule="KJV";
-
-    //searchType=-4;
-    //searchQuery="strong:H08064";
-
-
-    //Work:
+/*
+    //Why does this not work ?
+    targetModule="MorphGNT";
+    searchType=-3;
+    searchQuery="Word//Morph./V-FAI-3S/";  
+*/
+    //Working example
 
 /*
-    targetModule="OSHB";
-    searchType=-1;
-    searchQuery="בקשׁ";
-    manager.setGlobalOption("Hebrew Vowel Points", "Off");
+*	KJV search
 */
 
 /*
-    //do not forget to "mkfastmod OSHB"
-    targetModule="OSHB";
-    searchType=-4;
-    searchQuery="בקשׁ";
-    manager.setGlobalOption("Hebrew Vowel Points", "Off");
+    targetModule="KJV";
+    searchType=-3;
+    searchQuery="Word//Lemma./G5547/";
 */
 
 /*
@@ -117,18 +95,74 @@ int main()
 */  
 
 /*
+    //Do not forget to "mkfastmod KJV" first
+    targetModule="KJV";
+    searchType=-4;
+    searchQuery="heaven";
+*/
+
+/*
+*	OSHB search
+*/
+
+/*
+    //Strongs search without clucene index.
+    targetModule="OSHB";
+    searchType=-3;
+    searchQuery="Word//Lemma./H0835/";
+*/
+
+
+/*
+    //Morph search.
+    targetModule="OSHB";
+    searchType=-3;
+    searchQuery="Word//Morph./HVqp3ms/";
+*/
+
+
+
+/*
+    targetModule="OSHB";
+    searchType=-1;
+    searchQuery="בקשׁ";
+    manager.setGlobalOption("Hebrew Vowel Points", "Off");
+*/
+
+/*
+    //do not forget to "mkfastmod OSHB"
+    targetModule="OSHB";
+    searchType=-4;
+    searchQuery="בקשׁ";
+    manager.setGlobalOption("Hebrew Vowel Points", "Off");
+*/
+
+
+/*  //Strongs search with clucene index.
     //Do not forget to "mkfastmod OSHB" first
     targetModule="OSHB";
     searchType=-4;
     searchQuery="lemma:H08064";
 */
 
+
 /*
-    //Do not forget to "mkfastmod KJV" first
-    targetModule="KJV";
-    searchType=-4;
-    searchQuery="heaven";
+*	MorphGNT search
 */
+
+
+/*
+    targetModule="MorphGNT";
+    searchType=-3;
+    searchQuery="Word//Lemma./G5547/";  
+
+*/
+
+/*
+*	LXX search
+*/
+
+
 
     //targetModule="LXX";
     //targetModule="MorphGNT";
