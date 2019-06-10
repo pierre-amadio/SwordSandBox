@@ -30,7 +30,7 @@ def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
 bookStr="Psalm"
 moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
-chapterInt=70
+chapterInt=5
 print("Vocabulary for {} {}\n\n".format(bookStr,chapterInt))
 nameDic={}
 nameTotalCnt={}

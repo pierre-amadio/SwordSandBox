@@ -1,6 +1,15 @@
+1) Does not work on debian...
+2) There is a problem with versification.
+The function that get the number of verse per chapter behave as if it was a KJV module.
+Versification in OSHB differ. Compare by example psalm 5. 
+
+
+
+
 #Genanki python stuff
 
-git checkout https://github.com/kerrickstaley/genanki.git
+#git checkout https://github.com/kerrickstaley/genanki.git
+git clone https://github.com/kerrickstaley/genanki.git
 mkdir ~/dev/ankiswordstuff
 virtualenv -p /usr/bin/python3 ~/dev/ankiswordstuff
 . ~/dev/ankiswordstuff/bin/activate
@@ -13,6 +22,22 @@ python setup.py install
 cd ~/tmp
 wget http://www.crosswire.org/ftpmirror/pub/sword/source/v1.8/sword-1.8.1.tar.gz
 tar xvzf sword-1.8.1.tar.gz
+
+##########
+#http://www.crosswire.org/pipermail/sword-devel/2014-January/040797.html
+
+(ankiswordstuff) melmoth@x220:~/tmp$ diff -u ./sword-1.8.1/bindings/swig/python/CMakeLists.txt ./sword-1.8.1/bindings/swig/python/CMakeLists.txt-orig
+--- ./sword-1.8.1/bindings/swig/python/CMakeLists.txt	2019-06-09 19:40:53.250218419 +0200
++++ ./sword-1.8.1/bindings/swig/python/CMakeLists.txt-orig	2019-06-09 19:40:28.629627011 +0200
+@@ -11,8 +11,8 @@
+ #
+ #SWIG_LINK_LIBRARIES(Sword ${PYTHON_LIBRARIES} ${SWORD_LINK_NAME})
+ 
+-FIND_PACKAGE(PythonInterp 3 REQUIRED)
+-FIND_PACKAGE(PythonLibs 3)
++FIND_PACKAGE(PythonInterp REQUIRED)
++FIND_PACKAGE(PythonLibs)
+#########
 
 #as root
 mkdir /usr/local/sword
@@ -36,6 +61,7 @@ EOF
 
 #####################
 Now, let s build the python module.
+sudo apt-get install libtool
 
 cd ~/tmp/sword-1.8.1/bindings/swig/package
 ./autogen.sh
