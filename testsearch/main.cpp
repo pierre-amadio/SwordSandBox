@@ -64,8 +64,8 @@ int main()
 
 
     //for indexed, search lemma:G1234
-    searchType=-3;
-    searchQuery="H07225";
+    //searchType=-3;
+    //searchQuery="H8064";
 
     //This works to search for strong number.
     //searchType=-3;
@@ -74,12 +74,48 @@ int main()
     //And this wokrs for clucene search as well.
     //searchType=-4;
     //searchQuery="lemma:G2531";
-
+    
+    //do not forget to "mkfastmod OSHB"
     //searchType=-4;
     //searchQuery="lemma:H0835";
+    //searchQuery="strong:H0835";
+
+    targetModule="KJV";
+
+    searchType=-4;
+    //searchQuery="strong:H08064";
 
 
+    //Work:
+
+/*
     targetModule="OSHB";
+    searchType=-1;
+    searchQuery="בקשׁ";
+    manager.setGlobalOption("Hebrew Vowel Points", "Off");
+*/
+
+/*
+    //do not forget to "mkfastmod OSHB"
+    targetModule="OSHB";
+    searchType=-4;
+    searchQuery="בקשׁ";
+    manager.setGlobalOption("Hebrew Vowel Points", "Off");
+*/
+
+/*
+    targetModule="KJV";
+    searchType=-1;
+    searchQuery="heaven";
+*/
+
+/*
+    /Do not forget to "mkfastmod KJV" first
+    targetModule="KJV";
+    searchType=-4;
+    searchQuery="heaven";
+*/
+
     //targetModule="LXX";
     //targetModule="MorphGNT";
     //targetModule="FreSegond";
@@ -87,7 +123,7 @@ int main()
 
     //manager.setGlobalOption("Greek Accents", "Off");
     //manager.setGlobalOption("Strong's Numbers", "Off");
-    manager.setGlobalOption("Hebrew Vowel Points", "Off");
+    //manager.setGlobalOption("Hebrew Vowel Points", "Off");
     //manager.filterText("Greek Accents", searchTerm);
 
 
