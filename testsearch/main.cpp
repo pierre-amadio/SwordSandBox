@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <swmgr.h>
 #include <swmodule.h>
@@ -63,13 +64,13 @@ int main()
              */
 
 
-/*
+
     //Morph search.
     targetModule="OSHB";
     searchType=-3;
     //<w morph="oshm:HVqp3ms" n="1.1" savlm="strong:H02421">חַי</w>
     searchQuery="Word//Morph./HVqp3ms/";
-*/
+
 
 /*
     //Why does this not work ?
@@ -78,23 +79,27 @@ int main()
     //<w morph="robinson:V-AAP-GPM" savlm="lemma.Strong:εξερχομαι strong:G1831">εξελθοντων</w>
     searchQuery="Word//Morph./V-AAP-GPM/";  
 */
+
+
     //Working example
+
 
 /*
 *	KJV search
 */
 
-/*
+    /*
+    //<w lemma="strong:G5547 lemma.TR:χριστον" src="9">Christ</w>
     targetModule="KJV";
     searchType=-3;
     searchQuery="Word//Lemma./G5547/";
-*/
+    */
 
-
+/*
     targetModule="KJV";
     searchType=-1;
     searchQuery="heaven";
-
+*/
 
 /*
     //Do not forget to "mkfastmod KJV" first

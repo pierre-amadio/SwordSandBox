@@ -17,31 +17,42 @@ virtualenv -p /usr/bin/python3 ~/dev/ankiswordstuff
 cd genanki
 python setup.py install
 
+##################
 #sword stuff
-
-cd ~/tmp
-wget http://www.crosswire.org/ftpmirror/pub/sword/source/v1.8/sword-1.8.1.tar.gz
-tar xvzf sword-1.8.1.tar.gz
-
-##########
-#http://www.crosswire.org/pipermail/sword-devel/2014-January/040797.html
-
-(ankiswordstuff) melmoth@x220:~/tmp$ diff -u ./sword-1.8.1/bindings/swig/python/CMakeLists.txt ./sword-1.8.1/bindings/swig/python/CMakeLists.txt-orig
---- ./sword-1.8.1/bindings/swig/python/CMakeLists.txt	2019-06-09 19:40:53.250218419 +0200
-+++ ./sword-1.8.1/bindings/swig/python/CMakeLists.txt-orig	2019-06-09 19:40:28.629627011 +0200
-@@ -11,8 +11,8 @@
- #
- #SWIG_LINK_LIBRARIES(Sword ${PYTHON_LIBRARIES} ${SWORD_LINK_NAME})
- 
--FIND_PACKAGE(PythonInterp 3 REQUIRED)
--FIND_PACKAGE(PythonLibs 3)
-+FIND_PACKAGE(PythonInterp REQUIRED)
-+FIND_PACKAGE(PythonLibs)
-#########
-
+##################
 #as root
 mkdir /usr/local/sword
 chown melmoth /usr/local/sword
+
+#yum install cmake cmake-data openssl-devel curl-devel zlib-devel libidn-devel libicu-devel icu clucene-core-devel cppunit-devel swig  python3-devel gcc  gcc-c++
+yum install cmake3 cmake3-data openssl-devel curl-devel zlib-devel libidn-devel libicu-devel icu clucene-core-devel cppunit-devel swig  python36-devel gcc  gcc-c++ 
+
+#as the regular user:
+# Lets get the svn tree so we can build the python3 module.
+# https://src.fedoraproject.org/rpms/sword/blob/master/f/sword.spec
+cd
+cd tmp
+svn co http://crosswire.org/svn/sword/trunk/
+mv trunk sword-trunk
+cd sword-trunk
+
+mkdir build
+pushd build
+
+cmake3 -DLIBSWORD_LIBRARY_TYPE=Shared \
+       -DSWORD_PYTHON_3:BOOL=TRUE \
+       -DSWORD_BUILD_UTILITIES="Yes" \
+       -DLIBSWORD_SOVERSION=1.8 \
+       -DCMAKE_INSTALL_PREFIX="/usr/local/sword" \
+       -DSWORD_BUILD_TESTS=Yes \
+       -DSWORD_BUILD_EXAMPLES=Yes \
+       -DSWORD_PYTHON_INSTALL_DIR="/usr/local/sword/python3" \
+       ..
+
+
+
+####################"
+
 
 cd sword-1.8.1
 ./autogen.sh
@@ -66,8 +77,8 @@ sudo apt-get install libtool
 cd ~/tmp/sword-1.8.1/bindings/swig/package
 ./autogen.sh
 
-./configure PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/"
-
+./configure PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/" --with-python=/home/melmoth/dev/ankiswordstuff/bin/python3
+# same pb with ./configure PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/" --with-python=/usr/bin/python3
 
 
 make pythonswig
