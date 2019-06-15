@@ -39,10 +39,19 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
     
     return mod.renderText()
 
+"""
+bookStr="Mark"
+moduleStr="MorphGNT"
+strongModuleStr="StrongsGreek"
+chapterInt=1
+"""
+
 bookStr="Psalm"
 moduleStr="OSHB"
 strongModuleStr="StrongsHebrew"
 chapterInt=5
+
+
 print("Vocabulary for {} {}\n\n".format(bookStr,chapterInt))
 nameDic={}
 nameTotalCnt={}
@@ -54,11 +63,13 @@ for verseNbr in range(1,1+getVerseMax(moduleStr,bookStr,chapterInt)):
     keySnt="%s %s:%s"%(bookStr,chapterInt,verseNbr)
     print(keySnt)
     rawVerse=get_verse(bookStr,chapterInt,verseNbr,moduleStr,Sword.FMT_HTML).getRawData()
-    print(get_verse(bookStr,chapterInt,verseNbr,moduleStr,Sword.FMT_PLAIN).getRawData()) 
+    print(get_verse(bookStr,chapterInt,verseNbr,moduleStr,Sword.FMT_PLAIN).getRawData())
     soup=BeautifulSoup(rawVerse,features="html.parser")
     for w in soup.find_all(savlm=re.compile('strong')):
-       strKeyGroup=re.match("strong:(.*)",w.get('savlm'))
-       strKey=strKeyGroup.group(1)
+       pattern=re.compile("strong:(.*)",re.UNICODE)
+       #strKeyGroup=re.match("strong:(.*)",w.get('savlm'))
+       strKey=pattern.search(w.get('savlm')).group(1)
+       
        fullWord=w.get_text()
        if strKey not in nameDic.keys():
         nameTotalCnt[strKey]=1
