@@ -4,53 +4,6 @@ import Sword
 import sys
 import re
 from bs4 import BeautifulSoup
-"""
-There currently is a bug with the way nbr of verses per chapter are found.
-It give the number of verse for KJV, but some module have other versification:
-
-13 verses on OSHB
-diatheke -b OSHB  -f plain -k Psalm 5
-12 verses in KJV
-diatheke -b KJV  -f plain -k Psalm 5
-"""
-
-"""
-library = Sword.SWMgr(markup)
-target=library.getModule("StrongsHebrew")
-if not target:
-    print "No module found"
-    sys.exit()
-
-vk=Sword.SWKey("05975")
-target.setKey(vk)
-print target.renderText()
-
-
-    SWModule *bible = manager.getModule(curModule.toStdString().c_str());
-    if (!bible) {
-        qDebug() <<"Sword module "<< curModule << " not installed. This should n
-ot have happened...";
-    }
-    VerseKey *vk = (VerseKey *)bible->createKey();
-    vk->setBookName(curBook.toStdString().c_str());
-    vk->setChapter(curChapter);
-    return vk->getVerseMax();
-
-
-moduleName="OSHB"
-bookName="Psalms"
-chapterNbr=5
-mgr = Sword.SWMgr()
-mod=mgr.getModule(moduleName)
-versification=mod.getConfigEntry("Versification")
-print(versification)
-vk=Sword.VerseKey()
-vk.setVersificationSystem(versification)
-vk.setBookName(bookName)
-vk.setChapter(chapterNbr)
-print(vk.getVerseMax())
-
-"""
 
 
 def getVerseMax(moduleName,bookName,chapterNbr):
@@ -86,7 +39,7 @@ nameDic={}
 nameTotalCnt={}
 
 print(getVerseMax(moduleStr,bookStr,chapterInt))
-sys.exit()
+
 
 for verseNbr in range(1,1+getVerseMax(moduleStr,bookStr,chapterInt)):
     keySnt="%s %s:%s"%(bookStr,chapterInt,verseNbr)
@@ -110,11 +63,13 @@ for verseNbr in range(1,1+getVerseMax(moduleStr,bookStr,chapterInt)):
 
 for strK in sorted(nameTotalCnt, key=nameTotalCnt.__getitem__, reverse=True):
     print 
-    print("{} occurence in total").format(nameTotalCnt[strK])
-    allVariants="Variants: "
+    
+    print("{} occurence in total".format(nameTotalCnt[strK]))
+
+    allVariants=b"Variants: "
     for c in nameDic[strK]:
-        allVariants+=c.encode('utf-8').strip()+" "
-    print(allVariants)
+        allVariants+=c.encode('utf-8').strip()+b" "
+    print(allVariants.decode('utf-8'))
     markup=Sword.MarkupFilterMgr(Sword.FMT_HTML)
     markup.thisown=False
     library = Sword.SWMgr(markup)
