@@ -1,10 +1,7 @@
-1) Does not work on debian...
+1) Does (probably) not work on debian... Tested on RHEL7.
 2) There is a problem with versification.
 The function that get the number of verse per chapter behave as if it was a KJV module.
 Versification in OSHB differ. Compare by example psalm 5. 
-
-
-
 
 #Genanki python stuff
 
@@ -37,7 +34,7 @@ mv trunk sword-trunk
 cd sword-trunk
 
 mkdir build
-pushd build
+cd build
 
 cmake3 -DLIBSWORD_LIBRARY_TYPE=Shared \
        -DSWORD_PYTHON_3:BOOL=TRUE \
@@ -49,30 +46,40 @@ cmake3 -DLIBSWORD_LIBRARY_TYPE=Shared \
        -DSWORD_PYTHON_INSTALL_DIR="/usr/local/sword/python3" \
        ..
 
-
-
-####################"
-
-
-cd sword-1.8.1
-./autogen.sh
-./configure --prefix=/usr/local/sword --with-clucene --with-curl_sftp --enable-examples
 make
 make install
-make install_config
+####################"
+
 
 cat >> ~/dev/ankiswordstuff/env-sword-anki.sh <<EOF
 export PATH=$PATH:/usr/local/sword/bin/
 export LD_LIBRARY_PATH=/usr/local/sword/lib
 export PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig
 export CPPFLAGS="-I/usr/local/sword/include/sword"
+export PYTHONPATH=$PYTHONPATH:/usr/local/sword/python3/lib64/python3.4/site-packages
 EOF
 
 . ~/dev/ankiswordstuff/env-sword-anki.sh
 
+##########################
+Now let s use https://github.com/kerrickstaley/genanki
+
+. ~/dev/ankiswordstuff/bin/activate
+. ~/dev/ankiswordstuff/env-sword-anki.sh
+
+pip install bs4
+###################
+# Check you can import the needed modules:
+
+/home/melmoth/dev/ankiswordstuff/bin/python 
+
+imort Sword
+import sys
+from bs4 import BeautifulSoup
+import genanki
+
+
 #####################
-Now, let s build the python module.
-sudo apt-get install libtool
 
 cd ~/tmp/sword-1.8.1/bindings/swig/package
 ./autogen.sh
@@ -118,12 +125,5 @@ setup (name = "sword",
 python setup.py install
 
 ##########################
-Now let s use https://github.com/kerrickstaley/genanki
-
-. ~/dev/ankiswordstuff/bin/activate
-. ~/dev/ankiswordstuff/env-sword-anki.sh
-
-pip install bs4
-
 #Just to remember the url where i posted stuff: http://cocreator.byethost22.com/ankisword/
 
