@@ -16,18 +16,27 @@ def getVerseMax(moduleName,bookName,chapterNbr):
     vk.setChapter(chapterNbr)
     return vk.getVerseMax()
 
-def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
-    vk=Sword.VerseKey(key)
+def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN):
     markup=Sword.MarkupFilterMgr(outputType)
     markup.thisown=False
     mgr = Sword.SWMgr(markup)
+
     mod=mgr.getModule(moduleName)
+    versification=mod.getConfigEntry("Versification")
+    vk=Sword.VerseKey()
+    vk.setVersificationSystem(versification)
+    #vk.setTestament() ??
+    vk.setBookName(bookStr)
+    vk.setChapter(chapterInt)
+    vk.setVerse(verseNbr)
+    
     mod.setKey(vk)
     mgr.setGlobalOption("Hebrew Vowel Points", "On")
 
     if not mod:
         print("No module")
         sys.exit()
+    
     return mod.renderText()
 
 bookStr="Psalm"
@@ -44,8 +53,8 @@ print(getVerseMax(moduleStr,bookStr,chapterInt))
 for verseNbr in range(1,1+getVerseMax(moduleStr,bookStr,chapterInt)):
     keySnt="%s %s:%s"%(bookStr,chapterInt,verseNbr)
     print(keySnt)
-    rawVerse=display_verse(keySnt,moduleStr,Sword.FMT_HTML).getRawData()
-    print(display_verse(keySnt,moduleStr,Sword.FMT_PLAIN).getRawData()) 
+    rawVerse=get_verse(bookStr,chapterInt,verseNbr,moduleStr,Sword.FMT_HTML).getRawData()
+    print(get_verse(bookStr,chapterInt,verseNbr,moduleStr,Sword.FMT_PLAIN).getRawData()) 
     soup=BeautifulSoup(rawVerse,features="html.parser")
     for w in soup.find_all(savlm=re.compile('strong')):
        strKeyGroup=re.match("strong:(.*)",w.get('savlm'))
