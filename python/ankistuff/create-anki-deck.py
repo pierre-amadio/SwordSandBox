@@ -97,7 +97,6 @@ def getNbrChapter(moduleName,bookAbbr):
     vk.setVersificationSystem(versification)
     targetBook=0   
     for curBook in getAllBooks(versification):
-        print(curBook)
         if curBook["abbr"]==bookAbbr:
             targetBook=curBook
     print(targetBook)
