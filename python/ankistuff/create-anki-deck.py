@@ -29,8 +29,8 @@ myMainDic['OSHB']['Gen']={
 """
 my_css="""
 .card{
-font-size: 12px; 
-color:red; 
+font-size: 12px;
+color:red;
 text-align: center}
 
 .text {
@@ -42,8 +42,8 @@ text-align: left;
 
 .question{
 font-family: 'QUOTEFONT';
-font-size: 60px; 
-color:black; 
+font-size: 60px;
+color:black;
 text-align: center}
 """
 
@@ -95,13 +95,11 @@ def getNbrChapter(moduleName,bookAbbr):
     versification=mod.getConfigEntry("Versification")
     vk=Sword.VerseKey()
     vk.setVersificationSystem(versification)
-    targetBook=0   
+    targetBook=0
     for curBook in getAllBooks(versification):
         if curBook["abbr"]==bookAbbr:
             targetBook=curBook
-    print(targetBook)
     nbrChapter=vk.chapterCount(targetBook['testament'],targetBook['bookCount'])
-    print('nbr chapt=',nbrChapter)
     return nbrChapter
 
 def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN):
@@ -117,21 +115,51 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
     vk.setBookName(bookStr)
     vk.setChapter(chapterInt)
     vk.setVerse(verseNbr)
-    
     mod.setKey(vk)
     mgr.setGlobalOption("Hebrew Vowel Points", "On")
 
     if not mod:
         print("No module")
         sys.exit()
-    
     return mod.renderText()
 
 def fillDicForBook(moduleStr,bookAbbr,infos):
     out=infos
-     
-    print(getNbrChapter(moduleStr,bookAbbr))
-    return out 
+    nbrChapter=getNbrChapter(moduleStr,bookAbbr)
+    for cc in range (nbrChapter):
+        curChapter=cc+1
+        print("{} Chapter {}".format(bookAbbr,curChapter))
+        maxVerseNbr= getVerseMax(moduleStr,bookAbbr,curChapter)
+        print("nbr verse=",maxVerseNbr)
+        for verseNbr in range(1,1+maxVerseNbr):
+            keySnt="{} {}:{}".format(bookAbbr,curChapter,verseNbr)
+            keyTag="{}-{}:{}".format(bookAbbr,format(curChapter,"03d"),format(verseNbr,"03d"))
+            raw_verse=get_verse(bookAbbr,curChapter,verseNbr,moduleStr,outputType=Sword.FMT_HTML).getRawData()
+            #print(raw_verse)
+            soup=BeautifulSoup(raw_verse,features="html.parser")
+            for w in soup.find_all(savlm=re.compile('strong')):
+                pattern=re.compile("strong:(.*)",re.UNICODE)
+                strKey=pattern.search(w.get('savlm')).group(1)
+                fullWord=w.get_text()
+                if strKey not in out['nameTotalCnt'].keys():
+                    #First time we hit this strong key. 
+                    out["nameTotalCnt"][strKey]=1
+                    out["nameDic"][strKey]=[]
+                    out["chapterDic"][strKey]=[]
+                    out["verseKeyDic"][strKey]=[]
+                else:
+                    out["nameTotalCnt"][strKey]+=1
+
+                if fullWord not in out["nameDic"][strKey]:
+                    out["nameDic"][strKey].append(fullWord)
+
+                if curChapter not in out["chapterDic"][strKey]:
+                    out["chapterDic"][strKey].append(curChapter)
+
+                if keyTag not in out["verseKeyDic"][strKey]:
+                    out["verseKeyDic"][strKey].append(keyTag)
+
+    return out
 
 def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
     print("Generating a deck for {} ".format(bookAbbr))
@@ -142,9 +170,8 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
     tmpDic['nameTotalCnt']={}
     tmpDic['chapterDic']={}
     tmpDic['verseKeyDic']={}
-
-    
-    tmpDic=fillDicForBook(moduleStr,bookAbbr,tmpDic) 
+    tmpDic=fillDicForBook(moduleStr,bookAbbr,tmpDic)
+    print(tmpDic)
     dataDic[moduleStr][bookAbbr]=tmpDic
     return  dataDic
 
@@ -168,5 +195,5 @@ for b in  getAllBooks():
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
 deck=prepareDeckfor("Ps","OSHB","StrongsHebrew","Ezra SIL",myMainDic)
-print(deck)
+#print(deck)
 print(deck['OSHB']['Ps'])
