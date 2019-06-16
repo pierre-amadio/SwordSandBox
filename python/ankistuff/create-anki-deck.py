@@ -302,7 +302,7 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
         #Let s create the actual note.
         answer=sampleHtml
         answer+="<hr>"
-        answer+="strongEntry"
+        answer+=strongEntry
         my_note = genanki.Note(
             model=my_model,
             fields=[allVariants,answer,strK,str(nameTotalCntDic[strK])],tags=curTag
