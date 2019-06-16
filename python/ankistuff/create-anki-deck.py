@@ -49,13 +49,14 @@ text-align: center}
 
 
 
-def getAllBooks():
+def getAllBooks(versification="KJV"):
     """
      Return an array:
      [{'testament': 1, 'bookCount': 1, 'name': 'Genesis', 'abbr': 'Gen'},
      {'testament': 1, 'bookCount': 2, 'name': 'Exodus', 'abbr': 'Exod'},
     """
     vk=Sword.VerseKey()
+    vk.setVersificationSystem(versification)
     out=[]
     for i in range(1,3):
       vk.setTestament(i)
@@ -88,6 +89,21 @@ def getVerseMax(moduleName,bookName,chapterNbr):
     vk.setChapter(chapterNbr)
     return vk.getVerseMax()
 
+def getNbrChapter(moduleName,bookAbbr):
+    mgr = Sword.SWMgr()
+    mod=mgr.getModule(moduleName)
+    versification=mod.getConfigEntry("Versification")
+    vk=Sword.VerseKey()
+    vk.setVersificationSystem(versification)
+    targetBook=0   
+    for curBook in getAllBooks(versification):
+        print(curBook)
+        if curBook["abbr"]==bookAbbr:
+            targetBook=curBook
+    print(targetBook)
+    nbrChapter=vk.chapterCount(targetBook['testament'],targetBook['bookCount'])
+    print('nbr chapt=',nbrChapter)
+    return nbrChapter
 
 def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN):
     markup=Sword.MarkupFilterMgr(outputType)
@@ -112,24 +128,25 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
     
     return mod.renderText()
 
-def fillDicForBook(moduleStr,bookAbr,infos):
+def fillDicForBook(moduleStr,bookAbbr,infos):
     out=infos
-    
+     
+    print(getNbrChapter(moduleStr,bookAbbr))
     return out 
 
-def prepareDeckfor(bookAbr,moduleStr,strongMod,langFont,dataDic):
-    print("Generating a deck for {} ".format(bookAbr))
+def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
+    print("Generating a deck for {} ".format(bookAbbr))
     tmpDic={}
     tmpDic['moduleName']=moduleStr
-    tmpDic['bookName']=bookAbr
+    tmpDic['bookName']=bookAbbr
     tmpDic['nameDic']={}
     tmpDic['nameTotalCnt']={}
     tmpDic['chapterDic']={}
     tmpDic['verseKeyDic']={}
 
     
-    tmpDic=fillDicForBook(moduleStr,bookAbr,tmpDic) 
-    dataDic[moduleStr][bookAbr]=tmpDic
+    tmpDic=fillDicForBook(moduleStr,bookAbbr,tmpDic) 
+    dataDic[moduleStr][bookAbbr]=tmpDic
     return  dataDic
 
 myMainDic={}
