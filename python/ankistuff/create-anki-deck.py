@@ -293,11 +293,10 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
             sys.exit()
         #The tags.
         curTag=[]
-        for c  in chapterDic[strK]:
+        for c in chapterDic[strK]:
             formatChapter=format(c,"03d")
-            print(formatChapter)
             curTag.append("{}-chapter-{}".format(bookAbbr,formatChapter))
-        for s in verseKeyDic:
+        for s in verseKeyDic[strK]:
             curTag.append(s)
 
         #Let s create the actual note.
