@@ -163,7 +163,7 @@ def fillDicForBook(moduleStr,bookAbbr,infos):
     return out
 
 
-def getNewAnkiModel(modelID):
+def getNewAnkiModel(modelID,zefont):
     m = genanki.Model( modelID, 
         'Simple Model',
         fields=[
@@ -179,7 +179,7 @@ def getNewAnkiModel(modelID):
           'afmt': "{{FrontSide}} <hr id='answer'><div class=text>{{Answer}}</id>",
         },
       ],
-        css=my_css.replace("QUOTEFONT",bibleFont)
+        css=my_css.replace("QUOTEFONT",zefont)
 
       )
     return m
@@ -259,7 +259,7 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
     deckTitle="Vocabulary for {}".format(getInfoBasedOnAbbr(bookAbbr)["name"])
     modelID=random.randrange(1 << 30, 1 << 31)
     deckID=random.randrange(1 << 30, 1 << 31)
-    my_model=getNewAnkiModel(modelID)
+    my_model=getNewAnkiModel(modelID,langFont)
     my_deck=genanki.Deck(deckID,deckTitle)
 
     for strK in sorted(nameTotalCntDic, key=nameTotalCntDic.__getitem__, reverse=True):
@@ -267,6 +267,11 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
         print("{} occurence in total".format(nameTotalCntDic[strK]))
         #some sample sentences.
         sampleSentences=getSampleSentences(moduleStr,bookAbbr,strK)
+        sampleHtml=""
+        for snt in sampleSentences:
+            sampleHtml+="\n<br>"
+            sampleHtml+=snt
+
         #all the variants of the words i this book.
         allVariants=""
         for c in nameDic[strK]:
@@ -296,9 +301,12 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
             curTag.append(s)
 
         #Let s create the actual note.
+        answer=sampleHtml
+        answer+="<hr>"
+        answer+="strongEntry"
         my_note = genanki.Note(
             model=my_model,
-            fields=[allVariants,strongEntry,strK,str(nameTotalCntDic[strK])],tags=curTag
+            fields=[allVariants,answer,strK,str(nameTotalCntDic[strK])],tags=curTag
             )
         my_deck.add_note(my_note)
     
@@ -321,8 +329,8 @@ for b in  getAllBooks():
         strongModuleStr="StrongsGreek"
         bibleFont="Linux Libertine O"
 
-    #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont)
+    #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,myMainDic)
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
 prepareDeckfor("Ps","OSHB","StrongsHebrew","Ezra SIL",myMainDic)
-#prepareDeckfor("Mark","MorphGNT","StrongsGreek","Ezra SIL",myMainDic)
+#prepareDeckfor("Mark","MorphGNT","StrongsGreek","Linux Libertine O",myMainDic)
