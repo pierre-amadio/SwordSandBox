@@ -211,7 +211,7 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
             chap=int(ma.group(2))
             vers=int(ma.group(3))
             raw=get_verse(abbr,chap,vers,moduleStr,outputType=Sword.FMT_HTML)
-            rawHtml.append(raw)
+            rawHtml.append(raw.c_str())
             if cnt>maxSample:
                 break
             cnt+=1
@@ -219,9 +219,16 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
             print("Not maching {}".format(v))
             sys.exit()
 
-    for r  in rawHtml:
-        
+    for r in rawHtml:
+        tmpHTML=''
         print(r)
+        soup=BeautifulSoup(r,features="html.parser")
+        for w in soup.find_all():
+            print(w.decode())
+            pattern=re.compile(".*{}.*".format(strK),re.UNICODE)
+            if pattern.match(w.decode()):
+                print('MATCH') 
+            
     
     return out
 
