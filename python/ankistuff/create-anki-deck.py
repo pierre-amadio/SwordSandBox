@@ -50,7 +50,11 @@ text-align: center}
 font-family: 'QUOTEFONT';
 font-size: 22px;
 color:black;
-text-align: right
+text-align: ALIGN
+}
+
+.targetWord{
+color:blue;
 }
 
 """
@@ -171,7 +175,10 @@ def fillDicForBook(moduleStr,bookAbbr,infos):
     return out
 
 
-def getNewAnkiModel(modelID,zefont):
+def getNewAnkiModel(modelID,zefont,fontAlign):
+    css_snt=my_css.replace("QUOTEFONT",zefont)
+    css_snt=css_snt.replace("ALIGN",fontAlign)
+
     m = genanki.Model( modelID, 
         'Simple Model',
         fields=[
@@ -187,8 +194,7 @@ def getNewAnkiModel(modelID,zefont):
           'afmt': "{{FrontSide}} <hr id='answer'><div class=text>{{Answer}}</id>",
         },
       ],
-        css=my_css.replace("QUOTEFONT",zefont)
-
+        css=css_snt
       )
     return m
 
@@ -237,9 +243,9 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
         for w in soup.find_all():
             pattern=re.compile(".*{}.*".format(strK),re.UNICODE)
             if pattern.match(w.decode()):
-                tmpHTML+="<MYTAG>"
+                tmpHTML+="<span class=targetWord>"
                 tmpHTML+=w.decode()
-                tmpHTML+="</MYTAG>"
+                tmpHTML+="</span>"
             else:
                 tmpHTML+=w.decode()
             tmpHTML+=" "
@@ -248,7 +254,7 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
     
     return out
 
-def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
+def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
     print("Generating a deck for {} ".format(bookAbbr))
     tmpDic={}
     tmpDic['moduleName']=moduleStr
@@ -269,7 +275,7 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
     deckTitle="Vocabulary for {}".format(getInfoBasedOnAbbr(bookAbbr)["name"])
     modelID=random.randrange(1 << 30, 1 << 31)
     deckID=random.randrange(1 << 30, 1 << 31)
-    my_model=getNewAnkiModel(modelID,langFont)
+    my_model=getNewAnkiModel(modelID,langFont,langAlign)
     my_deck=genanki.Deck(deckID,deckTitle)
 
     for strK in sorted(nameTotalCntDic, key=nameTotalCntDic.__getitem__, reverse=True):
@@ -279,8 +285,7 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
         sampleSentences=getSampleSentences(moduleStr,bookAbbr,strK)
         sampleHtml=""
         for snt in sampleSentences:
-            #sampleHtml+="\n<br>"
-            #print(snt)
+            sampleHtml+="<br>"
             sampleHtml+=snt
 
         #all the variants of the words i this book.
@@ -296,7 +301,12 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
             sys.exit()
         vk=Sword.SWKey(strK[1:])
         target.setKey(vk)
-        strongEntry=target.renderText().getRawData()
+        print("VK=",vk)
+        try:
+            strongEntry=target.renderText().getRawData()
+        except:
+            help(vk)
+            sys.exit() 
         strongEntry=strongEntry.replace("\n","<br />\n")
         if not isinstance(strongEntry,str):
             print("ke passa")
@@ -312,7 +322,7 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
 
         #Let s create the actual note.
         question=allVariants
-        question+="<div id='sample' class=bibleQuote><br>"
+        question+="<div id='sample' class=bibleQuote>"
         question+=sampleHtml
         question+="</div>"
         answer=strongEntry
@@ -336,13 +346,15 @@ for b in  getAllBooks():
         moduleStr="OSHB"
         strongModuleStr="StrongsHebrew"
         bibleFont="Ezra SIL"
+        fontAlign="right"
     else:
         moduleStr="MorphGNT"
         strongModuleStr="StrongsGreek"
         bibleFont="Linux Libertine O"
+        fontAlign="left"
 
     #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,myMainDic)
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
-prepareDeckfor("Ps","OSHB","StrongsHebrew","Ezra SIL",myMainDic)
-#prepareDeckfor("Mark","MorphGNT","StrongsGreek","Linux Libertine O",myMainDic)
+prepareDeckfor("Ps","OSHB","StrongsHebrew","Ezra SIL","right",myMainDic)
+#prepareDeckfor("Mark","MorphGNT","StrongsGreek","Linux Libertine O","left",myMainDic)
