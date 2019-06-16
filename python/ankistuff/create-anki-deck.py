@@ -117,7 +117,7 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
     vk.setVerse(verseNbr)
     mod.setKey(vk)
     mgr.setGlobalOption("Hebrew Vowel Points", "On")
-
+    #mgr.setGlobalOption("Hebrew Cantillation", "Off")
     if not mod:
         print("No module")
         sys.exit()
@@ -125,12 +125,13 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
 
 def fillDicForBook(moduleStr,bookAbbr,infos):
     out=infos
-    nbrChapter=getNbrChapter(moduleStr,bookAbbr)
+    #nbrChapter=getNbrChapter(moduleStr,bookAbbr)
+    nbrChapter=2
     for cc in range (nbrChapter):
         curChapter=cc+1
-        print("{} Chapter {}".format(bookAbbr,curChapter))
+        print("Fetching words info for {} Chapter {}".format(bookAbbr,curChapter))
         maxVerseNbr= getVerseMax(moduleStr,bookAbbr,curChapter)
-        print("nbr verse=",maxVerseNbr)
+        #print("nbr verse=",maxVerseNbr)
         for verseNbr in range(1,1+maxVerseNbr):
             keySnt="{} {}:{}".format(bookAbbr,curChapter,verseNbr)
             keyTag="{}-{}:{}".format(bookAbbr,format(curChapter,"03d"),format(verseNbr,"03d"))
@@ -161,6 +162,33 @@ def fillDicForBook(moduleStr,bookAbbr,infos):
 
     return out
 
+
+def getNewAnkiModel(modelID):
+    m = genanki.Model( modelID, 
+        'Simple Model',
+        fields=[
+            {'name': 'Question'},
+            {'name': 'Answer'},
+            {'name': 'StrongID'},
+            {'name': 'NbrOccurence'}
+        ],
+        templates=[
+        {
+          'name': 'Card 1',
+          'qfmt': "<div id='questionDiv' class=question>{{Question}}</div>",
+          'afmt': "{{FrontSide}} <hr id='answer'><div class=text>{{Answer}}</id>",
+        },
+      ],
+        css=my_css.replace("QUOTEFONT",bibleFont)
+
+      )
+    return m
+
+def getSampleSentences(moduleStr,bookAbbr,strK):
+    print("Need to find sample for {}".format(strK))
+    out=[]
+    return out
+
 def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
     print("Generating a deck for {} ".format(bookAbbr))
     tmpDic={}
@@ -171,9 +199,31 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
     tmpDic['chapterDic']={}
     tmpDic['verseKeyDic']={}
     tmpDic=fillDicForBook(moduleStr,bookAbbr,tmpDic)
-    print(tmpDic)
+    #print(tmpDic)
     dataDic[moduleStr][bookAbbr]=tmpDic
-    return  dataDic
+
+    print("Info fetched, let s build the deck now")
+    nameDic=dataDic[moduleStr][bookAbbr]["nameDic"]
+    nameTotalCntDic=dataDic[moduleStr][bookAbbr]["nameTotalCnt"]
+    chapterDic=dataDic[moduleStr][bookAbbr]["chapterDic"]
+    verseKeyDic=dataDic[moduleStr][bookAbbr]["verseKeyDic"]
+    deckTitle="Vocabulary for {}".format(getInfoBasedOnAbbr(bookAbbr)["name"])
+    modelID=random.randrange(1 << 30, 1 << 31)
+    deckID=random.randrange(1 << 30, 1 << 31)
+    my_model=getNewAnkiModel(modelID)
+    my_deck=genanki.Deck(deckID,deckTitle)
+    for strK in sorted(nameTotalCntDic, key=nameTotalCntDic.__getitem__, reverse=True):
+        print(strK)
+
+        sampleSentences=getSampleSentences(moduleStr,bookAbbr,strK)
+
+        print("{} occurence in total".format(nameTotalCntDic[strK]))
+        allVariants=""
+        for c in nameDic[strK]:
+            allVariants+=c
+            allVariants+=" "
+        print(allVariants)
+    return
 
 myMainDic={}
 
@@ -194,6 +244,4 @@ for b in  getAllBooks():
     #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont)
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
-deck=prepareDeckfor("Ps","OSHB","StrongsHebrew","Ezra SIL",myMainDic)
-#print(deck)
-print(deck['OSHB']['Ps'])
+prepareDeckfor("Ps","OSHB","StrongsHebrew","Ezra SIL",myMainDic)
