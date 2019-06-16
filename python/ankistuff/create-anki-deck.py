@@ -231,7 +231,6 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
                 tmpHTML+="<MYTAG>"
                 tmpHTML+=w.decode()
                 tmpHTML+="</MYTAG>"
-                print(tmpHTML)
             else:
                 tmpHTML+=w.decode()
 
@@ -262,15 +261,41 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
     deckID=random.randrange(1 << 30, 1 << 31)
     my_model=getNewAnkiModel(modelID)
     my_deck=genanki.Deck(deckID,deckTitle)
+
     for strK in sorted(nameTotalCntDic, key=nameTotalCntDic.__getitem__, reverse=True):
         print(strK)
         print("{} occurence in total".format(nameTotalCntDic[strK]))
+        #some sample sentences.
         sampleSentences=getSampleSentences(moduleStr,bookAbbr,strK)
+        #all the variants of the words i this book.
         allVariants=""
         for c in nameDic[strK]:
             allVariants+=c
             allVariants+=" "
-        #print(allVariants)
+        #The actual Strongs entry
+        library = Sword.SWMgr()
+        target=library.getModule(strongMod)
+        if not target:
+            print("No module found")
+            sys.exit()
+        vk=Sword.SWKey(strK[1:])
+        target.setKey(vk)
+        strongEntry=target.renderText().getRawData()
+        strongEntry=strongEntry.replace("\n","<br />\n")
+        if not isinstance(strongEntry,str):
+            print("ke passa")
+            help(strongEntry)
+            sys.exit()
+        #The tags.
+        curTag=[]
+        for c  in chapterDic[strK]:
+            formatChapter=format(c,"03d")
+            print(formatChapter)
+            curTag.append("{}-chapter-{}".format(bookAbbr,formatChapter))
+        for s in verseKeyDic:
+            curTag.append(verseKeyDic)
+        print(curTag)
+
     return
 
 myMainDic={}
