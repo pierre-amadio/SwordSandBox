@@ -293,9 +293,16 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
             print(formatChapter)
             curTag.append("{}-chapter-{}".format(bookAbbr,formatChapter))
         for s in verseKeyDic:
-            curTag.append(verseKeyDic)
-        print(curTag)
+            curTag.append(s)
 
+        #Let s create the actual note.
+        my_note = genanki.Note(
+            model=my_model,
+            fields=[allVariants,strongEntry,strK,str(nameTotalCntDic[strK])],tags=curTag
+            )
+        my_deck.add_note(my_note)
+    
+    genanki.Package(my_deck).write_to_file('{}.apkg'.format(bookAbbr))
     return
 
 myMainDic={}
