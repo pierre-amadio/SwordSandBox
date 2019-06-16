@@ -302,11 +302,11 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
         vk=Sword.SWKey(strK[1:])
         target.setKey(vk)
         print("VK=",vk)
-        try:
-            strongEntry=target.renderText().getRawData()
-        except:
-            help(vk)
-            sys.exit() 
+        #try:
+        strongEntry=target.renderText().getRawData()
+        #except:
+        #    help(target.renderText())
+        #    sys.exit() 
         strongEntry=strongEntry.replace("\n","<br />\n")
         if not isinstance(strongEntry,str):
             print("ke passa")
@@ -356,5 +356,5 @@ for b in  getAllBooks():
     #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,myMainDic)
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
-prepareDeckfor("Ps","OSHB","StrongsHebrew","Ezra SIL","right",myMainDic)
-#prepareDeckfor("Mark","MorphGNT","StrongsGreek","Linux Libertine O","left",myMainDic)
+#prepareDeckfor("Ps","OSHB","StrongsHebrew","Ezra SIL","right",myMainDic)
+prepareDeckfor("Mark","MorphGNT","StrongsGreek","Linux Libertine O","left",myMainDic)
