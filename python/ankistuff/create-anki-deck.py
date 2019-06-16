@@ -221,14 +221,17 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
 
     for r in rawHtml:
         tmpHTML=''
-        print(r)
         soup=BeautifulSoup(r,features="html.parser")
         for w in soup.find_all():
-            print(w.decode())
             pattern=re.compile(".*{}.*".format(strK),re.UNICODE)
             if pattern.match(w.decode()):
-                print('MATCH') 
-            
+                tmpHTML+="<MYTAG>"
+                tmpHTML+=w.decode()
+                tmpHTML+="</MYTAG>"
+            else:
+                tmpHTML+=w.decode()
+
+        out.append(tmpHTML) 
     
     return out
 
