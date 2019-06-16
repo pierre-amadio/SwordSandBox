@@ -13,6 +13,19 @@ This require python3 , sword and genanki
 . ~/dev/ankiswordstuff/bin/activate
 . ~/dev/ankiswordstuff/env-sword-anki.sh
 
+
+Structures of the dictionnary involved:
+
+myMainDic['OSHB']['Gen']={
+ 'moduleName':'OSHB',
+ 'bookName':'Gen',
+ 'nameDic': {'strongKey':["a word","another variation","yet another one"]},
+ 'nameTotalCnt':{"strongKey": integer}
+ 'chapterDic':{'strongKey':[int,int,int]}
+ 'verseKeyDic':{'srongKey':[str,str,str]}
+}
+
+
 """
 my_css="""
 .card{
@@ -99,8 +112,31 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
     
     return mod.renderText()
 
-def prepareDeckfor(bookAbr,moduleStr,strongMod,langFont):
+def fillDicForBook(moduleStr,bookAbr,infos):
+    out=infos
+    
+    return out 
+
+def prepareDeckfor(bookAbr,moduleStr,strongMod,langFont,dataDic):
     print("Generating a deck for {} ".format(bookAbr))
+    tmpDic={}
+    tmpDic['moduleName']=moduleStr
+    tmpDic['bookName']=bookAbr
+    tmpDic['nameDic']={}
+    tmpDic['nameTotalCnt']={}
+    tmpDic['chapterDic']={}
+    tmpDic['verseKeyDic']={}
+
+    
+    tmpDic=fillDicForBook(moduleStr,bookAbr,tmpDic) 
+    dataDic[moduleStr][bookAbr]=tmpDic
+    return  dataDic
+
+myMainDic={}
+
+myMainDic['OSHB']={}
+myMainDic['MorphGNT']={}
+
 
 for b in  getAllBooks():
     if b['testament']==1:
@@ -112,5 +148,9 @@ for b in  getAllBooks():
         strongModuleStr="StrongsGreek"
         bibleFont="Linux Libertine O"
 
-    prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont)
+    #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont)
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
+
+deck=prepareDeckfor("Ps","OSHB","StrongsHebrew","Ezra SIL",myMainDic)
+print(deck)
+print(deck['OSHB']['Ps'])
