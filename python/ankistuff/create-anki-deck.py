@@ -187,6 +187,42 @@ def getNewAnkiModel(modelID):
 def getSampleSentences(moduleStr,bookAbbr,strK):
     print("Need to find sample for {}".format(strK))
     out=[]
+    mgr = Sword.SWMgr()
+    mod=mgr.getModule(moduleStr)
+
+    query="lemma:{}".format(strK)
+    res=mod.doSearch(query,-4)
+
+    bsmpl=[]
+    for n in range(res.getCount()):
+        #res.getElement(n) is a SWKey
+        vSnt=res.getElement(n).getShortText()
+        if re.match(bookAbbr,vSnt):
+            bsmpl.append(res.getElement(n).getShortText())
+
+    maxSample=5
+    cnt=1
+    rawHtml=[]
+    for v in bsmpl:
+        #print(v)
+        ma=re.match('(\w)+ (\d+):(\d+)',v)
+        if ma:
+            abbr=ma.group(1)
+            chap=int(ma.group(2))
+            vers=int(ma.group(3))
+            raw=get_verse(abbr,chap,vers,moduleStr,outputType=Sword.FMT_HTML)
+            rawHtml.append(raw)
+            if cnt>maxSample:
+                break
+            cnt+=1
+        else:
+            print("Not maching {}".format(v))
+            sys.exit()
+
+    for r  in rawHtml:
+        
+        print(r)
+    
     return out
 
 def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
