@@ -9,6 +9,28 @@ import re
 from bs4 import BeautifulSoup
 
 """
+currently stuck with this:
+
+import Sword
+library = Sword.SWMgr()
+target=library.getModule("StrongsGreek")
+vk=Sword.SWKey("1140")
+target.setKey(vk)
+strongEntry=target.renderText().getRawData()
+
+###################
+$ diatheke -b StrongsGreek -k 1140
+:  1140  daimonion  dahee-mon'-ee-on
+ 
+  
+   neuter of a derivative of 1142; a dæmonic being; by extension a
+    deity:--devil, god.
+     see GREEK for 1142
+     (StrongsGreek)
+
+"""
+
+"""
 This require python3 , sword and genanki
 . ~/dev/ankiswordstuff/bin/activate
 . ~/dev/ankiswordstuff/env-sword-anki.sh
@@ -304,9 +326,9 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
         print("VK=",vk)
         #try:
         strongEntry=target.renderText().getRawData()
-        #except:
-        #    help(target.renderText())
-        #    sys.exit() 
+        except:
+            help(target.renderText())
+            sys.exit() 
         strongEntry=strongEntry.replace("\n","<br />\n")
         if not isinstance(strongEntry,str):
             print("ke passa")
