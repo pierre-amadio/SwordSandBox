@@ -197,6 +197,7 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
     for n in range(res.getCount()):
         #res.getElement(n) is a SWKey
         vSnt=res.getElement(n).getShortText()
+        #print(vSnt)
         if re.match(bookAbbr,vSnt):
             bsmpl.append(res.getElement(n).getShortText())
 
@@ -205,12 +206,14 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
     rawHtml=[]
     for v in bsmpl:
         #print(v)
-        ma=re.match('(\w)+ (\d+):(\d+)',v)
+        ma=re.match('^(\S+) (\d+):(\d+)',v)
         if ma:
             abbr=ma.group(1)
             chap=int(ma.group(2))
             vers=int(ma.group(3))
+            #print(abbr,chap,vers)
             raw=get_verse(abbr,chap,vers,moduleStr,outputType=Sword.FMT_HTML)
+            #print("raw=",raw)
             rawHtml.append(raw.c_str())
             if cnt>maxSample:
                 break
@@ -228,6 +231,7 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
                 tmpHTML+="<MYTAG>"
                 tmpHTML+=w.decode()
                 tmpHTML+="</MYTAG>"
+                print(tmpHTML)
             else:
                 tmpHTML+=w.decode()
 
@@ -260,15 +264,13 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
     my_deck=genanki.Deck(deckID,deckTitle)
     for strK in sorted(nameTotalCntDic, key=nameTotalCntDic.__getitem__, reverse=True):
         print(strK)
-
-        sampleSentences=getSampleSentences(moduleStr,bookAbbr,strK)
-
         print("{} occurence in total".format(nameTotalCntDic[strK]))
+        sampleSentences=getSampleSentences(moduleStr,bookAbbr,strK)
         allVariants=""
         for c in nameDic[strK]:
             allVariants+=c
             allVariants+=" "
-        print(allVariants)
+        #print(allVariants)
     return
 
 myMainDic={}
@@ -291,3 +293,4 @@ for b in  getAllBooks():
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
 prepareDeckfor("Ps","OSHB","StrongsHebrew","Ezra SIL",myMainDic)
+#prepareDeckfor("Mark","MorphGNT","StrongsGreek","Ezra SIL",myMainDic)
