@@ -45,6 +45,14 @@ font-family: 'QUOTEFONT';
 font-size: 60px;
 color:black;
 text-align: center}
+
+.bibleQuote{
+font-family: 'QUOTEFONT';
+font-size: 22px;
+color:black;
+text-align: right
+}
+
 """
 
 
@@ -223,7 +231,8 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
             sys.exit()
 
     for r in rawHtml:
-        tmpHTML=''
+        #tmpHTML="<div id='sample' class=bibleQuote>"
+        tmpHTML=""
         soup=BeautifulSoup(r,features="html.parser")
         for w in soup.find_all():
             pattern=re.compile(".*{}.*".format(strK),re.UNICODE)
@@ -233,7 +242,8 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
                 tmpHTML+="</MYTAG>"
             else:
                 tmpHTML+=w.decode()
-
+            tmpHTML+=" "
+        #tmpHTML+="</div>"
         out.append(tmpHTML) 
     
     return out
@@ -269,7 +279,8 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
         sampleSentences=getSampleSentences(moduleStr,bookAbbr,strK)
         sampleHtml=""
         for snt in sampleSentences:
-            sampleHtml+="\n<br>"
+            #sampleHtml+="\n<br>"
+            #print(snt)
             sampleHtml+=snt
 
         #all the variants of the words i this book.
@@ -300,12 +311,14 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,dataDic):
             curTag.append(s)
 
         #Let s create the actual note.
-        answer=sampleHtml
-        answer+="<hr>"
-        answer+=strongEntry
+        question=allVariants
+        question+="<div id='sample' class=bibleQuote><br>"
+        question+=sampleHtml
+        question+="</div>"
+        answer=strongEntry
         my_note = genanki.Note(
             model=my_model,
-            fields=[allVariants,answer,strK,str(nameTotalCntDic[strK])],tags=curTag
+            fields=[question,answer,strK,str(nameTotalCntDic[strK])],tags=curTag
             )
         my_deck.add_note(my_note)
     
