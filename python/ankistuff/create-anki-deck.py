@@ -53,6 +53,7 @@ my_css="""
 .card{
 font-size: 12px;
 color:red;
+background-color: white;
 text-align: center}
 
 .text {
@@ -70,13 +71,13 @@ text-align: center}
 
 .bibleQuote{
 font-family: 'QUOTEFONT';
-font-size: 22px;
+font-size: 30px;
 color:black;
 text-align: ALIGN
 }
 
 .targetWord{
-color:blue;
+color:red;
 }
 
 """
@@ -221,7 +222,7 @@ def getNewAnkiModel(modelID,zefont,fontAlign):
     return m
 
 def getSampleSentences(moduleStr,bookAbbr,strK):
-    print("Need to find sample for {}".format(strK))
+    #print("Need to find sample for {}".format(strK))
     out=[]
     mgr = Sword.SWMgr()
     mod=mgr.getModule(moduleStr)
@@ -301,8 +302,7 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
     my_deck=genanki.Deck(deckID,deckTitle)
 
     for strK in sorted(nameTotalCntDic, key=nameTotalCntDic.__getitem__, reverse=True):
-        print(strK)
-        print("{} occurence in total".format(nameTotalCntDic[strK]))
+        print("{} occurence in total of {}".format(nameTotalCntDic[strK],strK))
         #some sample sentences.
         sampleSentences=getSampleSentences(moduleStr,bookAbbr,strK)
         sampleHtml=""
@@ -353,7 +353,6 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
             fields=[question,answer,strK,str(nameTotalCntDic[strK])],tags=curTag
             )
         my_deck.add_note(my_note)
-    
     genanki.Package(my_deck).write_to_file('{}.apkg'.format(bookAbbr))
     return
 
@@ -379,4 +378,5 @@ for b in  getAllBooks():
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
 #prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
-prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
+#prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
+prepareDeckfor("Gen","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
