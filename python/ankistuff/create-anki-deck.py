@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 """
 TODO: assure a consistent note GID so deck can be upgraded.
 https://github.com/kerrickstaley/genanki
+https://japaneselevelup.com/updating-anki-decks-without-losing-your-progress/
 
 Notes have a guid property that uniquely identifies the note. If you import a new note that has the same GUID as an existing note, the new note will overwrite the old one (as long as their models have the same fields).
 
@@ -284,15 +285,17 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
     tmpDic=fillDicForBook(moduleStr,bookAbbr,tmpDic)
     #print(tmpDic)
     dataDic[moduleStr][bookAbbr]=tmpDic
-
     print("Info fetched, let s build the deck now")
     nameDic=dataDic[moduleStr][bookAbbr]["nameDic"]
     nameTotalCntDic=dataDic[moduleStr][bookAbbr]["nameTotalCnt"]
     chapterDic=dataDic[moduleStr][bookAbbr]["chapterDic"]
     verseKeyDic=dataDic[moduleStr][bookAbbr]["verseKeyDic"]
     deckTitle="Vocabulary for {}".format(getInfoBasedOnAbbr(bookAbbr)["name"])
-    modelID=random.randrange(1 << 30, 1 << 31)
-    deckID=random.randrange(1 << 30, 1 << 31)
+    #modelID=random.randrange(1 << 30, 1 << 31)
+    #Let s keep this modlId once and for all.
+    modelID=1706525240
+    #deckID=random.randrange(1 << 30, 1 << 31)
+    deckID=hash(bookAbbr+moduleStr)
     my_model=getNewAnkiModel(modelID,langFont,langAlign)
     my_deck=genanki.Deck(deckID,deckTitle)
 
