@@ -9,24 +9,19 @@ import re
 from bs4 import BeautifulSoup
 
 """
-currently stuck with this:
+TODO: assure a consistent note GID so deck can be upgraded.
+https://github.com/kerrickstaley/genanki
 
-import Sword
-library = Sword.SWMgr()
-target=library.getModule("StrongsGreek")
-vk=Sword.SWKey("1140")
-target.setKey(vk)
-strongEntry=target.renderText().getRawData()
+Notes have a guid property that uniquely identifies the note. If you import a new note that has the same GUID as an existing note, the new note will overwrite the old one (as long as their models have the same fields).
 
-###################
-$ diatheke -b StrongsGreek -k 1140
-:  1140  daimonion  dahee-mon'-ee-on
- 
-  
-   neuter of a derivative of 1142; a dæmonic being; by extension a
-    deity:--devil, god.
-     see GREEK for 1142
-     (StrongsGreek)
+This is an important feature if you want to be able to tweak the design/content of your notes, regenerate your deck, and import the updated version into Anki. Your notes need to have stable GUIDs in order for the new note to replace the existing one.
+
+By default, the GUID is a hash of all the field values. This may not be desirable if, for example, you add a new field with additional info that doesn't change the identity of the note. You can create a custom GUID implementation to hash only the fields that identify the note:
+
+class MyNote(genanki.Note):
+  @property
+  def guid(self):
+     return genanki.guid_for(self.fields[0], self.fields[1])
 
 """
 
@@ -377,6 +372,6 @@ for b in  getAllBooks():
     #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,myMainDic)
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
-#prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
-#prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
-prepareDeckfor("Gen","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
+prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
+prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
+#prepareDeckfor("Gen","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
