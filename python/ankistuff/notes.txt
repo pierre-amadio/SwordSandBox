@@ -1,8 +1,3 @@
-1) Does (probably) not work on debian... Tested on RHEL7.
-2) There is a problem with versification.
-The function that get the number of verse per chapter behave as if it was a KJV module.
-Versification in OSHB differ. Compare by example psalm 5. 
-
 #Genanki python stuff
 
 #git checkout https://github.com/kerrickstaley/genanki.git
@@ -84,54 +79,6 @@ import genanki
 installmgr -r "Xiphos"
 installmgr -ri Xiphos StrongsRealGreek
 installmgr -ri Xiphos StrongsRealHebrew
-
-
-
-
-#####################
-
-cd ~/tmp/sword-1.8.1/bindings/swig/package
-./autogen.sh
-
-./configure PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/" --with-python=/home/melmoth/dev/ankiswordstuff/bin/python3
-# same pb with ./configure PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/" --with-python=/usr/bin/python3
-
-
-make pythonswig
-PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/" make python_make
-cd python
-################### Put the modified setup.py #############
-#! /usr/bin/python
-
-from distutils.core import setup
-from distutils.extension import Extension
-import subprocess
-
-def pkgconfig(*packages, **kw):
-        flag_map = {'-I': 'include_dirs', '-L': 'library_dirs', '-l': 'libraries'}
-        #for token in subprocess.run("pkg-config --libs --cflags %s" % ' '.join(packages), capture_output=True).split():
-        for token in ["-I/usr/local/sword/include/sword","-L/usr/local/sword/lib","-lsword"]:
-                if token[:2] in flag_map:
-                        kw.setdefault(flag_map.get(token[:2]), []).append(token[2:])
-                else: # throw others to extra_link_args
-                        kw.setdefault('extra_link_args', []).append(token)
-        for k, v in kw.items(): # remove duplicated
-                kw[k] = list(set(v))
-        return kw
-
-setup (name = "sword",
-        version = "1.6.2",
-        maintainer = "Sword Developers",
-        maintainer_email = "sword-devel@crosswire.org",
-        url = "http://www.crosswire.org/sword",
-        py_modules = ["Sword"],
-        include_dirs=['..', '../..'],
-        ext_modules = [Extension("_Sword", ["Sword.cxx"], **pkgconfig('sword')
-        )],
-)
-
-############################################################
-python setup.py install
 
 ##########################
 #Just to remember the url where i posted stuff: http://cocreator.byethost22.com/ankisword/
