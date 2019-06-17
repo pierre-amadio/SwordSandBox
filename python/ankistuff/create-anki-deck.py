@@ -159,8 +159,8 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
 
 def fillDicForBook(moduleStr,bookAbbr,infos):
     out=infos
-    #nbrChapter=getNbrChapter(moduleStr,bookAbbr)
-    nbrChapter=2
+    nbrChapter=getNbrChapter(moduleStr,bookAbbr)
+    #nbrChapter=2
     for cc in range (nbrChapter):
         curChapter=cc+1
         print("Fetching words info for {} Chapter {}".format(bookAbbr,curChapter))
@@ -323,12 +323,12 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
             sys.exit()
         vk=Sword.SWKey(strK[1:])
         target.setKey(vk)
-        print("VK=",vk)
+        #print("VK=",vk)
         #try:
         strongEntry=target.renderText().getRawData()
-        except:
-            help(target.renderText())
-            sys.exit() 
+        #except:
+        #    help(target.renderText())
+        #    sys.exit() 
         strongEntry=strongEntry.replace("\n","<br />\n")
         if not isinstance(strongEntry,str):
             print("ke passa")
@@ -366,17 +366,17 @@ myMainDic['MorphGNT']={}
 for b in  getAllBooks():
     if b['testament']==1:
         moduleStr="OSHB"
-        strongModuleStr="StrongsHebrew"
+        strongModuleStr="StrongsRealHebrew"
         bibleFont="Ezra SIL"
         fontAlign="right"
     else:
         moduleStr="MorphGNT"
-        strongModuleStr="StrongsGreek"
+        strongModuleStr="StrongsRealGreek"
         bibleFont="Linux Libertine O"
         fontAlign="left"
 
     #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,myMainDic)
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
-#prepareDeckfor("Ps","OSHB","StrongsHebrew","Ezra SIL","right",myMainDic)
-prepareDeckfor("Mark","MorphGNT","StrongsGreek","Linux Libertine O","left",myMainDic)
+#prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
+prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)

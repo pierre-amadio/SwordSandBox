@@ -78,6 +78,15 @@ import sys
 from bs4 import BeautifulSoup
 import genanki
 
+#####################
+#regular strongs module have some utf8 issues, let s use Xiphos ones.
+
+installmgr -r "Xiphos"
+installmgr -ri Xiphos StrongsRealGreek
+installmgr -ri Xiphos StrongsRealHebrew
+
+
+
 
 #####################
 
