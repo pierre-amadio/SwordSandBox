@@ -11,7 +11,6 @@ from bs4 import BeautifulSoup
 """
 TODO: assure a consistent note GID so deck can be upgraded.
 https://github.com/kerrickstaley/genanki
-https://japaneselevelup.com/updating-anki-decks-without-losing-your-progress/
 
 Notes have a guid property that uniquely identifies the note. If you import a new note that has the same GUID as an existing note, the new note will overwrite the old one (as long as their models have the same fields).
 
@@ -78,6 +77,10 @@ color:red;
 
 """
 
+class MyNote(genanki.Note):
+  @property
+  def guid(self):
+    return genanki.guid_for(self.fields[0], self.fields[4],self.fields[5])
 
 
 def getAllBooks(versification="KJV"):
@@ -194,17 +197,19 @@ def fillDicForBook(moduleStr,bookAbbr,infos):
     return out
 
 
-def getNewAnkiModel(modelID,zefont,fontAlign):
+def getNewAnkiModel(modelID,zefont,fontAlign,moduleName,bookAbbr):
     css_snt=my_css.replace("QUOTEFONT",zefont)
     css_snt=css_snt.replace("ALIGN",fontAlign)
 
     m = genanki.Model( modelID, 
-        'Simple Model',
+        'Model for {}'.format(moduleName),
         fields=[
             {'name': 'Question'},
             {'name': 'Answer'},
             {'name': 'StrongID'},
-            {'name': 'NbrOccurence'}
+            {'name': 'NbrOccurence'},
+            {"name": 'SwordModule'},
+            {"name": 'BookAbbrev'}
         ],
         templates=[
         {
@@ -293,10 +298,11 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
     deckTitle="Vocabulary for {}".format(getInfoBasedOnAbbr(bookAbbr)["name"])
     #modelID=random.randrange(1 << 30, 1 << 31)
     #Let s keep this modlId once and for all.
-    modelID=1706525240
+    #We use the moduleStr so each book of a given module will use the same model in each deck.
+    modelID=hash(moduleStr)
     #deckID=random.randrange(1 << 30, 1 << 31)
     deckID=hash(bookAbbr+moduleStr)
-    my_model=getNewAnkiModel(modelID,langFont,langAlign)
+    my_model=getNewAnkiModel(modelID,langFont,langAlign,moduleStr,bookAbbr)
     my_deck=genanki.Deck(deckID,deckTitle)
 
     for strK in sorted(nameTotalCntDic, key=nameTotalCntDic.__getitem__, reverse=True):
@@ -345,10 +351,11 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
         question+="<div id='sample' class=bibleQuote>"
         question+=sampleHtml
         question+="</div>"
-        answer=strongEntry
-        my_note = genanki.Note(
+        #answer=strongEntry
+        answer="KIKOOO"
+        my_note = MyNote(
             model=my_model,
-            fields=[question,answer,strK,str(nameTotalCntDic[strK])],tags=curTag
+            fields=[question,answer,strK,str(nameTotalCntDic[strK]),moduleStr,bookAbbr],tags=curTag
             )
         my_deck.add_note(my_note)
     genanki.Package(my_deck).write_to_file('{}.apkg'.format(bookAbbr))
@@ -376,5 +383,5 @@ for b in  getAllBooks():
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
 prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
-prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
+#prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
 #prepareDeckfor("Gen","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
