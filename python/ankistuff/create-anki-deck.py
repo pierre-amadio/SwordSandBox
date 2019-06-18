@@ -160,8 +160,8 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
 
 def fillDicForBook(moduleStr,bookAbbr,infos):
     out=infos
-    #nbrChapter=getNbrChapter(moduleStr,bookAbbr)
-    nbrChapter=2
+    nbrChapter=getNbrChapter(moduleStr,bookAbbr)
+    #nbrChapter=2
     for cc in range (nbrChapter):
         curChapter=cc+1
         print("Fetching words info for {} Chapter {}".format(bookAbbr,curChapter))
@@ -360,8 +360,8 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
         question+="<div id='sample' class=bibleQuote>"
         question+=sampleHtml
         question+="</div>"
-        #answer=strongEntry
-        answer="KIKOOO"
+        answer=strongEntry
+        #answer="KIKOOO"
         my_note = MyNote(
             model=my_model,
             fields=[question,answer,strK,str(nameTotalCntDic[strK]),moduleStr,bookAbbr],tags=curTag
