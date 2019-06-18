@@ -7,6 +7,7 @@ import Sword
 import sys
 import re
 from bs4 import BeautifulSoup
+import hashlib
 
 """
 TODO: assure a consistent note GID so deck can be upgraded.
@@ -159,8 +160,8 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
 
 def fillDicForBook(moduleStr,bookAbbr,infos):
     out=infos
-    nbrChapter=getNbrChapter(moduleStr,bookAbbr)
-    #nbrChapter=2
+    #nbrChapter=getNbrChapter(moduleStr,bookAbbr)
+    nbrChapter=2
     for cc in range (nbrChapter):
         curChapter=cc+1
         print("Fetching words info for {} Chapter {}".format(bookAbbr,curChapter))
@@ -299,9 +300,17 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
     #modelID=random.randrange(1 << 30, 1 << 31)
     #Let s keep this modlId once and for all.
     #We use the moduleStr so each book of a given module will use the same model in each deck.
-    modelID=hash(moduleStr)
+    #modelID=hash(moduleStr)
+    t_module=moduleStr.encode('utf8')
+    module_hash=hashlib.sha256(t_module)
+    modelID=int(module_hash.hexdigest(),base=16)% 100000000
     #deckID=random.randrange(1 << 30, 1 << 31)
-    deckID=hash(bookAbbr+moduleStr)
+    #deckID=hash(bookAbbr+moduleStr)
+    t_deck_str=bookAbbr+moduleStr
+    t_deck=t_deck_str.encode('utf8')
+    deck_hash=hashlib.sha256(t_deck)
+    deckID=int(deck_hash.hexdigest(),base=16)% 100000000
+    #deckID=base64.b64encode( bytes(bookAbbr+moduleStr, "utf-8") )
     my_model=getNewAnkiModel(modelID,langFont,langAlign,moduleStr,bookAbbr)
     my_deck=genanki.Deck(deckID,deckTitle)
 
@@ -359,6 +368,7 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
             )
         my_deck.add_note(my_note)
     genanki.Package(my_deck).write_to_file('{}.apkg'.format(bookAbbr))
+    print("modelid=",modelID)
     return
 
 myMainDic={}
