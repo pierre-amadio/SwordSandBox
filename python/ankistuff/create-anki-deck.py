@@ -8,24 +8,7 @@ import sys
 import re
 from bs4 import BeautifulSoup
 import hashlib
-
-"""
-TODO: assure a consistent note GID so deck can be upgraded.
-https://github.com/kerrickstaley/genanki
-
-Notes have a guid property that uniquely identifies the note. If you import a new note that has the same GUID as an existing note, the new note will overwrite the old one (as long as their models have the same fields).
-
-This is an important feature if you want to be able to tweak the design/content of your notes, regenerate your deck, and import the updated version into Anki. Your notes need to have stable GUIDs in order for the new note to replace the existing one.
-
-By default, the GUID is a hash of all the field values. This may not be desirable if, for example, you add a new field with additional info that doesn't change the identity of the note. You can create a custom GUID implementation to hash only the fields that identify the note:
-
-class MyNote(genanki.Note):
-  @property
-  def guid(self):
-     return genanki.guid_for(self.fields[0], self.fields[1])
-
-"""
-
+import time
 """
 This require python3 , sword and genanki
 . ~/dev/ankiswordstuff/bin/activate
@@ -42,6 +25,7 @@ myMainDic['OSHB']['Gen']={
  'chapterDic':{'strongKey':[int,int,int]}
  'verseKeyDic':{'srongKey':[str,str,str]}
 }
+
 
 
 """
@@ -77,6 +61,9 @@ color:red;
 }
 
 """
+
+deckVersion="0.9.beta"
+
 
 class MyNote(genanki.Note):
   @property
@@ -160,8 +147,8 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
 
 def fillDicForBook(moduleStr,bookAbbr,infos):
     out=infos
-    nbrChapter=getNbrChapter(moduleStr,bookAbbr)
-    #nbrChapter=2
+    #nbrChapter=getNbrChapter(moduleStr,bookAbbr)
+    nbrChapter=1
     for cc in range (nbrChapter):
         curChapter=cc+1
         print("Fetching words info for {} Chapter {}".format(bookAbbr,curChapter))
@@ -210,7 +197,9 @@ def getNewAnkiModel(modelID,zefont,fontAlign,moduleName,bookAbbr):
             {'name': 'StrongID'},
             {'name': 'NbrOccurence'},
             {"name": 'SwordModule'},
-            {"name": 'BookAbbrev'}
+            {"name": 'BookAbbrev'},
+            {"name": 'Version'},
+            {"name": 'CreationDate'}
         ],
         templates=[
         {
@@ -362,9 +351,10 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
         question+="</div>"
         answer=strongEntry
         #answer="KIKOOO"
+        datetime=str(time.time())
         my_note = MyNote(
             model=my_model,
-            fields=[question,answer,strK,str(nameTotalCntDic[strK]),moduleStr,bookAbbr],tags=curTag
+            fields=[question,answer,strK,str(nameTotalCntDic[strK]),moduleStr,bookAbbr,deckVersion,datetime],tags=curTag
             )
         my_deck.add_note(my_note)
     genanki.Package(my_deck).write_to_file('{}.apkg'.format(bookAbbr))
