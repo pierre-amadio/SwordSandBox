@@ -74,11 +74,19 @@ from bs4 import BeautifulSoup
 import genanki
 
 #####################
-#regular strongs module have some utf8 issues, let s use Xiphos ones.
-
+#Modules stuff
+installmgr -r CrossWire
+installmgr -ri CrossWire Byz
+installmgr -ri CrossWire OSHB
+installmgr -ri CrossWire MorphGNT
 installmgr -r "Xiphos"
 installmgr -ri Xiphos StrongsRealGreek
 installmgr -ri Xiphos StrongsRealHebrew
+
+#If you do not build the clucene index, there will be no sample sentence in he notes.
+mkfastmod Byz
+mkfastmod OSHB
+mkfastmod MorphGNT
 
 ##########################
 #Just to remember the url where i posted stuff: http://cocreator.byethost22.com/ankisword/

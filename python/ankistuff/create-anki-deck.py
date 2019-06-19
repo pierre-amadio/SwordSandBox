@@ -147,8 +147,8 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
 
 def fillDicForBook(moduleStr,bookAbbr,infos):
     out=infos
-    nbrChapter=getNbrChapter(moduleStr,bookAbbr)
-    #nbrChapter=1
+    #nbrChapter=getNbrChapter(moduleStr,bookAbbr)
+    nbrChapter=1
     for cc in range (nbrChapter):
         curChapter=cc+1
         print("Fetching words info for {} Chapter {}".format(bookAbbr,curChapter))
@@ -213,7 +213,7 @@ def getNewAnkiModel(modelID,zefont,fontAlign,moduleName,bookAbbr):
     return m
 
 def getSampleSentences(moduleStr,bookAbbr,strK):
-    #print("Need to find sample for {}".format(strK))
+    print("Need to find sample for {}".format(strK))
     out=[]
     mgr = Sword.SWMgr()
     mod=mgr.getModule(moduleStr)
@@ -365,7 +365,7 @@ myMainDic={}
 
 myMainDic['OSHB']={}
 myMainDic['MorphGNT']={}
-
+myMainDic['Byz']={}
 
 for b in  getAllBooks():
     if b['testament']==1:
@@ -374,7 +374,8 @@ for b in  getAllBooks():
         bibleFont="Ezra SIL"
         fontAlign="right"
     else:
-        moduleStr="MorphGNT"
+        #moduleStr="MorphGNT"
+        moduleStr="Byz"
         strongModuleStr="StrongsRealGreek"
         bibleFont="Linux Libertine O"
         fontAlign="left"
@@ -382,6 +383,7 @@ for b in  getAllBooks():
     #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,fontAlign,myMainDic)
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
-prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
+#prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
+prepareDeckfor("Mark","Byz","StrongsRealGreek","Linux Libertine O","left",myMainDic)
 #prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
 #prepareDeckfor("Gen","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
