@@ -49,6 +49,11 @@ myMainDic['OSHB']['Gen']={
 
 
 """
+
+
+deckVersion="0.01"
+
+
 my_css="""
 .card{
 font-size: 12px;
@@ -81,8 +86,6 @@ color:red;
 }
 
 """
-
-deckVersion="0.9.beta"
 
 
 class MyNote(genanki.Note):
@@ -167,8 +170,8 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
 
 def fillDicForBook(moduleStr,bookAbbr,infos):
     out=infos
-    #nbrChapter=getNbrChapter(moduleStr,bookAbbr)
-    nbrChapter=1
+    nbrChapter=getNbrChapter(moduleStr,bookAbbr)
+    #nbrChapter=1
     for cc in range (nbrChapter):
         curChapter=cc+1
         print("Fetching words info for {} Chapter {}".format(bookAbbr,curChapter))
@@ -233,7 +236,7 @@ def getNewAnkiModel(modelID,zefont,fontAlign,moduleName,bookAbbr):
     return m
 
 def getSampleSentences(moduleStr,bookAbbr,strK):
-    print("Need to find sample for {}".format(strK))
+    #print("Need to find sample for {}".format(strK))
     out=[]
     mgr = Sword.SWMgr()
     mod=mgr.getModule(moduleStr)
@@ -249,11 +252,12 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
         if re.match(bookAbbr,vSnt):
             bsmpl.append(res.getElement(n).getShortText())
 
-    maxSample=5
+    maxSample=4
     cnt=1
-    rawHtml=[]
+    #rawHtml=[]
+    sampleDIC={}
     for v in bsmpl:
-        #print(v)
+        #print("VERSE=",v)
         ma=re.match('^(\S+) (\d+):(\d+)',v)
         if ma:
             abbr=ma.group(1)
@@ -261,8 +265,8 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
             vers=int(ma.group(3))
             #print(abbr,chap,vers)
             raw=get_verse(abbr,chap,vers,moduleStr,outputType=Sword.FMT_HTML)
-            #print("raw=",raw)
-            rawHtml.append(raw.c_str())
+            #rawHtml.append(raw.c_str())
+            sampleDIC[v]=raw.c_str()
             if cnt>maxSample:
                 break
             cnt+=1
@@ -270,11 +274,14 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
             print("Not maching {}".format(v))
             sys.exit()
 
-    for r in rawHtml:
+    for curK in sampleDIC.keys():
+        r=sampleDIC[curK]
+        #print("key",curK)
+        #print("val=",r)
         #tmpHTML="<div id='sample' class=bibleQuote>"
         tmpHTML=""
         soup=BeautifulSoup(r,features="html.parser")
-        for w in soup.find_all():
+        for w in soup.find_all('w'):
             pattern=re.compile(".*{}.*".format(strK),re.UNICODE)
             if pattern.match(w.decode()):
                 tmpHTML+="<span class=targetWord>"
@@ -284,6 +291,13 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
                 tmpHTML+=w.decode()
             tmpHTML+=" "
         #tmpHTML+="</div>"
+        #print( "\n\n<br>*********<br>\n")
+        #print(curK)
+        #print( r)
+        #print( "<br>######<br>\n")
+        #print(tmpHTML)
+
+        #out.append("<H1>{}</H1>".format(curK)+tmpHTML) 
         out.append(tmpHTML) 
     
     return out
@@ -403,7 +417,7 @@ for b in  getAllBooks():
     #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,fontAlign,myMainDic)
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
-#prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
-prepareDeckfor("Mark","Byz","StrongsRealGreek","Linux Libertine O","left",myMainDic)
+prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
+#prepareDeckfor("Mark","Byz","StrongsRealGreek","Linux Libertine O","left",myMainDic)
 #prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
 #prepareDeckfor("Gen","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
