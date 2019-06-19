@@ -91,7 +91,7 @@ color:red;
 class MyNote(genanki.Note):
   @property
   def guid(self):
-    return genanki.guid_for(self.fields[0], self.fields[4],self.fields[5])
+    return genanki.guid_for(self.fields[2], self.fields[4],self.fields[5])
 
 
 def getAllBooks(versification="KJV"):
@@ -417,7 +417,7 @@ for b in  getAllBooks():
     #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,fontAlign,myMainDic)
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
-prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
+#prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
 #prepareDeckfor("Mark","Byz","StrongsRealGreek","Linux Libertine O","left",myMainDic)
-#prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
+prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
 #prepareDeckfor("Gen","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
