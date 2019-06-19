@@ -147,8 +147,8 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
 
 def fillDicForBook(moduleStr,bookAbbr,infos):
     out=infos
-    #nbrChapter=getNbrChapter(moduleStr,bookAbbr)
-    nbrChapter=1
+    nbrChapter=getNbrChapter(moduleStr,bookAbbr)
+    #nbrChapter=1
     for cc in range (nbrChapter):
         curChapter=cc+1
         print("Fetching words info for {} Chapter {}".format(bookAbbr,curChapter))
@@ -304,7 +304,7 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
     my_deck=genanki.Deck(deckID,deckTitle)
 
     for strK in sorted(nameTotalCntDic, key=nameTotalCntDic.__getitem__, reverse=True):
-        print("{} occurence in total of {}".format(nameTotalCntDic[strK],strK))
+        print("({}) {} occurence in total of {}".format(bookAbbr,nameTotalCntDic[strK],strK))
         #some sample sentences.
         sampleSentences=getSampleSentences(moduleStr,bookAbbr,strK)
         sampleHtml=""
@@ -357,7 +357,7 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
             fields=[question,answer,strK,str(nameTotalCntDic[strK]),moduleStr,bookAbbr,deckVersion,datetime],tags=curTag
             )
         my_deck.add_note(my_note)
-    genanki.Package(my_deck).write_to_file('{}.apkg'.format(bookAbbr))
+    genanki.Package(my_deck).write_to_file('{}-{}.apkg'.format(bookAbbr,deckVersion))
     print("modelid=",modelID)
     return
 
@@ -379,7 +379,7 @@ for b in  getAllBooks():
         bibleFont="Linux Libertine O"
         fontAlign="left"
 
-    #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,myMainDic)
+    #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,fontAlign,myMainDic)
     #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
 
 prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
