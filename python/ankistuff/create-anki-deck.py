@@ -422,12 +422,14 @@ for b in  getAllBooks():
         fontAlign="left"
 
     decFileName=getDeckFileName(b["abbr"],deckVersion)
+    print('<li><a href="01/{}">{}</a></li>'.format(decFileName,b["name"]))
     if os.path.isfile(decFileName):
         #print("{} already done".format(decFileName))
-        print('<br><a href="01/{}">{}</a>'.format(decFileName,b["name"]))
+        #print('<br><a href="01/{}">{}</a>'.format(decFileName,b["name"]))
+        continue
     else:
         #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,fontAlign,myMainDic)
-        print("we should build {}".format(b["abbr"]))
+        #print("we should build {}".format(b["abbr"]))
         continue
 
 #prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
