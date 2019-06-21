@@ -29,6 +29,7 @@ import re
 from bs4 import BeautifulSoup
 import hashlib
 import time
+import os.path
 """
 This require python3 , sword and genanki
 . ~/dev/ankiswordstuff/bin/activate
@@ -51,7 +52,7 @@ myMainDic['OSHB']['Gen']={
 """
 
 
-deckVersion="0.01"
+deckVersion="0.1"
 
 
 my_css="""
@@ -171,7 +172,7 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
 def fillDicForBook(moduleStr,bookAbbr,infos):
     out=infos
     nbrChapter=getNbrChapter(moduleStr,bookAbbr)
-    #nbrChapter=1
+    #nbrChapter=2
     for cc in range (nbrChapter):
         curChapter=cc+1
         print("Fetching words info for {} Chapter {}".format(bookAbbr,curChapter))
@@ -302,6 +303,10 @@ def getSampleSentences(moduleStr,bookAbbr,strK):
     
     return out
 
+def getDeckFileName(bookAbbr,deckVersion):
+    return '{}-{}.apkg'.format(bookAbbr,deckVersion)
+
+
 def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
     print("Generating a deck for {} ".format(bookAbbr))
     tmpDic={}
@@ -391,7 +396,9 @@ def prepareDeckfor(bookAbbr,moduleStr,strongMod,langFont,langAlign,dataDic):
             fields=[question,answer,strK,str(nameTotalCntDic[strK]),moduleStr,bookAbbr,deckVersion,datetime],tags=curTag
             )
         my_deck.add_note(my_note)
-    genanki.Package(my_deck).write_to_file('{}-{}.apkg'.format(bookAbbr,deckVersion))
+    #genanki.Package(my_deck).write_to_file('{}-{}.apkg'.format(bookAbbr,deckVersion))
+    deckFileName=getDeckFileName(bookAbbr,deckVersion)
+    genanki.Package(my_deck).write_to_file(deckFileName)
     print("modelid=",modelID)
     return
 
@@ -414,10 +421,16 @@ for b in  getAllBooks():
         bibleFont="Linux Libertine O"
         fontAlign="left"
 
-    #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,fontAlign,myMainDic)
-    #print('<br><a href="apkg/{}.apkg">{}</a>'.format(b["abbr"],b["name"]))
+    decFileName=getDeckFileName(b["abbr"],deckVersion)
+    if os.path.isfile(decFileName):
+        #print("{} already done".format(decFileName))
+        print('<br><a href="01/{}">{}</a>'.format(decFileName,b["name"]))
+    else:
+        #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,fontAlign,myMainDic)
+        print("we should build {}".format(b["abbr"]))
+        continue
 
 #prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
-#prepareDeckfor("Mark","Byz","StrongsRealGreek","Linux Libertine O","left",myMainDic)
-prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
 #prepareDeckfor("Gen","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
+#prepareDeckfor("Mark","Byz","StrongsRealGreek","Linux Libertine O","left",myMainDic)
+#prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
