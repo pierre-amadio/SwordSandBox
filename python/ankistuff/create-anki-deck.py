@@ -30,6 +30,7 @@ from bs4 import BeautifulSoup
 import hashlib
 import time
 import os.path
+import gc
 """
 This require python3 , sword and genanki
 . ~/dev/ankiswordstuff/bin/activate
@@ -423,12 +424,13 @@ for b in  getAllBooks():
 
     decFileName=getDeckFileName(b["abbr"],deckVersion)
     print('<li><a href="01/{}">{}</a></li>'.format(decFileName,b["name"]))
+    gc.collect()
     if os.path.isfile(decFileName):
-        #print("{} already done".format(decFileName))
+        print("{} already done".format(decFileName))
         #print('<br><a href="01/{}">{}</a>'.format(decFileName,b["name"]))
         continue
     else:
-        #prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,fontAlign,myMainDic)
+        prepareDeckfor(b["abbr"],moduleStr,strongModuleStr,bibleFont,fontAlign,myMainDic)
         #print("we should build {}".format(b["abbr"]))
         continue
 
