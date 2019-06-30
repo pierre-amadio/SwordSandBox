@@ -96,6 +96,8 @@ diatheke -b OSHB -s phrase -r Psalms -k בקשׁ
 
 diatheke -b StrongsGreek -k 3056 
 diatheke -b Robinson -k V-PAI-3S
+diatheke -b MorphGNT -o avlmn -f OSIS -s phrase -k "V-PAI-3S" 
+
 
 mkfastmod ESV2011
 mkfastmod OSHB
