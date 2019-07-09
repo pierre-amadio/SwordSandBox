@@ -433,4 +433,4 @@ for b in  getAllBooks():
 #prepareDeckfor("Ps","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
 #prepareDeckfor("Gen","OSHB","StrongsRealHebrew","Ezra SIL","right",myMainDic)
 #prepareDeckfor("Mark","Byz","StrongsRealGreek","Linux Libertine O","left",myMainDic)
-#prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
+prepareDeckfor("Mark","MorphGNT","StrongsRealGreek","Linux Libertine O","left",myMainDic)
