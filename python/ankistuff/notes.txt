@@ -19,6 +19,10 @@ chown melmoth /usr/local/sword
 #yum install cmake cmake-data openssl-devel curl-devel zlib-devel libidn-devel libicu-devel icu clucene-core-devel cppunit-devel swig  python3-devel gcc  gcc-c++
 yum install cmake3 cmake3-data openssl-devel curl-devel zlib-devel libidn-devel libicu-devel icu clucene-core-devel cppunit-devel swig  python36-devel gcc  gcc-c++ 
 
+#debian:
+sudo apt-get install g++ swig python-all-dev libtool automake autoconf libcurl4-openssl-dev libclucene-dev  \
+  make  python-virtualenv libicu-dev subversion build-essential pkg-config
+
 #as the regular user:
 # Lets get the svn tree so we can build the python3 module.
 # https://src.fedoraproject.org/rpms/sword/blob/master/f/sword.spec
@@ -31,6 +35,7 @@ cd sword-trunk
 mkdir build
 cd build
 
+#use cmake in debian 
 cmake3 -DLIBSWORD_LIBRARY_TYPE=Shared \
        -DSWORD_PYTHON_3:BOOL=TRUE \
        -DSWORD_BUILD_UTILITIES="Yes" \
@@ -51,7 +56,7 @@ export PATH=$PATH:/usr/local/sword/bin/
 export LD_LIBRARY_PATH=/usr/local/sword/lib
 export PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig
 export CPPFLAGS="-I/usr/local/sword/include/sword"
-export PYTHONPATH=$PYTHONPATH:/usr/local/sword/python3/lib64/python3.4/site-packages
+export PYTHONPATH=$PYTHONPATH:/usr/local/sword/python3/lib64/python3.4/site-packages:/usr/local/sword/python3/lib/python3.7/site-packages
 EOF
 
 . ~/dev/ankiswordstuff/env-sword-anki.sh
@@ -68,7 +73,7 @@ pip install bs4
 
 /home/melmoth/dev/ankiswordstuff/bin/python 
 
-imort Sword
+import Sword
 import sys
 from bs4 import BeautifulSoup
 import genanki
