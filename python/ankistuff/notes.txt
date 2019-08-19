@@ -95,4 +95,8 @@ mkfastmod MorphGNT
 
 ##########################
 #Just to remember the url where i posted stuff: http://cocreator.byethost22.com/ankisword/
+##########################
+Creating a filtered deck with new vocab only:
+
+(tag:Ps-006:006 or tag:Ps-006:007) -is:review
 
