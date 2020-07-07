@@ -66,19 +66,28 @@ int main()
 
 
     //Morph search.
-    targetModule="OSHB";
-    searchType=-3;
+    //targetModule="OSHB";
+    //searchType=-3;
     //<w morph="oshm:HVqp3ms" n="1.1" savlm="strong:H02421">חַי</w>
-    searchQuery="Word//Morph./HVqp3ms/";
+    //searchQuery="Word//Morph./HVqp3ms/";
 
 
-/*
-    //Why does this not work ?
+
+    /*
+	Carefull, for the morph search with MorphGNT you will have to change the module option order:
+	https://www.mail-archive.com/sword-devel@crosswire.org/msg34601.html
+	
+	Be sure they are set this way:
+
+	GlobalOptionFilter=OSISLemma
+	GlobalOptionFilter=OSISStrongs
+	GlobalOptionFilter=OSISMorph
+    */
     targetModule="MorphGNT";
     searchType=-3;
     //<w morph="robinson:V-AAP-GPM" savlm="lemma.Strong:εξερχομαι strong:G1831">εξελθοντων</w>
     searchQuery="Word//Morph./V-AAP-GPM/";  
-*/
+
 
 
     //Working example
