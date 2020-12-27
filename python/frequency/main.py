@@ -93,7 +93,7 @@ def fillDicForBook(moduleStr,bookAbbr,infos):
     #nbrChapter=2
     for cc in range (nbrChapter):
         curChapter=cc+1
-        print("Fetching words info for {} Chapter {}".format(bookAbbr,curChapter))
+        #print("Fetching words info for {} Chapter {}".format(bookAbbr,curChapter))
         maxVerseNbr= getVerseMax(moduleStr,bookAbbr,curChapter)
         #print("nbr verse=",maxVerseNbr)
         for verseNbr in range(1,1+maxVerseNbr):
@@ -127,7 +127,7 @@ def fillDicForBook(moduleStr,bookAbbr,infos):
     return out
 
 def preparePickleFor(bookAbbr,moduleStr,dataDic):
-    print("Generating a deck for {} ".format(bookAbbr))
+    #print("Generating a pickle for {} ".format(bookAbbr))
     tmpDic={}
     tmpDic['moduleName']=moduleStr
     tmpDic['bookName']=bookAbbr
@@ -137,18 +137,53 @@ def preparePickleFor(bookAbbr,moduleStr,dataDic):
     tmpDic['verseKeyDic']={}
     tmpDic=fillDicForBook(moduleStr,bookAbbr,tmpDic)
     #print(tmpDic)
-    dataDic[moduleStr][bookAbbr]=tmpDic
-    print("Info fetched, let s build the deck now")
-    nameDic=dataDic[moduleStr][bookAbbr]["nameDic"]
-    nameTotalCntDic=dataDic[moduleStr][bookAbbr]["nameTotalCnt"]
-    chapterDic=dataDic[moduleStr][bookAbbr]["chapterDic"]
-    verseKeyDic=dataDic[moduleStr][bookAbbr]["verseKeyDic"]
-    deckTitle="Vocabulary for {}".format(getInfoBasedOnAbbr(bookAbbr)["name"])
-
-    for strK in sorted(nameTotalCntDic, key=nameTotalCntDic.__getitem__, reverse=True):
-        print("({}) {} occurence in total of {}".format(bookAbbr,nameTotalCntDic[strK],strK))
+    #dataDic[moduleStr][bookAbbr]=tmpDic
+    #print("Info fetched, let s build the deck now")
+    #nameDic=dataDic[moduleStr][bookAbbr]["nameDic"]
+    #nameTotalCntDic=dataDic[moduleStr][bookAbbr]["nameTotalCnt"]
+    #chapterDic=dataDic[moduleStr][bookAbbr]["chapterDic"]
+    #verseKeyDic=dataDic[moduleStr][bookAbbr]["verseKeyDic"]
+    #deckTitle="Vocabulary for {}".format(getInfoBasedOnAbbr(bookAbbr)["name"])
+    #for strK in sorted(nameTotalCntDic, key=nameTotalCntDic.__getitem__, reverse=True):
+    #    print("({}) {} occurence in total of {}".format(bookAbbr,nameTotalCntDic[strK],strK))
     return tmpDic
 
+def getScoreForChapter(data,cc):
+    """
+        first we create a set for all word in the chapter (so word occuring several time count only 1).
+        then we add the number of occurence (data[nameTotalCnt]) in the book for this word to get a global score of "usuality". 
+        We divide this usuality score by the number of word in this chapter (in the set).
+        -> A really difficult chapter would have only words occuring once in all the book and a final score of 1.
+        The bigger the score, the "easier" the chapter.
+    """
+    curChapter=cc
+    bookAbbr=data['bookName']
+    moduleStr=data['moduleName']
+    #print("Fetching words info for {} Chapter {}".format(bookAbbr,curChapter))
+    maxVerseNbr= getVerseMax(moduleStr,bookAbbr,curChapter)
+    #print("nbr verse=",maxVerseNbr)
+    uniqWord=set()
+    for verseNbr in range(1,1+maxVerseNbr):
+        keySnt="{} {}:{}".format(bookAbbr,curChapter,verseNbr)
+        keyTag="{}-{}:{}".format(bookAbbr,format(curChapter,"03d"),format(verseNbr,"03d"))
+        raw_verse=get_verse(bookAbbr,curChapter,verseNbr,moduleStr,outputType=Sword.FMT_HTML).getRawData()
+        #print(keySnt)
+        #print(raw_verse)
+        soup=BeautifulSoup(raw_verse,features="html.parser")
+        for w in soup.find_all(savlm=re.compile('strong')):
+            pattern=re.compile("strong:(.*)",re.UNICODE)
+            strKey=pattern.search(w.get('savlm')).group(1)
+            fullWord=w.get_text()
+            #print(fullWord,strKey)
+            uniqWord.add(strKey) 
+
+    #print(uniqWord,len(uniqWord))
+    usualScore=0
+    for curWord in uniqWord:
+        #print(curWord,data['nameTotalCnt'][curWord])
+        usualScore+=data['nameTotalCnt'][curWord]
+    out=usualScore/len(uniqWord)
+    return(out)
 myMainDic={}
 
 myMainDic['OSHB']={}
@@ -160,14 +195,27 @@ bookShortName="Ps"
 pickleFile='{}.pickle'.format(bookShortName)
 if not os.path.isfile(pickleFile):
     data=preparePickleFor(bookShortName,moduleName,myMainDic)
-    print(data)
+    #print(data)
     pfile=open(pickleFile,"ab")
     pickle.dump(data,pfile)
     pfile.close()
 else:
-    print("let s use the pickle then")
+    #print("let s use the pickle then")
     pfile=open(pickleFile,"rb")
     data=pickle.load(pfile)
     pfile.close()
 
-print(data)
+#print(data.keys())
+#print(data['nameTotalCnt'])
+
+
+nbrChapter=getNbrChapter(moduleName,bookShortName)
+ranking={}
+for cc in range (nbrChapter):
+    cc+=1
+    score=getScoreForChapter(data,cc)
+    #print(cc,score)
+    ranking[cc]=score
+
+for strK in sorted(ranking, key=ranking.__getitem__, reverse=True):
+    print(strK,ranking[strK])
