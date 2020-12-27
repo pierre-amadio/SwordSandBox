@@ -220,4 +220,4 @@ for cc in range (nbrChapter):
     ranking[cc]=score
 
 for strK in sorted(ranking, key=ranking.__getitem__, reverse=True):
-    print(strK,ranking[strK])
+    print("Psalm:%s (score=%s)"%(strK,ranking[strK]))
