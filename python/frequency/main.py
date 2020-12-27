@@ -1,6 +1,8 @@
 #!/home/melmoth/dev/ankiswordstuff/bin/python
 # -*- coding: utf-8 -*-
 """
+This script order the psalms so the one with the most common words are listed first.
+The idea is, if one wants to learn all the vocabulary of the psalms, using this order should be the easiest way to go.
 . ~/dev/ankiswordstuff/bin/activate
 . ~/dev/ankiswordstuff/env-sword-anki.sh
 """
