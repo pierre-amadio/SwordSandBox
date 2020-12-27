@@ -9,6 +9,8 @@ import Sword
 import sys
 import re
 from bs4 import BeautifulSoup
+import os.path
+import pickle
 
 
 def getAllBooks(versification="KJV"):
@@ -124,7 +126,7 @@ def fillDicForBook(moduleStr,bookAbbr,infos):
 
     return out
 
-def preparePickleFor(bookAbbr,moduleStr,strongMod,dataDic):
+def preparePickleFor(bookAbbr,moduleStr,dataDic):
     print("Generating a deck for {} ".format(bookAbbr))
     tmpDic={}
     tmpDic['moduleName']=moduleStr
@@ -145,7 +147,7 @@ def preparePickleFor(bookAbbr,moduleStr,strongMod,dataDic):
 
     for strK in sorted(nameTotalCntDic, key=nameTotalCntDic.__getitem__, reverse=True):
         print("({}) {} occurence in total of {}".format(bookAbbr,nameTotalCntDic[strK],strK))
-    return
+    return tmpDic
 
 myMainDic={}
 
@@ -153,5 +155,19 @@ myMainDic['OSHB']={}
 myMainDic['MorphGNT']={}
 myMainDic['Byz']={}
 
-#prepareDeckfor("Ps","OSHB","StrongsRealHebrew",myMainDic)
-preparePickleFor("Ps","OSHB","StrongsRealHebrew",myMainDic)
+moduleName="OSHB"
+bookShortName="Ps"
+pickleFile='{}.pickle'.format(bookShortName)
+if not os.path.isfile(pickleFile):
+    data=preparePickleFor(bookShortName,moduleName,myMainDic)
+    print(data)
+    pfile=open(pickleFile,"ab")
+    pickle.dump(data,pfile)
+    pfile.close()
+else:
+    print("let s use the pickle then")
+    pfile=open(pickleFile,"rb")
+    data=pickle.load(pfile)
+    pfile.close()
+
+print(data)
