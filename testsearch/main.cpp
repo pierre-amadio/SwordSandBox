@@ -64,6 +64,7 @@ int main()
              */
 
 
+    //Working example
 
     //Morph search.
     //targetModule="OSHB";
@@ -83,14 +84,13 @@ int main()
 	GlobalOptionFilter=OSISStrongs
 	GlobalOptionFilter=OSISMorph
     */
-    targetModule="MorphGNT";
-    searchType=-3;
+    //targetModule="MorphGNT";
+    //searchType=-3;
     //<w morph="robinson:V-AAP-GPM" savlm="lemma.Strong:εξερχομαι strong:G1831">εξελθοντων</w>
-    searchQuery="Word//Morph./V-AAP-GPM/";  
+    //searchQuery="Word//Morph./V-AAP-GPM/";  
 
 
 
-    //Working example
 
 
 /*
@@ -128,12 +128,12 @@ int main()
 *	OSHB search
 */
 
-/*
+
     //Strongs search without clucene index.
     targetModule="OSHB";
     searchType=-3;
-    searchQuery="Word//Lemma./H0835/";
-*/
+    searchQuery="Word//Lemma./H0776/";
+
 
 
 /*
@@ -167,12 +167,12 @@ int main()
     manager.setGlobalOption("Hebrew Vowel Points", "Off");
 */
 
-
-/*  //Strongs search with clucene index.
+/*
+    //Strongs search with clucene index.
     //Do not forget to "mkfastmod OSHB" first
     targetModule="OSHB";
     searchType=-4;
-    searchQuery="lemma:H08064";
+    searchQuery="lemma:H0776";
 */
 
 

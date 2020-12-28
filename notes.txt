@@ -98,6 +98,9 @@ diatheke -b StrongsGreek -k 3056
 diatheke -b Robinson -k V-PAI-3S
 diatheke -b MorphGNT -o avlmn -f OSIS -s phrase -k "V-PAI-3S" 
 
+#Strong number search
+diatheke -b OSHB -s lucene -r Genesis -k "lemma:H0776"
+diatheke -b OSHB -s attribute -r Genesis -k "Word//Lemma./H0776/"
 
 mkfastmod ESV2011
 mkfastmod OSHB
