@@ -125,14 +125,17 @@ def search(query,moduleName="ESV2011",searchType=0):
 
 
 #query="בקשׁ"
-query="עמד"
+#query="עמד"
 #query="אמד"
 #query="lemma:H0835" 
 
-result=search(query,"OSHB",0)
+
+query="Word//Lemma./G0/"
+
+result=search(query,"LXX",-3)
 for c in result:
     print c
-    print display_verse(c,"OSHB",Sword.FMT_HTML)
+    print display_verse(c,"LXX",Sword.FMT_HTML)
     print "##"
 
 
