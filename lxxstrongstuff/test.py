@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/home/melmoth/dev/ankiswordstuff/bin/python3 
 # -*- coding: utf-8 -*-
 # Trying to fill the gap in the LXX strong entry.
 # https://docs.python.org/3/howto/unicode.html
@@ -26,6 +26,8 @@ with accent we have still a duplicate problem with:
 import unicodedata
 import re
 import sys
+from bs4 import BeautifulSoup
+
 
 #From https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-normalize-in-a-python-unicode-string
 def strip_accents(s):
@@ -40,7 +42,8 @@ def strip_accents(s):
 StrongDic="/home/melmoth/dev/strongs/greek/strongs-greek-spellings.dic"
 
 #This comes from https://git.crosswire.org/cyrille/lxx
-lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
+#lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
+lxxFile="/home/melmoth/test.xml"
 
 def prepareDic(fileName):
     """
@@ -70,9 +73,45 @@ def prepareDic(fileName):
                     #print("NO MATCH: '%s'"%line)
             return out
 
+def parseLXX(fileName,strongDic):
+    print("Let s parse some xml")
+    with open(fileName) as fp:
+        soup = BeautifulSoup(fp, 'html.parser')
+        #for link in soup.find_all('w'):
+        for link in soup.find_all('w'):
+            #print(link)
+            """
+            <w lemma="strong:G0,G0 lex:τέλλομαι,ἐν" morph="packard:VA+AMD2S" xlit="betacode:E)/NTEILAI">ἔντειλαι</w>
+            """
+            lemma=link["lemma"]
+            fullWord=link.contents[0]
+
+            #r=re.match("(strong:G0.*\s+)lex",lemma)
+            r=re.match("(strong:G0\s+)lex:(.*)",lemma)
+            if r:
+                #print(link)
+                #print(r.group(2)) 
+                target=r.group(2)
+                #print(r.group(1))
+                #print(fullWord)
+                if target not in strongDic.keys():
+                    print(link)
+                    print("unknown:%s"%target)
+                    a=1
+                else:
+                    print(strongDic[target])
+                    a=1
 
 
 
 strongDic=prepareDic(StrongDic)
-#for i in dic:
-#    print(i,dic[i])
+#print( strongDic.keys())
+#for i in strongDic:
+#    print(i,strongDic[i])
+parseLXX(lxxFile,strongDic)
+
+#unknown:ἀκατασκεύαστος 
+# http://www.biblesupport.com/topic/10987-strong-dictionary-how-to-add-3751-new-entries/
+#unknown:εἶπον   2036 (ἔπω)
+#unknown:γίγνομαι 1096 (γίνομαι)
+
