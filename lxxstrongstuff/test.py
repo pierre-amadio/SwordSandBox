@@ -147,6 +147,20 @@ def prepareDic(fileName):
                     #print("NO MATCH: '%s'"%line)
             return out
 
+def findStrongIdFor(osisId,fullWord):
+    print("What is the strong id for %s / %s"%(osisId,fullWord))
+    m=re.match("(\S+)\.(\d+)\.(\d+)",osisId)
+    if m:
+        bookAbr=m.group(1)
+        chaptNbr=int(m.group(2))
+        verseNbr=int(m.group(3))
+        verse=get_verse(bookAbr,chaptNbr,verseNbr,"LXX",outputType=Sword.FMT_OSIS)
+        print(verse)
+    else:
+        print("Cannot parse osisId %s"%osisId)
+        sys.exit()
+
+
 def parseLXX(fileName,strongDic):
     print("Let s parse some xml")
     with open(fileName) as fp:
@@ -160,23 +174,27 @@ def parseLXX(fileName,strongDic):
             lemma=link["lemma"]
             fullWord=link.contents[0]
 
-            #r=re.match("(strong:G0.*\s+)lex",lemma)
-            r=re.match("(strong:G0\s+)lex:(.*)",lemma)
+            r=re.match("(strong:G0.*) lex",lemma)
+            #r=re.match("(strong:G0\s+)lex:(.*)",lemma)
             if r:
                 #print(link)
                 #print(r.group(2)) 
-                target=r.group(2)
+                #target=r.group(2)
                 #print(r.group(1))
                 #print(fullWord)
-                if target not in strongDic.keys():
-                    print(link)
-                    print(link.parent["osisid"])
-                    print("unknown:%s"%target)
-                    a=1
-                else:
-                    print(strongDic[target])
-                    a=1
-
+                #if target not in strongDic.keys():
+                #    print(link)
+                #    print(link.parent["osisid"])
+                #    print("unknown:%s"%target)
+                #    a=1
+                #else:
+                #    print(strongDic[target])
+                #    a=1
+                print(link)
+                print(link.parent["osisid"])
+                print("to change:'%s'"%r.group(1))
+                osisId=link.parent["osisid"]
+                strongId=findStrongIdFor(osisId,fullWord) 
 
 
 strongDic=prepareDic(StrongDic)
