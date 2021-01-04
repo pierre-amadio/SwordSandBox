@@ -96,7 +96,9 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
     vk.setChapter(chapterInt)
     vk.setVerse(verseNbr)
     mod.setKey(vk)
-    mgr.setGlobalOption("Hebrew Vowel Points", "On")
+    #mgr.setGlobalOption("Hebrew Vowel Points", "On")
+    mgr.setGlobalOption("Greek Accents", "Off")
+    mgr.setGlobalOption("Strong's Numbers", "On")
     #mgr.setGlobalOption("Hebrew Cantillation", "Off")
     if not mod:
         print("No module")
@@ -150,16 +152,28 @@ def prepareDic(fileName):
 def findStrongIdFor(osisId,fullWord):
     print("What is the strong id for %s / %s"%(osisId,fullWord))
     m=re.match("(\S+)\.(\d+)\.(\d+)",osisId)
+    swordVerse=""
     if m:
         bookAbr=m.group(1)
         chaptNbr=int(m.group(2))
         verseNbr=int(m.group(3))
-        verse=get_verse(bookAbr,chaptNbr,verseNbr,"LXX",outputType=Sword.FMT_OSIS)
-        print(verse)
+        swordVerse=get_verse(bookAbr,chaptNbr,verseNbr,"LXX",outputType=Sword.FMT_OSIS).getRawData()
     else:
         print("Cannot parse osisId %s"%osisId)
         sys.exit()
 
+    print(swordVerse)
+    soup=BeautifulSoup(swordVerse,features="html.parser")
+    for w in soup.find_all("w"):
+        print(w)
+        print(w.contents[0])
+        print(w["lemma"])
+        m=re.match("strong:G(.*)",w["lemma"])
+        if m:
+            print(m.group(1))
+        else:
+            print("cannot parse lemma %s"%w["lemma"])
+            sys.exit()
 
 def parseLXX(fileName,strongDic):
     print("Let s parse some xml")
