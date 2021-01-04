@@ -39,8 +39,8 @@ def strip_accents(s):
                      if unicodedata.category(c) != 'Mn')
 
 #This comes from https://git.crosswire.org/cyrille/lxx
-#lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
-lxxFile="/home/melmoth/test.xml"
+lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
+#lxxFile="/home/melmoth/test.xml"
 
 def findStrongIdFor(osisId,fullWord):
     #print("What is the strong id for %s / %s"%(osisId,fullWord))
