@@ -118,8 +118,8 @@ def strip_accents(s):
 StrongDic="/home/melmoth/dev/strongs/greek/strongs-greek-spellings.dic"
 
 #This comes from https://git.crosswire.org/cyrille/lxx
-lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
-#lxxFile="/home/melmoth/test.xml"
+#lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
+lxxFile="/home/melmoth/test.xml"
 
 def prepareDic(fileName):
     """
@@ -150,7 +150,7 @@ def prepareDic(fileName):
             return out
 
 def findStrongIdFor(osisId,fullWord):
-    print("What is the strong id for %s / %s"%(osisId,fullWord))
+    #print("What is the strong id for %s / %s"%(osisId,fullWord))
     m=re.match("(\S+)\.(\d+)\.(\d+)",osisId)
     swordVerse=""
     if m:
@@ -172,7 +172,7 @@ def findStrongIdFor(osisId,fullWord):
         if m:
             candidateStrong=m.group(1)
         else:
-            print("Warning: cannot parse lemma %s"%candidateLemma)
+            #print("Warning: cannot parse lemma %s"%candidateLemma)
             continue
         #print(candidateWord,candidateStrong)
         noAccent=strip_accents(fullWord)
@@ -211,28 +211,52 @@ def parseLXX(fileName,strongDic):
                 #    print(strongDic[target])
                 #    a=1
                 #print(link)
-                #print(link.parent["osisid"])
-                #print("to change:'%s'"%r.group(1))
-
                 #getting confused by variant here: <verse osisID="Josh.1.1"><seg type="x-variant" subType="x-1"> 
                 #TODO: get the osisID info from the first verse parent node we find (instead of the direct parent
+                parentVerse=link.find_parent("verse")
+
+                """
+                now we can still be confused with nodes such as this <title>
+
+                    <chapter osisID="Odes.1">
+                    <title type="chapter"><w lemma="strong:G5603 lex:ᾠδή" morph="packard:N1+NSF" xlit="betacode:W)|DH\">ᾠδὴ</w> <w lemma="strong:G0 lex:Μωυσῆς" morph="packard:N3+GSM" xlit="betacode:*MWUSE/WS">Μωυσέως</w> <w l      emma="strong:G1722 lex:ἐν" morph="packard:P" xlit="betacode:E)N">ἐν</w> <w lemma="strong:G3588 lex:ὁ" morph="packard:RA+DSF" xlit="betacode:TH=|">τῇ</w> <w lemma="strong:G1841 lex:ἔξοδος" morph="packard:N2      +DSF" xlit="betacode:E)CO/DW|">ἐξόδῳ</w></title>
+
+                """
+                if not parentVerse:
+                    continue
                 try:
-                    osisId=link.parent["osisid"]
+                    #osisId=link.parent["osisid"]
+                    osisId=parentVerse["osisid"]
                 except:
                     print( "Problem with ")
                     print(link)
+                    print("_____ PARENTVERSE")
+                    print(parentVerse)
                     print("_____________ PARENT:)")
                     print(link.parent)
                     sys.exit()
                 strongId=findStrongIdFor(osisId,fullWord) 
+                #print(link.parent["osisid"])
+                print("__")
+                print(link)
+                print(fullWord)
+                print("to change:'%s'"%r.group(1))
                 print(strongId)
-
+                print(lemma)
+                newLemma=lemma.replace(r.group(1),"strong:G%s"%strongId)
+                print(newLemma)
+                link["lemma"]=newLemma
+        
+        #out=soup.prettify()
+        out=str(soup)
+        return out
 
 strongDic=prepareDic(StrongDic)
 #print( strongDic.keys())
 #for i in strongDic:
 #    print(i,strongDic[i])
-parseLXX(lxxFile,strongDic)
+new=parseLXX(lxxFile,strongDic)
+print(new)
 
 #unknown:ἀκατασκεύαστος 
 # http://www.biblesupport.com/topic/10987-strong-dictionary-how-to-add-3751-new-entries/
