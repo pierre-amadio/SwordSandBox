@@ -115,6 +115,7 @@ def parseLXX(fileName):
 #This comes from https://git.crosswire.org/cyrille/lxx
 #Source file to work on.
 lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
+
 #lxxFile="/home/melmoth/test.xml"
 
 #Where to write the modified output:
