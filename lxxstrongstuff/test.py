@@ -43,7 +43,7 @@ def strip_accents(s):
 
 def findStrongIdFor(osisId,fullWord):
     """
-        Try to find what is the correct strong number for fullWord by looking in the Sword engine for verse OsisId 
+        Try to find what is the correct strong number for fullWord by looking in the Sword engine for verse OsisId
         to see if it is set there.
         Return the strong number if it find it, 0 otherwise.
     """
@@ -84,6 +84,8 @@ def parseLXX(fileName):
         for link in soup.find_all('w'):
             lemma=link["lemma"]
             fullWord=link.contents[0]
+            #Assuming there are no valid entry that actually start with strong:G0 (like strong:G0209 by example).
+            #It seems to be ok.
             r=re.match("(strong:G0.*) lex",lemma)
             if r:
                 parentVerse=link.find_parent("verse")
@@ -111,9 +113,11 @@ def parseLXX(fileName):
         return out
 
 #This comes from https://git.crosswire.org/cyrille/lxx
+#Source file to work on.
 lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
 #lxxFile="/home/melmoth/test.xml"
-#Where to write the output:
+
+#Where to write the modified output:
 newFile="./new-lxx-osis.xml"
 
 new=parseLXX(lxxFile)
