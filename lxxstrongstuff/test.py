@@ -27,7 +27,81 @@ import unicodedata
 import re
 import sys
 from bs4 import BeautifulSoup
+import Sword
 
+def getAllBooks(versification="KJV"):
+    """
+     Return an array:
+     [{'testament': 1, 'bookCount': 1, 'name': 'Genesis', 'abbr': 'Gen'},
+     {'testament': 1, 'bookCount': 2, 'name': 'Exodus', 'abbr': 'Exod'},
+    """
+    vk=Sword.VerseKey()
+    vk.setVersificationSystem(versification)
+    out=[]
+    for i in range(1,3):
+      vk.setTestament(i)
+      for j in range(1,vk.bookCount(i)+1):
+         vk.setBook(j)
+         tmp={}
+         tmp['name']=vk.bookName(i,j)
+         tmp['abbr']=vk.getBookAbbrev()
+         tmp['testament']=i
+         tmp['bookCount']=j
+         out.append(tmp)
+    return out
+
+def getInfoBasedOnAbbr(abbr):
+    """
+    Return info related to a book based on its abbreviation (ie 'Gen')
+    """
+    for cur in getAllBooks():
+        if cur['abbr']==abbr:
+            return cur
+    sys.exit("no such book : %s"%abbr)
+
+def getVerseMax(moduleName,bookName,chapterNbr):
+    mgr = Sword.SWMgr()
+    mod=mgr.getModule(moduleName)
+    versification=mod.getConfigEntry("Versification")
+    vk=Sword.VerseKey()
+    vk.setVersificationSystem(versification)
+    vk.setBookName(bookName)
+    vk.setChapter(chapterNbr)
+    return vk.getVerseMax()
+
+def getNbrChapter(moduleName,bookAbbr):
+    mgr = Sword.SWMgr()
+    mod=mgr.getModule(moduleName)
+    versification=mod.getConfigEntry("Versification")
+    vk=Sword.VerseKey()
+    vk.setVersificationSystem(versification)
+    targetBook=0
+    for curBook in getAllBooks(versification):
+        if curBook["abbr"]==bookAbbr:
+            targetBook=curBook
+    nbrChapter=vk.chapterCount(targetBook['testament'],targetBook['bookCount'])
+    return nbrChapter
+
+def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN):
+    markup=Sword.MarkupFilterMgr(outputType)
+    markup.thisown=False
+    mgr = Sword.SWMgr(markup)
+
+    mod=mgr.getModule(moduleName)
+    versification=mod.getConfigEntry("Versification")
+    vk=Sword.VerseKey()
+    vk.setVersificationSystem(versification)
+    #vk.setTestament() ??
+    vk.setBookName(bookStr)
+    vk.setChapter(chapterInt)
+    vk.setVerse(verseNbr)
+    mod.setKey(vk)
+    mgr.setGlobalOption("Hebrew Vowel Points", "On")
+    #mgr.setGlobalOption("Hebrew Cantillation", "Off")
+    if not mod:
+        print("No module")
+        sys.exit()
+    return mod.renderText()
 
 #From https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-normalize-in-a-python-unicode-string
 def strip_accents(s):
@@ -96,6 +170,7 @@ def parseLXX(fileName,strongDic):
                 #print(fullWord)
                 if target not in strongDic.keys():
                     print(link)
+                    print(link.parent["osisid"])
                     print("unknown:%s"%target)
                     a=1
                 else:
