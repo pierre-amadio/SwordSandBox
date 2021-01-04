@@ -39,8 +39,9 @@ def strip_accents(s):
                      if unicodedata.category(c) != 'Mn')
 
 #This comes from https://git.crosswire.org/cyrille/lxx
-lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
-#lxxFile="/home/melmoth/test.xml"
+#lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
+lxxFile="/home/melmoth/test.xml"
+newFile="./new-lxx-osis.xml"
 
 def findStrongIdFor(osisId,fullWord):
     #print("What is the strong id for %s / %s"%(osisId,fullWord))
@@ -113,6 +114,10 @@ def parseLXX(fileName):
 #    print(i,strongDic[i])
 new=parseLXX(lxxFile)
 #print(new)
+with open(newFile, "w", encoding='utf-8') as file:
+    file.write(new)
+
+
 
 #unknown:ἀκατασκεύαστος 
 # http://www.biblesupport.com/topic/10987-strong-dictionary-how-to-add-3751-new-entries/
