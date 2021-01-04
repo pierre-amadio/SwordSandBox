@@ -1,9 +1,9 @@
 #!/home/melmoth/dev/ankiswordstuff/bin/python3 
 # -*- coding: utf-8 -*-
 # Trying to fill the gap in the LXX strong entry.
-# https://docs.python.org/3/howto/unicode.html
-# https://github.com/openscriptures/strongs
-
+"""
+This script takes an LXX osis xml file, and try to replace the missing strong id based on the content of the old Sword LXX module.
+"""
 import unicodedata
 import re
 import sys
@@ -11,6 +11,9 @@ from bs4 import BeautifulSoup
 import Sword
 
 def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN):
+    """
+        Return a verse from the Sword engine.
+    """
     markup=Sword.MarkupFilterMgr(outputType)
     markup.thisown=False
     mgr = Sword.SWMgr(markup)
@@ -38,12 +41,12 @@ def strip_accents(s):
    return ''.join(c for c in unicodedata.normalize('NFD', s)
                      if unicodedata.category(c) != 'Mn')
 
-#This comes from https://git.crosswire.org/cyrille/lxx
-#lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
-lxxFile="/home/melmoth/test.xml"
-newFile="./new-lxx-osis.xml"
-
 def findStrongIdFor(osisId,fullWord):
+    """
+        Try to find what is the correct strong number for fullWord by looking in the Sword engine for verse OsisId 
+        to see if it is set there.
+        Return the strong number if it find it, 0 otherwise.
+    """
     #print("What is the strong id for %s / %s"%(osisId,fullWord))
     m=re.match("(\S+)\.(\d+)\.(\d+)",osisId)
     swordVerse=""
@@ -56,7 +59,6 @@ def findStrongIdFor(osisId,fullWord):
         print("Cannot parse osisId %s"%osisId)
         sys.exit()
 
-    #print(swordVerse)
     soup=BeautifulSoup(swordVerse,features="html.parser")
     for w in soup.find_all("w"):
         candidateWord=w.contents[0]
@@ -79,7 +81,6 @@ def parseLXX(fileName):
     print("Let s parse some xml")
     with open(fileName) as fp:
         soup = BeautifulSoup(fp, 'html.parser')
-        #for link in soup.find_all('w'):
         for link in soup.find_all('w'):
             lemma=link["lemma"]
             fullWord=link.contents[0]
@@ -88,6 +89,7 @@ def parseLXX(fileName):
                 parentVerse=link.find_parent("verse")
                 if not parentVerse:
                     #Some chapter title have w node but no actual verse id.
+                    #We ignore those.
                     continue
                 try:
                     osisId=parentVerse["osisid"]
@@ -108,19 +110,12 @@ def parseLXX(fileName):
         out=str(soup)
         return out
 
-#strongDic=prepareDic(StrongDic)
-#print( strongDic.keys())
-#for i in strongDic:
-#    print(i,strongDic[i])
+#This comes from https://git.crosswire.org/cyrille/lxx
+lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
+#lxxFile="/home/melmoth/test.xml"
+#Where to write the output:
+newFile="./new-lxx-osis.xml"
+
 new=parseLXX(lxxFile)
-#print(new)
 with open(newFile, "w", encoding='utf-8') as file:
     file.write(new)
-
-
-
-#unknown:ἀκατασκεύαστος 
-# http://www.biblesupport.com/topic/10987-strong-dictionary-how-to-add-3751-new-entries/
-#unknown:εἶπον   2036 (ἔπω)
-#unknown:γίγνομαι 1096 (γίνομαι)
-
