@@ -118,8 +118,8 @@ def strip_accents(s):
 StrongDic="/home/melmoth/dev/strongs/greek/strongs-greek-spellings.dic"
 
 #This comes from https://git.crosswire.org/cyrille/lxx
-#lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
-lxxFile="/home/melmoth/test.xml"
+lxxFile="/home/melmoth/dev/lxx/osis/lxx.osis.xml"
+#lxxFile="/home/melmoth/test.xml"
 
 def prepareDic(fileName):
     """
@@ -162,18 +162,24 @@ def findStrongIdFor(osisId,fullWord):
         print("Cannot parse osisId %s"%osisId)
         sys.exit()
 
-    print(swordVerse)
+    #print(swordVerse)
     soup=BeautifulSoup(swordVerse,features="html.parser")
     for w in soup.find_all("w"):
-        print(w)
-        print(w.contents[0])
-        print(w["lemma"])
-        m=re.match("strong:G(.*)",w["lemma"])
+        candidateWord=w.contents[0]
+        candidateLemma=w["lemma"]
+        m=re.match("strong:G(\d+)",candidateLemma)
+        candidateStrong=0
         if m:
-            print(m.group(1))
+            candidateStrong=m.group(1)
         else:
-            print("cannot parse lemma %s"%w["lemma"])
-            sys.exit()
+            print("Warning: cannot parse lemma %s"%candidateLemma)
+            continue
+        #print(candidateWord,candidateStrong)
+        noAccent=strip_accents(fullWord)
+        if(noAccent==candidateWord):
+            return candidateStrong
+    #print("No match found....")
+    return(0)
 
 def parseLXX(fileName,strongDic):
     print("Let s parse some xml")
@@ -204,11 +210,22 @@ def parseLXX(fileName,strongDic):
                 #else:
                 #    print(strongDic[target])
                 #    a=1
-                print(link)
-                print(link.parent["osisid"])
-                print("to change:'%s'"%r.group(1))
-                osisId=link.parent["osisid"]
+                #print(link)
+                #print(link.parent["osisid"])
+                #print("to change:'%s'"%r.group(1))
+
+                #getting confused by variant here: <verse osisID="Josh.1.1"><seg type="x-variant" subType="x-1"> 
+                #TODO: get the osisID info from the first verse parent node we find (instead of the direct parent
+                try:
+                    osisId=link.parent["osisid"]
+                except:
+                    print( "Problem with ")
+                    print(link)
+                    print("_____________ PARENT:)")
+                    print(link.parent)
+                    sys.exit()
                 strongId=findStrongIdFor(osisId,fullWord) 
+                print(strongId)
 
 
 strongDic=prepareDic(StrongDic)
