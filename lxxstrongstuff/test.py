@@ -3,6 +3,10 @@
 # Trying to fill the gap in the LXX strong entry.
 """
 This script takes an LXX osis xml file, and try to replace the missing strong id based on the content of the old Sword LXX module.
+
+TODO: add a GlobalOptionFilter=OSISXlit   in the lxx.conf file in order to  get clena output with diatheke plain format.
+https://wiki.crosswire.org/OSIS_Bibles
+
 """
 import unicodedata
 import re
