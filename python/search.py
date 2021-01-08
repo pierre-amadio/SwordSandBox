@@ -81,6 +81,8 @@ def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
     mgr.configPath = "%s/mods.d" % swordDir
     mod=mgr.getModule(moduleName)
     mod.setKey(vk)
+    #Look in bindings/objc/src/SwordManager.h for the correct mapping between C++ define and python string.
+    #you may also have to look into specific module code though such as src/modules/filters/osisxlit.cpp:       static const char oName[] = "Transliterated Forms";
     mgr.setGlobalOption("Strong's Numbers","Off")
     mgr.setGlobalOption("Cross-references","Off")
     mgr.setGlobalOption("Morpheme Segmentation","Off")
