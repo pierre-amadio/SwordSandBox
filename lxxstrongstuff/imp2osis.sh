@@ -18,19 +18,19 @@ if [ ! -f $SRCFILE ] ;
 fi
 
 
+#Correcting Proverb chapter.
+sed -ri 's/(\$\$\$Prov\/)32(\/)/\125\2/g' $SRCFILE
+sed -ri 's/(\$\$\$Prov\/)33(\/)/\126\2/g' $SRCFILE  
+sed -ri 's/(\$\$\$Prov\/)34(\/)/\127\2/g' $SRCFILE
+sed -ri 's/(\$\$\$Prov\/)35(\/)/\128\2/g' $SRCFILE
+sed -ri 's/(\$\$\$Prov\/)36(\/)/\129\2/g' $SRCFILE
 
-echo $1
 
-exit 0
-
-#Correction du chapitrage dans Prov
-sed -ri 's/(\$\$\$Prov\/)32(\/)/\125\2/g' 002.txt
-sed -ri 's/(\$\$\$Prov\/)33(\/)/\126\2/g' 002.txt
-sed -ri 's/(\$\$\$Prov\/)34(\/)/\127\2/g' 002.txt
-sed -ri 's/(\$\$\$Prov\/)35(\/)/\128\2/g' 002.txt
-sed -ri 's/(\$\$\$Prov\/)36(\/)/\129\2/g' 002.txt
 #Correction des versets avec fusionnés dans suzanne
-sed -ri 's/(\$\$\$Sus)\/([0-9]+)\/([0-9]+)/\1 1:\2-\3/g' 002.txt 
+sed -ri 's/(\$\$\$Sus)\/([0-9]+)\/([0-9]+)/\1 1:\2-\3/g' $SRCFILE
+
+exit 1
+
 #Remplacement de / par :
 sed -ri 's/(\$\$\$[A-Za-z/1-4]+)\/([0-9]+)\/([0-9]+)/\1 \2:\3/g' 002.txt 
 #Corrections des noms des livres
