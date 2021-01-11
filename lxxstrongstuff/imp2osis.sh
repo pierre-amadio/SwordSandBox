@@ -1,36 +1,18 @@
 #!/bin/bash
-#
-# imp2osis.sh lxxfile.imp
-# Change the main LXX text (not the alternate version) from the imp format to osis.
+cd lxxm-gen
+./convert.sh
+cd ../
+killall xiphos
+cp 002_orig 002.txt
 
-if [ $# -eq 0 ]
-  then
-  echo "No input file."
-  exit 1
-fi
-
-SRCFILE=$1
-
-if [ ! -f $SRCFILE ] ;
-  then
-  echo "$1 is not a file"   
-  exit 1
-fi
-
-
-#Correcting Proverb chapter.
-sed -ri 's/(\$\$\$Prov\/)32(\/)/\125\2/g' $SRCFILE
-sed -ri 's/(\$\$\$Prov\/)33(\/)/\126\2/g' $SRCFILE  
-sed -ri 's/(\$\$\$Prov\/)34(\/)/\127\2/g' $SRCFILE
-sed -ri 's/(\$\$\$Prov\/)35(\/)/\128\2/g' $SRCFILE
-sed -ri 's/(\$\$\$Prov\/)36(\/)/\129\2/g' $SRCFILE
-
-
+#Correction du chapitrage dans Prov
+sed -ri 's/(\$\$\$Prov\/)32(\/)/\125\2/g' 002.txt
+sed -ri 's/(\$\$\$Prov\/)33(\/)/\126\2/g' 002.txt
+sed -ri 's/(\$\$\$Prov\/)34(\/)/\127\2/g' 002.txt
+sed -ri 's/(\$\$\$Prov\/)35(\/)/\128\2/g' 002.txt
+sed -ri 's/(\$\$\$Prov\/)36(\/)/\129\2/g' 002.txt
 #Correction des versets avec fusionnés dans suzanne
-sed -ri 's/(\$\$\$Sus)\/([0-9]+)\/([0-9]+)/\1 1:\2-\3/g' $SRCFILE
-
-exit 1
-
+sed -ri 's/(\$\$\$Sus)\/([0-9]+)\/([0-9]+)/\1 1:\2-\3/g' 002.txt 
 #Remplacement de / par :
 sed -ri 's/(\$\$\$[A-Za-z/1-4]+)\/([0-9]+)\/([0-9]+)/\1 \2:\3/g' 002.txt 
 #Corrections des noms des livres
