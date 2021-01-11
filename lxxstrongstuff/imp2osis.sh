@@ -1,9 +1,27 @@
 #!/bin/bash
-cd lxxm-gen
-./convert.sh
-cd ../
-killall xiphos
-cp 002_orig 002.txt
+#
+# imp2osis.sh lxxfile.imp
+# Change the main LXX text (not the alternate version) from the imp format to osis.
+
+if [ $# -eq 0 ]
+  then
+  echo "No input file."
+  exit 1
+fi
+
+SRCFILE=$1
+
+if [ ! -f $SRCFILE ] ;
+  then
+  echo "$1 is not a file"   
+  exit 1
+fi
+
+
+
+echo $1
+
+exit 0
 
 #Correction du chapitrage dans Prov
 sed -ri 's/(\$\$\$Prov\/)32(\/)/\125\2/g' 002.txt
