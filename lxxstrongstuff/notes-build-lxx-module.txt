@@ -29,6 +29,8 @@ cd lxxmorph
 mv 08.JoshA.mlxx 10.JudgesA.mlxx 60.BelTh.mlxx 62.DanielTh.mlxx 64.SusTh.mlxx 23.TobitS.mlxx ../alternate
 
 #Now let s convert this in imp format with some java stuff
+# sources of some class available here: http://www.mneuhold.at/antike/grkconv_en.html
+# http://www.mneuhold.at/download/greekconverter-060820-src.zip
 #We are now in buildLXX/lxxm-gen
 cd $WORKDIR/buildLXX/lxxm-gen
 #Let s copy the needed java stuff
