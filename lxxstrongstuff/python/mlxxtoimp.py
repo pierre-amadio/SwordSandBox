@@ -80,6 +80,7 @@ with open(inputFile) as fp:
             if heading:
                 headingTxt+=out
             else:
-                print(out,end='')
+                if(len(word)):
+                    print(out,end='')
 
     fp.close()
