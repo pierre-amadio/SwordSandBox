@@ -52,15 +52,16 @@ with open(inputFile) as fp:
             if(len(line)==36):
                 print("What are len(36) line for???",line)
                 sys.exit()
-            #print(line.strip())
+            print(line)
             word=line[0:25].rstrip()
             parse=line[25:36].rstrip()
             lemma=line[36:].rstrip()
             #print("before='%s"%lemma)
             lemma=re.sub('\s+',',',lemma)
-            #print("word '%s'"%word)
-            #print("parse '%s'"%parse)
-            #print("lemma '%s'"%lemma)
+            parse=re.sub('\s+',' ',parse)
+            print("word '%s'"%word)
+            print("parse '%s'"%parse)
+            print("lemma '%s'"%lemma)
             if not first :
                 """
                     space between words
@@ -68,7 +69,11 @@ with open(inputFile) as fp:
                 out+=" "
             else:
                 first=False
-            convert=betacode.conv.beta_to_uni(word)
-            print("convert='%s'"%convert)
+            convertWord=betacode.conv.beta_to_uni(word)
+            convertLemma=betacode.conv.beta_to_uni(lemma)
+            print("convert word='%s'"%convertWord)
+            print("convert lemma='%s"%convertLemma)
+            out="<w lemma=\"%s\" morph=\"packard:%s\" xlit=\"betacode:%s\">%s"%(convertLemma,parse,word,convertWord)
+            print(out)
 
     fp.close()
