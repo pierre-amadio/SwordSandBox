@@ -22,18 +22,30 @@ with open(inputFile) as fp:
         if(len(line)>1 and len(line)<36):
             """
                 line smaller than 36 char, this is  probably the beginning of a verse or chapter.
+                Let s print  things such as $$$Gen/1/2
             """
-            m=re.match("(\S{3})\s+(\d+):(\d+)",line)
+            m=re.match("(\S+)\s+(\d+):(\d+)",line)
             if m:
                 book=m.group(1)
                 chapter=m.group(2)
                 verse=m.group(3)
+                print("$$$%s/%s/%s"%(book,chapter,verse))
+                """
+                    we still need to add some section stuff if headingTxt is not null
+                    see by example $$$Od/1/1
+                """
+                if(len(headingTxt)):
+                    print("Need to deal with header:",headingTxt)
+                    sys.exit()
             else:
                 print("Cannot parse line:'%s'"%line)
-                sys.exit()
+                #sys.exit()
 
+                   
         else:
             """
                 line larger than 36 char
             """
+            out=""
+
     fp.close()
