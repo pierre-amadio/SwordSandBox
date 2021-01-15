@@ -1,11 +1,13 @@
 #!/home/melmoth/dev/ankiswordstuff/bin/python3
 import sys
 import re
+import betacode.conv
 """
 reimplementation of https://crosswire.org/svn/sword-tools/trunk/modules/lxxm/src/lxxm/LXXMConv.java
 
 https://pypi.org/project/betacode/
 ~/dev/ankiswordstuff/bin/python3.7  -m pip install  betacode
+~/dev/ankiswordstuff/bin/python3.7  -m pip install pygtrie
 
 ./mlxxtoimp.py ~/dev/lxx/scripts/lxxm-gen/lxxmorph/01.Gen.1.mlxx 
 """
@@ -50,15 +52,23 @@ with open(inputFile) as fp:
             if(len(line)==36):
                 print("What are len(36) line for???",line)
                 sys.exit()
-            print(line.strip())
+            #print(line.strip())
             word=line[0:25].rstrip()
             parse=line[25:36].rstrip()
             lemma=line[36:].rstrip()
-            print("before='%s"%lemma)
+            #print("before='%s"%lemma)
             lemma=re.sub('\s+',',',lemma)
             #print("word '%s'"%word)
             #print("parse '%s'"%parse)
-            print("lemma '%s'"%lemma)
-            
+            #print("lemma '%s'"%lemma)
+            if not first :
+                """
+                    space between words
+                """
+                out+=" "
+            else:
+                first=False
+            convert=betacode.conv.beta_to_uni(word)
+            print("convert='%s'"%convert)
 
     fp.close()
