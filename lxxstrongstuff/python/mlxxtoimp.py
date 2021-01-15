@@ -31,19 +31,21 @@ with open(inputFile) as fp:
                 book=m.group(1)
                 chapter=m.group(2)
                 verse=m.group(3)
-                #print("$$$%s/%s/%s"%(book,chapter,verse))
+                print("$$$%s/%s/%s"%(book,chapter,verse))
                 """
                     we still need to add some section stuff if headingTxt is not null
                     see by example $$$Od/1/1
                 """
                 if(len(headingTxt)):
-                    print("Need to deal with header:",headingTxt)
-                    sys.exit()
+                    print("<title type=\"section\" subtype=\"x-preverse\">%s</title>"%headingTxt)
+                    headingTxt=""
+                    heading=False
             else:
-                print("Cannot parse line:'%s'"%line)
-                #sys.exit()
-
-                   
+                """
+                    The line does not look like a regular Book chapter:verse line, we probably are in a header section (such as with Odes)
+                """
+                heading=True 
+            first=True 
         else:
             """
                 line larger than 36 char
@@ -52,16 +54,16 @@ with open(inputFile) as fp:
             if(len(line)==36):
                 print("What are len(36) line for???",line)
                 sys.exit()
-            print(line)
+            #print(line)
             word=line[0:25].rstrip()
             parse=line[25:36].rstrip()
             lemma=line[36:].rstrip()
             #print("before='%s"%lemma)
             lemma=re.sub('\s+',',',lemma)
             parse=re.sub('\s+',' ',parse)
-            print("word '%s'"%word)
-            print("parse '%s'"%parse)
-            print("lemma '%s'"%lemma)
+            #print("word '%s'"%word)
+            #print("parse '%s'"%parse)
+            #print("lemma '%s'"%lemma)
             if not first :
                 """
                     space between words
@@ -71,9 +73,13 @@ with open(inputFile) as fp:
                 first=False
             convertWord=betacode.conv.beta_to_uni(word)
             convertLemma=betacode.conv.beta_to_uni(lemma)
-            print("convert word='%s'"%convertWord)
-            print("convert lemma='%s"%convertLemma)
-            out="<w lemma=\"%s\" morph=\"packard:%s\" xlit=\"betacode:%s\">%s"%(convertLemma,parse,word,convertWord)
-            print(out)
+            #print("convert word='%s'"%convertWord)
+            #print("convert lemma='%s"%convertLemma)
+            out="<w lemma=\"%s\" morph=\"packard:%s\" xlit=\"betacode:%s\">%s</w>"%(convertLemma,parse,word,convertWord)
+            #print(out)
+            if heading:
+                headingTxt+=out
+            else:
+                print(out)
 
     fp.close()
