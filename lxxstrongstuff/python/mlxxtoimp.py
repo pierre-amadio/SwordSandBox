@@ -29,7 +29,7 @@ with open(inputFile) as fp:
                 book=m.group(1)
                 chapter=m.group(2)
                 verse=m.group(3)
-                print("$$$%s/%s/%s"%(book,chapter,verse))
+                #print("$$$%s/%s/%s"%(book,chapter,verse))
                 """
                     we still need to add some section stuff if headingTxt is not null
                     see by example $$$Od/1/1
@@ -47,5 +47,18 @@ with open(inputFile) as fp:
                 line larger than 36 char
             """
             out=""
+            if(len(line)==36):
+                print("What are len(36) line for???",line)
+                sys.exit()
+            print(line.strip())
+            word=line[0:25].rstrip()
+            parse=line[25:36].rstrip()
+            lemma=line[36:].rstrip()
+            print("before='%s"%lemma)
+            lemma=re.sub('\s+',',',lemma)
+            #print("word '%s'"%word)
+            #print("parse '%s'"%parse)
+            print("lemma '%s'"%lemma)
+            
 
     fp.close()
