@@ -17,15 +17,38 @@ https://crosswire.org/svn/sword-tools/trunk/modules/lxxm/src/lxxm/LXXMConv.java
 
 
 mkdir javastuff
-cd javastfuu
+cd javastuff
+mkdir orig
 wget http://www.mneuhold.at/download/greekconverter-060820-src.zip
-unzip greekconverter-060820-src.zip
+cd orig
+unzip ../greekconverter-060820-src.zip
+cd ..
 
-mkdir utf8
-for i in `ls *java`; do echo $i; iconv --from-code ISO-8859-16 --to-code=UTF8 $i > utf8/$i ; done
+mkdir src 
+mkdir out
+cd orig
+for i in `ls *java`; do echo $i; iconv --from-code ISO-8859-16 --to-code=UTF8 $i > ../src/$i ; done
+cd ..
 
-cd utf8
+javac -d out/ -sourcepath src   src/BetacodeToUnicode.java
 
+complain about UC not define:
+
+src/BetacodeToUnicode.java:67: error: cannot find symbol
+    tblChars['!'] = UC.ONE_DOT_LEADER;  // missing letter dot
+                    ^
+symbol:   variable UC
+
+Let s try to add UC.java then:
+
+javastuff]$ javac -d out/ -sourcepath src   src/BetacodeToUnicode.java src/UC.java
+
+src/BetacodeToUnicode.java:67: error: cannot find symbol
+ tblChars['!'] = UC.ONE_DOT_LEADER;  // missing letter dot
+  symbol:   variable ONE_DOT_LEADER
+  location: class UC
+
+This ONE_DOT_LEADER is not define in the UC class indeed ....
 
 
 
