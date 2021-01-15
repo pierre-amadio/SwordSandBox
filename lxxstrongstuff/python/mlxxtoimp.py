@@ -31,7 +31,7 @@ with open(inputFile) as fp:
                 book=m.group(1)
                 chapter=m.group(2)
                 verse=m.group(3)
-                print("$$$%s/%s/%s"%(book,chapter,verse))
+                print("\n$$$%s/%s/%s"%(book,chapter,verse))
                 """
                     we still need to add some section stuff if headingTxt is not null
                     see by example $$$Od/1/1
@@ -80,6 +80,6 @@ with open(inputFile) as fp:
             if heading:
                 headingTxt+=out
             else:
-                print(out)
+                print(out,end='')
 
     fp.close()
