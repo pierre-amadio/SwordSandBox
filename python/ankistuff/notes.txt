@@ -3,7 +3,7 @@
 #git checkout https://github.com/kerrickstaley/genanki.git
 git clone https://github.com/kerrickstaley/genanki.git
 mkdir ~/dev/ankiswordstuff
-virtualenv -p /usr/bin/python3 ~/dev/ankiswordstuff
+virtualenv -p /usr/bin/python3.6 ~/dev/ankiswordstuff
 . ~/dev/ankiswordstuff/bin/activate
 
 cd genanki
@@ -35,7 +35,10 @@ cd sword-1.9.0
 #(e.g. /usr/local/include/CLucene/)
 
 mkdir -p /usr/local/sword/include/CLucene
+#dedbian
 cp /usr/lib/x86_64-linux-gnu/CLucene/clucene-config.h /usr/local/sword/include/CLucene
+#rhel
+cp /usr/lib64/CLucene/clucene-config.h /usr/local/sword/include/CLucene
 
 mkdir build
 cd build
@@ -74,7 +77,7 @@ export PATH=$PATH:/usr/local/sword/bin/
 export LD_LIBRARY_PATH=/usr/local/sword/lib
 export PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig
 export CPPFLAGS="-I/usr/local/sword/include/sword"
-export PYTHONPATH=$PYTHONPATH:/usr/local/sword/python3/lib64/python3.4/site-packages:/usr/local/sword/python3/lib/python3.7/site-packages
+export PYTHONPATH=$PYTHONPATH:/usr/local/sword/python3/lib64/python3.4/site-packages:/usr/local/sword/python3/lib/python3.7/site-packages:/usr/local/sword/python3/lib64/python3.6/site-packages/
 EOF
 
 . ~/dev/ankiswordstuff/env-sword-anki.sh
@@ -102,6 +105,7 @@ import genanki
 
 #####################
 #Modules stuff
+~/dev/lxxmodule/bin/python3 -m pip install lxml
 
 /usr/local/sword/bin/installmgr -init
 /usr/local/sword/bin/installmgr -sc   
