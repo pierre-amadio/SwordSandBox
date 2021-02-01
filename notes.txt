@@ -152,13 +152,17 @@ cd bibletime
 
 
 #debian
-sudo apt-get install qt5-default qt5-qmake qt5-doc-html cmake qt5-qmltooling-plugins qttools5-dev-tools libqt5webkit5-dev libqt5svg5-dev
+sudo apt-get install qt5-default qt5-qmake qt5-doc-html cmake qt5-qmltooling-plugins qttools5-dev-tools libqt5webkit5-dev libqt5svg5-dev po4a xsltproc fop docbook-xsl docbook-xml
+
+
 
 #ubuntu add aslo 
 #    sudo apt install qtbase5-dev
 
 
-PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/"  ./build-debug.sh
+rm -rf build
+PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/"  ./build-debug.sh -DBUILD_HANDBOOK_HTML=OFF -DBUILD_HANDBOOK_PDF=OFF -DBUILD_HOWTO_HTML=OFF -DBUILD_HOWTO_PDF=OFF
+
 
 
 ./build/install/bin/bibletime
