@@ -111,6 +111,10 @@ diatheke -b LXX -v 0 -o a -f plain -k Josh 15:21
 diatheke -b LXX -v 1 -o a -f plain -k Josh 15:21
 diatheke -b LXX -v -1 -o a -f plain -k Josh 15:21
 
+#qere-qetiv
+diatheke -b OSHB -o cvfa -f plain -k Ruth 1.8
+
+
 
 mkfastmod ESV2011
 mkfastmod OSHB
