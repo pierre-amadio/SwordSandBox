@@ -94,6 +94,9 @@ diatheke -b OSHB -s phrase -r Genesis -k בראשׁית
 diatheke -b OSHB -o v -s phrase -r Genesis -k בְּרֵאשִׁית
 diatheke -b OSHB -s phrase -r Psalms -k בקשׁ 
 
+diatheke -b LXX -o nfmhalsbwgeixM -f plain -k Genesis 1:1
+
+
 diatheke -b StrongsGreek -k 3056 
 diatheke -b Robinson -k V-PAI-3S
 diatheke -b MorphGNT -o avlmn -f FMT_OSIS -s phrase -k "V-PAI-3S" 
@@ -101,6 +104,13 @@ diatheke -b MorphGNT -o avlmn -f FMT_OSIS -s phrase -k "V-PAI-3S"
 #Strong number search
 diatheke -b OSHB -s lucene -r Genesis -k "lemma:H0776"
 diatheke -b OSHB -s attribute -r Genesis -k "Word//Lemma./H0776/"
+
+
+#variant
+diatheke -b LXX -v 0 -o a -f plain -k Josh 15:21
+diatheke -b LXX -v 1 -o a -f plain -k Josh 15:21
+diatheke -b LXX -v -1 -o a -f plain -k Josh 15:21
+
 
 mkfastmod ESV2011
 mkfastmod OSHB
