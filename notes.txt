@@ -161,7 +161,30 @@ sudo apt-get install qt5-default qt5-qmake qt5-doc-html cmake qt5-qmltooling-plu
 
 
 rm -rf build
-PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/"  ./build-debug.sh -DBUILD_HANDBOOK_HTML=OFF -DBUILD_HANDBOOK_PDF=OFF -DBUILD_HOWTO_HTML=OFF -DBUILD_HOWTO_PDF=OFF
+cd build
+
+export PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig 
+export CPPFLAGS="-I/usr/local/sword/include/ -I/usr/local/sword/include/sword/"  
+cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX="install/" -DBUILD_HANDBOOK_HTML=OFF -DBUILD_HANDBOOK_PDF=OFF -DBUILD_HOWTO_HTML=OFF -DBUILD_HOWTO_PDF=OFF ..
+make clean
+make -j4 install
+
+fail:
+/usr/bin/ld: /tmp/ccI0aBNM.ltrans1.ltrans.o:(.data.rel.ro+0xc30): undefined reference to `sword::VerseKey::getShortRangeText() const'
+/usr/bin/ld: /tmp/ccI0aBNM.ltrans1.ltrans.o:(.data.rel.ro+0xc48): undefined reference to `sword::VerseKey::clearBounds() const'
+/usr/bin/ld: /tmp/ccI0aBNM.ltrans3.ltrans.o:(.data.rel.ro+0x658): undefined reference to `sword::SWMgr::addModToConfig(sword::FileDesc*, char const*)'
+/usr/bin/ld: /tmp/ccI0aBNM.ltrans4.ltrans.o:(.data.rel.ro+0x90): undefined reference to `sword::StringMgr::lowerUTF8(char*, unsigned int) const'
+/usr/bin/ld: /tmp/ccI0aBNM.ltrans4.ltrans.o:(.data.rel.ro+0x98): undefined reference to `sword::StringMgr::isUpper(unsigned int) const'
+/usr/bin/ld: /tmp/ccI0aBNM.ltrans4.ltrans.o:(.data.rel.ro+0xa0): undefined reference to `sword::StringMgr::isLower(unsigned int) const'
+/usr/bin/ld: /tmp/ccI0aBNM.ltrans4.ltrans.o:(.data.rel.ro+0xa8): undefined reference to `sword::StringMgr::isDigit(unsigned int) const'
+/usr/bin/ld: /tmp/ccI0aBNM.ltrans4.ltrans.o:(.data.rel.ro+0xb0): undefined reference to `sword::StringMgr::isAlpha(unsigned int) const'
+
+
+
+#PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/"  ./build-debug.sh -DBUILD_HANDBOOK_HTML=OFF -DBUILD_HANDBOOK_PDF=OFF -DBUILD_HOWTO_HTML=OFF -DBUILD_HOWTO_PDF=OFF
+#PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig CPPFLAGS="-I/usr/local/sword/include/ -I/usr/local/sword/include/sword/"  ./build-debug.sh -DBUILD_HANDBOOK_HTML=OFF -DBUILD_HANDBOOK_PDF=OFF -DBUILD_HOWTO_HTML=OFF -DBUILD_HOWTO_PDF=OFF
+
+
 
 
 
