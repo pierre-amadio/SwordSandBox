@@ -1,0 +1,103 @@
+#################
+#sword stuff
+##################
+#as root
+mkdir /usr/local/sword
+chown melmoth /usr/local/sword
+
+sudo apt-get install g++ swig python-all-dev libtool automake autoconf libcurl4-openssl-dev libclucene-dev  \
+  make  python3-virtualenv libicu-dev subversion build-essential pkg-config python3-bs4
+
+#as the regular user
+cd ~/dev
+wget http://www.crosswire.org/ftpmirror/pub/sword/source/v1.9/sword-1.9.0.tar.gz
+tar xvzf sword-1.9.0.tar.gz
+cd sword-1.9.0
+
+#NOTE: sometimes clucene forgets to install some header files.  You might need to
+#manually copy clucene-core-X/src/CLucene/clucene-config.h to your install prefix
+#(e.g. /usr/local/include/CLucene/)
+
+mkdir -p /usr/local/sword/include/CLucene
+#dedbian
+cp /usr/lib/x86_64-linux-gnu/CLucene/clucene-config.h /usr/local/sword/include/CLucene
+#rhel
+#cp /usr/lib64/CLucene/clucene-config.h /usr/local/sword/include/CLucene
+
+mkdir build
+cd build
+
+cmake -DLIBSWORD_LIBRARY_TYPE=Shared \
+       -DSWORD_PYTHON_3:BOOL=TRUE \
+       -DSWORD_BUILD_UTILS="Yes" \
+       -DLIBSWORD_SOVERSION=1.9 \
+       -DCMAKE_INSTALL_PREFIX="/usr/local/sword" \
+       -DSWORD_BUILD_EXAMPLES=Yes \
+       -DSWORD_PYTHON_INSTALL_DIR="/usr/local/sword/python3" \
+       ..
+
+
+
+make
+make install
+mkdir -p /usr/local/sword/sword/modules
+
+mkdir ~/dev/swordstuff
+cat >> ~/dev/swordstuff/env-sword.sh <<EOF
+export PATH=$PATH:/usr/local/sword/bin/
+export LD_LIBRARY_PATH=/usr/local/sword/lib
+export PKG_CONFIG_PATH=/usr/local/sword/lib/pkgconfig
+export CPPFLAGS="-I/usr/local/sword/include/sword"
+export PYTHONPATH=$PYTHONPATH:/usr/local/sword/python3/lib/python3.9/site-packages
+EOF
+
+. ~/dev/swordstuff/env-sword.sh
+
+##########################
+#Lets prepare a virtuaenv
+
+virtualenv -p /usr/bin/python3.9 ~/dev/swordstuff
+. ~/dev/swordstuff/bin/activate
+
+#pip install bs4
+#pip3 install bs4
+~/dev/swordstuff/bin/python3.9  -m pip install bs4
+
+###################
+# Check you can import the needed modules:
+
+/home/melmoth/dev/swordstuff/bin/python 
+
+import Sword
+import sys
+#from bs4 import BeautifulSoup
+
+
+################
+#Before using:
+. ~/dev/swordstuff/bin/activate
+. ~/dev/swordstuff/env-sword.sh
+
+###############
+
+
+#####################
+#Modules stuff
+~/dev/lxxmodule/bin/python3 -m pip install lxml
+
+/usr/local/sword/bin/installmgr -init
+/usr/local/sword/bin/installmgr -sc   
+/usr/local/sword/bin/installmgr -r CrossWire
+/usr/local/sword/bin/installmgr -ri CrossWire Byz
+/usr/local/sword/bin/installmgr -ri CrossWire OSHB
+/usr/local/sword/bin/installmgr -ri CrossWire MorphGNT
+/usr/local/sword/bin/installmgr -r "Xiphos"
+/usr/local/sword/bin/installmgr -ri Xiphos StrongsRealGreek
+/usr/local/sword/bin/installmgr -ri Xiphos StrongsRealHebrew
+
+#If you do not build the clucene index, there will be no sample sentence in he notes.
+/usr/local/sword/bin/mkfastmod Byz
+/usr/local/sword/bin/mkfastmod OSHB
+/usr/local/sword/bin/mkfastmod MorphGNT
+
+
