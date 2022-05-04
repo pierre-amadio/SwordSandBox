@@ -4,12 +4,13 @@
 	
 <div type="book" osisID="{{book.name}}">
 {% for chapter in book.chapters -%} 
-<chapter osisID="{{chapter.osisId}}">
+	<chapter osisID="{{chapter.osisId}}">{{chapter.nbr}}
   {% if chapter.title %}
   <title type="chapter">{{chapter.title}}</title>
   {% endif %}
   {% for verse in chapter.verses -%}
   <verse osisID="{{verse.osisId}}">
+   ({{verse.nbr}})
    {{verse.content}}
   </verse>
   {% endfor -%}

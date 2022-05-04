@@ -21,15 +21,21 @@
 """
 Assuming we have a book data structure like this:
 { 'chapters': [ { 'osisId': 'Gen 1',
+                  'nbr':'1',
                   'title': 'The creation',
                   'verses': [ { 'content': 'in the beginning...',
+                                'nbr':'1',
                                 'osisId': 'Gen 1:1'},
                               {'content': 'blablabla',
+                                'nbr':'2',
                                 'osisId': 'Gen 1:2'}]},
                 { 'osisId': 'Gen 2',
+                  'nbr':'2',
                   'verses': [ {'content': 'blablabla 21',
+                                'nbr':'1',
                                'osisId': 'Gen 2:1'},
                               { 'content': 'blablabla 22',
+                                'nbr':'2',
                                 'osisId': 'Gen 2:2'}]}],
   'name': 'Genesis'}
 """
@@ -136,9 +142,12 @@ def createBook(moduleName,bookAbbr):
     book["chapters"]=[]
     for chapterInd in range(getNbrChapter(moduleName,bookAbbr)):
         chapter=chapterInd+1
+        chapterAnchorId="%s-%s"%(bookName,chapter)
+
         verseMax=getVerseMax(moduleName,bookAbbr,chapter)
         book["chapters"].append({})
-        book["chapters"][chapterInd]["osisId"]="%s %s"%(bookName,chapter)
+        book["chapters"][chapterInd]["osisId"]=chapterAnchorId
+        book["chapters"][chapterInd]["nbr"]=str(chapter)
         book["chapters"][chapterInd]["title"]=""
         book["chapters"][chapterInd]["verses"]=[]
 
@@ -147,6 +156,7 @@ def createBook(moduleName,bookAbbr):
             verseContent=get_verse(bookAbbr,chapter,verseNbr,moduleName,outputType=Sword.FMT_XHTML)
             book["chapters"][chapterInd]["verses"].append({})
             book["chapters"][chapterInd]["verses"][verseInd]["content"]=verseContent.getRawData()
+            book["chapters"][chapterInd]["verses"][verseInd]["nbr"]=str(verseNbr)
             book["chapters"][chapterInd]["verses"][verseInd]["osisId"]="%s %s:%s"%(bookAbbr,chapter,verseNbr)
     return (book)
     
@@ -154,4 +164,7 @@ moduleName="MorphGNT"
 bookAbbr="Matt"
 rawBook=createBook(moduleName,bookAbbr)
 output = template.render(book=rawBook)
-print(output)
+
+
+with open("coin.html","w") as f:
+    f.write(output)
