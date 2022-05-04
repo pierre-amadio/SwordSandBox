@@ -4,7 +4,7 @@
 	
 <div type="book" osisID="{{book.name}}">
 {% for chapter in book.chapters -%} 
-	<chapter osisID="{{chapter.osisId}}">{{chapter.nbr}}
+	<chapter id="{{chapter.id}}">{{chapter.nbr}}
   {% if chapter.title %}
   <title type="chapter">{{chapter.title}}</title>
   {% endif %}

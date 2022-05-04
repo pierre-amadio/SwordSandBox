@@ -20,7 +20,7 @@
 
 """
 Assuming we have a book data structure like this:
-{ 'chapters': [ { 'osisId': 'Gen 1',
+{ 'chapters': [ { 'id': 'Gen-1',
                   'nbr':'1',
                   'title': 'The creation',
                   'verses': [ { 'content': 'in the beginning...',
@@ -29,7 +29,7 @@ Assuming we have a book data structure like this:
                               {'content': 'blablabla',
                                 'nbr':'2',
                                 'osisId': 'Gen 1:2'}]},
-                { 'osisId': 'Gen 2',
+                { 'id': 'Gen-2',
                   'nbr':'2',
                   'verses': [ {'content': 'blablabla 21',
                                 'nbr':'1',
@@ -46,8 +46,8 @@ import sys
 from jinja2 import Template,FileSystemLoader,Environment
 file_loader = FileSystemLoader("templates")
 env = Environment(loader=file_loader)
-template = env.get_template("book.xml")
-
+bookTemplate = env.get_template("book.xml")
+tocTemplate = env.get_template("toc.ncx")
 """
 This require python3 and sword 
 . ~/dev/swordstuff/bin/activate
@@ -142,11 +142,11 @@ def createBook(moduleName,bookAbbr):
     book["chapters"]=[]
     for chapterInd in range(getNbrChapter(moduleName,bookAbbr)):
         chapter=chapterInd+1
-        chapterAnchorId="%s-%s"%(bookName,chapter)
+        chapterAnchorId="%s-%s"%(bookAbbr,chapter)
 
         verseMax=getVerseMax(moduleName,bookAbbr,chapter)
         book["chapters"].append({})
-        book["chapters"][chapterInd]["osisId"]=chapterAnchorId
+        book["chapters"][chapterInd]["id"]=chapterAnchorId
         book["chapters"][chapterInd]["nbr"]=str(chapter)
         book["chapters"][chapterInd]["title"]=""
         book["chapters"][chapterInd]["verses"]=[]
@@ -163,8 +163,15 @@ def createBook(moduleName,bookAbbr):
 moduleName="MorphGNT"
 bookAbbr="Matt"
 rawBook=createBook(moduleName,bookAbbr)
-output = template.render(book=rawBook)
+output = bookTemplate.render(book=rawBook)
 
 
-with open("coin.html","w") as f:
+bookName=getInfoBasedOnAbbr(bookAbbr)["name"]
+with open("%s.html"%bookName,"w") as f:
     f.write(output)
+
+tocoutput=tocTemplate.render(toc=rawBook)
+with open("toc.ncx","w") as f:
+    f.write(tocoutput)
+
+

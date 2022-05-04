@@ -12,11 +12,14 @@
   <text>Unknown</text>
 </docTitle>
 <navMap>
-<navPoint id="navPoint-1" playOrder="1">
+{% for chapter in toc.chapters -%}	
+	<navPoint id="{{chapter.nbr}}" playOrder="{{chapter.nbr}}">
   <navLabel>
-    <text>Start</text>
+	  <text>Chapter {{chapter.nbr}}</text>
   </navLabel>
-  <content src="Text/Section0001.xhtml" />
-</navPoint>
+  <content src="Text/{{toc.bookname}}.html" />
+ </navPoint>
+{% endfor -%}
+
 </navMap>
 </ncx>
