@@ -1,0 +1,21 @@
+<html>
+<head></head>
+<body>
+	
+<div type="book" osisID="{{book.name}}">
+{% for chapter in book.chapters -%} 
+<chapter osisID="{{chapter.osisId}}">
+  {% if chapter.title %}
+  <title type="chapter">{{chapter.title}}</title>
+  {% endif %}
+  {% for verse in chapter.verses -%}
+  <verse osisID="{{verse.osisId}}">
+   {{verse.content}}
+  </verse>
+  {% endfor -%}
+</chapter>
+{% endfor -%}
+</div>
+
+</body>
+</html>

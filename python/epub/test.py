@@ -17,8 +17,30 @@
     along with This script.  If not, see <http://www.gnu.org/licenses/>.
 
 """
+
+"""
+Assuming we have a book data structure like this:
+{ 'chapters': [ { 'osisId': 'Gen 1',
+                  'title': 'The creation',
+                  'verses': [ { 'content': 'in the beginning...',
+                                'osisId': 'Gen 1:1'},
+                              {'content': 'blablabla',
+                                'osisId': 'Gen 1:2'}]},
+                { 'osisId': 'Gen 2',
+                  'verses': [ {'content': 'blablabla 21',
+                               'osisId': 'Gen 2:1'},
+                              { 'content': 'blablabla 22',
+                                'osisId': 'Gen 2:2'}]}],
+  'name': 'Genesis'}
+"""
+
+
 import Sword
 import sys
+from jinja2 import Template,FileSystemLoader,Environment
+file_loader = FileSystemLoader("templates")
+env = Environment(loader=file_loader)
+template = env.get_template("book.xml")
 
 """
 This require python3 and sword 
@@ -107,16 +129,29 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
     return mod.renderText()
 
 def createBook(moduleName,bookAbbr):
-    print(moduleName,bookAbbr)
+    bookName=getInfoBasedOnAbbr(bookAbbr)["name"]
+    
+    book={}
+    book["name"]=bookName
+    book["chapters"]=[]
     for chapterInd in range(getNbrChapter(moduleName,bookAbbr)):
         chapter=chapterInd+1
+        verseMax=getVerseMax(moduleName,bookAbbr,chapter)
+        book["chapters"].append({})
+        book["chapters"][chapterInd]["osisId"]="%s %s"%(bookName,chapter)
+        book["chapters"][chapterInd]["title"]=""
+        book["chapters"][chapterInd]["verses"]=[]
 
-        verseNbr=getVerseMax(moduleName,bookAbbr,chapter)
-        print(chapter,verseNbr)
-        verse=get_verse(bookAbbr,chapter,verseNbr,moduleName,outputType=Sword.FMT_HTML)
-        print(verse)
-
-
+        for verseInd in range(verseMax):
+            verseNbr=verseInd+1
+            verseContent=get_verse(bookAbbr,chapter,verseNbr,moduleName,outputType=Sword.FMT_XHTML)
+            book["chapters"][chapterInd]["verses"].append({})
+            book["chapters"][chapterInd]["verses"][verseInd]["content"]=verseContent.getRawData()
+            book["chapters"][chapterInd]["verses"][verseInd]["osisId"]="%s %s:%s"%(bookAbbr,chapter,verseNbr)
+    return (book)
+    
 moduleName="MorphGNT"
 bookAbbr="Matt"
-createBook(moduleName,bookAbbr)
+rawBook=createBook(moduleName,bookAbbr)
+output = template.render(book=rawBook)
+print(output)

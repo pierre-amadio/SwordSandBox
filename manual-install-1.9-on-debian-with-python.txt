@@ -62,6 +62,8 @@ virtualenv -p /usr/bin/python3.9 ~/dev/swordstuff
 #pip install bs4
 #pip3 install bs4
 ~/dev/swordstuff/bin/python3.9  -m pip install bs4
+~/dev/swordstuff/bin/python3.9  -m pip install jinja2
+
 
 ###################
 # Check you can import the needed modules:
