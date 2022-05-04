@@ -17,7 +17,7 @@
   <navLabel>
 	  <text>Chapter {{chapter.nbr}}</text>
   </navLabel>
-  <content src="Text/{{toc.bookname}}.html" />
+  <content src="Text/{{toc.name}}.html#{{chapter.id}}" />
  </navPoint>
 {% endfor -%}
 
