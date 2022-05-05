@@ -12,3 +12,14 @@
   //height: 100%;
 
 }
+
+@font-face {
+  font-family: "Gentium Plus"; 
+  src: url("../Fonts/GentiumPlus-Regular.ttf");
+}
+
+body {
+  font-family: "Gentium Plus"; 
+     /* font-family: "Cardo"; */
+    /* fall back to sans serif so that it's really obvious if the fonts don't load */
+}
