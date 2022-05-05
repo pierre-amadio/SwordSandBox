@@ -19,6 +19,13 @@
 """
 
 """
+This require python3 and sword 
+. ~/dev/swordstuff/bin/activate
+. ~/dev/swordstuff/env-sword.sh
+"""
+
+
+"""
 Assuming we have a book data structure like this:
 { 'chapters': [ { 'id': 'Gen-1',
                   'nbr':'1',
@@ -48,11 +55,7 @@ file_loader = FileSystemLoader("templates")
 env = Environment(loader=file_loader)
 bookTemplate = env.get_template("book.xml")
 tocTemplate = env.get_template("toc.ncx")
-"""
-This require python3 and sword 
-. ~/dev/swordstuff/bin/activate
-. ~/dev/swordstuff/env-sword.sh
-"""
+
 
 def getAllBooks(versification="KJV"):
     """
