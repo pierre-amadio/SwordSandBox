@@ -1,3 +1,5 @@
+tag:Ps-chapter-138 -is:review
+
 Psalm:117 (score=175.78571428571428)
 Psalm:100 (score=118.97058823529412)
 Psalm:134 (score=117.5)
@@ -15,6 +17,7 @@ Psalm:130 (score=85.62162162162163)
 Psalm:14 (score=84.19298245614036)
 Psalm:47 (score=82.51063829787235)
 Psalm:99 (score=82.5)
+
 Psalm:128 (score=80.47222222222223)
 Psalm:70 (score=80.21052631578948)
 Psalm:133 (score=79.90625)

@@ -87,8 +87,7 @@ def getInfoBasedOnAbbr(abbr):
             return cur
     sys.exit("no such book : %s"%abbr)
 
-def getVerseMax(moduleName,bookName,chapterNbr):
-    mgr = Sword.SWMgr()
+def getVerseMax(moduleName,bookName,chapterNbr,mgr):
     mod=mgr.getModule(moduleName)
     versification=mod.getConfigEntry("Versification")
     vk=Sword.VerseKey()
@@ -97,8 +96,7 @@ def getVerseMax(moduleName,bookName,chapterNbr):
     vk.setChapter(chapterNbr)
     return vk.getVerseMax()
 
-def getNbrChapter(moduleName,bookAbbr):
-    mgr = Sword.SWMgr()
+def getNbrChapter(moduleName,bookAbbr,mgr):
     mod=mgr.getModule(moduleName)
     versification=mod.getConfigEntry("Versification")
     vk=Sword.VerseKey()
@@ -110,11 +108,7 @@ def getNbrChapter(moduleName,bookAbbr):
     nbrChapter=vk.chapterCount(targetBook['testament'],targetBook['bookCount'])
     return nbrChapter
 
-def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN):
-    markup=Sword.MarkupFilterMgr(outputType)
-    markup.thisown=False
-    mgr = Sword.SWMgr(markup)
-
+def get_verse(bookStr,chapterInt,verseNbr,moduleName,mgr):
     mod=mgr.getModule(moduleName)
     versification=mod.getConfigEntry("Versification")
     vk=Sword.VerseKey()
@@ -127,6 +121,9 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
     mgr.setGlobalOption("Hebrew Vowel Points", "On")
     mgr.setGlobalOption("Hebrew Cantillation", "On")
     mgr.setGlobalOption("Strong's Numbers", "Off")
+    mgr.setGlobalOption("Headings", "Off")
+    mgr.setGlobalOption("Footnotes", "On")
+    mgr.setGlobalOption("Textual Variants", "Off")
     mgr.setGlobalOption("Morphological Tags", "Off")
     mgr.setGlobalOption("Lemmas", "Off")
     mgr.setGlobalOption("Greek Accents", "On")
@@ -137,17 +134,17 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,outputType=Sword.FMT_PLAIN)
         sys.exit()
     return mod.renderText()
 
-def createBook(moduleName,bookAbbr):
+def createBook(moduleName,bookAbbr,mgr):
     bookName=getInfoBasedOnAbbr(bookAbbr)["name"]
     
     book={}
     book["name"]=bookName
     book["chapters"]=[]
-    for chapterInd in range(getNbrChapter(moduleName,bookAbbr)):
+    for chapterInd in range(getNbrChapter(moduleName,bookAbbr,mgr)):
         chapter=chapterInd+1
         chapterAnchorId="%s-%s"%(bookAbbr,chapter)
 
-        verseMax=getVerseMax(moduleName,bookAbbr,chapter)
+        verseMax=getVerseMax(moduleName,bookAbbr,chapter,mgr)
         book["chapters"].append({})
         book["chapters"][chapterInd]["id"]=chapterAnchorId
         book["chapters"][chapterInd]["nbr"]=str(chapter)
@@ -156,19 +153,25 @@ def createBook(moduleName,bookAbbr):
 
         for verseInd in range(verseMax):
             verseNbr=verseInd+1
-            verseContent=get_verse(bookAbbr,chapter,verseNbr,moduleName,outputType=Sword.FMT_XHTML)
+            verseContent=get_verse(bookAbbr,chapter,verseNbr,moduleName,mgr)
             book["chapters"][chapterInd]["verses"].append({})
             book["chapters"][chapterInd]["verses"][verseInd]["content"]=verseContent.getRawData()
             book["chapters"][chapterInd]["verses"][verseInd]["nbr"]=str(verseNbr)
             book["chapters"][chapterInd]["verses"][verseInd]["osisId"]="%s %s:%s"%(bookAbbr,chapter,verseNbr)
     return (book)
     
-moduleName="MorphGNT"
-bookAbbr="Matt"
-rawBook=createBook(moduleName,bookAbbr)
+moduleName="SBLGNT"
+bookAbbr="Mark"
+outputType=Sword.FMT_XHTML
+markup=Sword.MarkupFilterMgr(outputType)
+markup.thisown=False
+mgr = Sword.SWMgr(markup)
+
+
+rawBook=createBook(moduleName,bookAbbr,mgr)
+
+
 output = bookTemplate.render(book=rawBook)
-
-
 bookName=getInfoBasedOnAbbr(bookAbbr)["name"]
 with open("%s.html"%bookName,"w") as f:
     f.write(output)
