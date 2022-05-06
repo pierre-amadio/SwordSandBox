@@ -203,7 +203,7 @@ for cur in getAllBooks(versification):
       curChapter={}
       curChapter["navpointId"]=uniqueID
       uniqueID+=1
-      curChapter["playorderId"]=uniqueID
+      curChapter["playOrderId"]=uniqueID
       uniqueID+=1
       curChapter["name"]="%s-%s"%(curBook["name"],nbrChapter)
       curChapter["file"]="Text/%s-%s.html"%(cur["abbr"],nbrChapter)
