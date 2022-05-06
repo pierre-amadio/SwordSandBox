@@ -22,6 +22,26 @@
 This require python3 and sword 
 . ~/dev/swordstuff/bin/activate
 . ~/dev/swordstuff/env-sword.sh
+
+Be sure moduleName is set to match the module you want to use. 
+Be sure there is a html directory created in the current directory.
+Launch the script, this will fill the html directories with chapter for all book of the newt testament and create a table of content in ./toc.ncx
+
+Downlod the greek font
+https://software.sil.org/downloads/r/gentium/GentiumPlus-6.101.zip
+Let's use GentiumPlus-6.101/GentiumPlus-Regular.ttf
+
+Start sigil
+Add all the html files in the Text dir.
+Remove the default Section001.xhtml
+
+It looks like the Styles/style.css file has been imported automatically: double check just in case.
+Add the font ttf file in the font directory.
+
+Add the content of the toc.ncx file in the existing toc.ncx
+
+In content.opf change title and language (grc)
+
 """
 
 
@@ -193,16 +213,13 @@ for cur in getAllBooks(versification):
     curBook["file"]="Text/%s-1.html"%cur["abbr"]
     curBook["name"]=tmpContent["name"]
     curBook["navpointId"]=uniqueID
-    uniqueID+=1
     curBook["playOrderId"]=uniqueID
     uniqueID+=1
     curBook["chapters"]=[]
     for chapter in tmpContent["chapters"]:
       nbrChapter=chapter["nbr"]
-      print("nbr=",nbrChapter)
       curChapter={}
       curChapter["navpointId"]=uniqueID
-      uniqueID+=1
       curChapter["playOrderId"]=uniqueID
       uniqueID+=1
       curChapter["name"]="%s-%s"%(curBook["name"],nbrChapter)
@@ -211,10 +228,6 @@ for cur in getAllBooks(versification):
     toc.append(curBook)
 
 
-
-print(toc)
-for book in toc:
-  print(book)
 
 
 tocTemplate = env.get_template("toc.ncx")
