@@ -25,37 +25,17 @@ This require python3 and sword
 """
 
 
-"""
-Assuming we have a book data structure like this:
-{ 'chapters': [ { 'id': 'Gen-1',
-                  'nbr':'1',
-                  'title': 'The creation',
-                  'verses': [ { 'content': 'in the beginning...',
-                                'nbr':'1',
-                                'osisId': 'Gen 1:1'},
-                              {'content': 'blablabla',
-                                'nbr':'2',
-                                'osisId': 'Gen 1:2'}]},
-                { 'id': 'Gen-2',
-                  'nbr':'2',
-                  'verses': [ {'content': 'blablabla 21',
-                                'nbr':'1',
-                               'osisId': 'Gen 2:1'},
-                              { 'content': 'blablabla 22',
-                                'nbr':'2',
-                                'osisId': 'Gen 2:2'}]}],
-  'name': 'Genesis'}
-"""
-
 
 import Sword
 import sys
 from jinja2 import Template,FileSystemLoader,Environment
 file_loader = FileSystemLoader("templates")
 env = Environment(loader=file_loader)
+
+"""
 bookTemplate = env.get_template("book.xml")
 tocTemplate = env.get_template("toc.ncx")
-
+"""
 
 def getAllBooks(versification="KJV"):
     """
@@ -134,7 +114,7 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,mgr):
         sys.exit()
     return mod.renderText()
 
-def createBook(moduleName,bookAbbr,mgr):
+def OLDcreateBook(moduleName,bookAbbr,mgr):
     bookName=getInfoBasedOnAbbr(bookAbbr)["name"]
     
     book={}
@@ -159,18 +139,93 @@ def createBook(moduleName,bookAbbr,mgr):
             book["chapters"][chapterInd]["verses"][verseInd]["nbr"]=str(verseNbr)
             book["chapters"][chapterInd]["verses"][verseInd]["osisId"]="%s %s:%s"%(bookAbbr,chapter,verseNbr)
     return (book)
-    
-moduleName="SBLGNT"
-bookAbbr="Mark"
-outputType=Sword.FMT_XHTML
+
+def createChapter(moduleName,bookAbbr,mgr,chapter):
+  print("Let s create ",bookAbbr,chapter)
+  verseMax=getVerseMax(moduleName,bookAbbr,chapter,mgr)
+  curChapter={}
+  curChapter["id"]="%s-%s"%(bookAbbr,chapter)
+  curChapter["nbr"]=chapter
+  curChapter["verses"]=[]
+  for verseInd in range(verseMax):
+    verseNbr=verseInd+1
+    verseContent=get_verse(bookAbbr,chapter,verseNbr,moduleName,mgr)
+    curChapter["verses"].append({})
+    curChapter["verses"][verseInd]["content"]=verseContent.getRawData()
+    curChapter["verses"][verseInd]["nbr"]=str(verseNbr)
+    curChapter["verses"][verseInd]["osisId"]="%s %s:%s"%(bookAbbr,chapter,verseNbr)
+
+  chapterTemplate = env.get_template("chapter.html")
+  chapterOutput = chapterTemplate.render(chapter=curChapter)
+  fileOutput="html/%s-%s.html"%(bookAbbr,chapter)
+  with open(fileOutput,"w") as f:
+      f.write(chapterOutput)
+  return(curChapter)
+
+def createBook(moduleName,bookAbbr,mgr):
+    bookName=getInfoBasedOnAbbr(bookAbbr)["name"]
+    book={}
+    book["name"]=bookName
+    book["chapters"]=[]
+    for chapterInd in range(getNbrChapter(moduleName,bookAbbr,mgr)):
+      chapter=chapterInd+1
+      book["chapters"].append(createChapter(moduleName,bookAbbr,mgr,chapter))
+    return(book)
+
+
+outputType=Sword.FMT_HTML
 markup=Sword.MarkupFilterMgr(outputType)
 markup.thisown=False
 mgr = Sword.SWMgr(markup)
 
+moduleName="SBLGNT"
 
+mod=mgr.getModule(moduleName)
+versification=mod.getConfigEntry("Versification")
+
+toc=[]
+nbrBook=0
+uniqueID=0
+for cur in getAllBooks(versification):
+  if cur['testament']==2:
+    tmpContent=createBook(moduleName,cur["abbr"],mgr)
+    curBook={}
+    curBook["file"]="Text/%s-1.html"%cur["abbr"]
+    curBook["name"]=tmpContent["name"]
+    curBook["navpointId"]=uniqueID
+    uniqueID+=1
+    curBook["playOrderId"]=uniqueID
+    uniqueID+=1
+    curBook["chapters"]=[]
+    for chapter in tmpContent["chapters"]:
+      nbrChapter=chapter["nbr"]
+      print("nbr=",nbrChapter)
+      curChapter={}
+      curChapter["navpointId"]=uniqueID
+      uniqueID+=1
+      curChapter["playorderId"]=uniqueID
+      uniqueID+=1
+      curChapter["name"]="%s-%s"%(curBook["name"],nbrChapter)
+      curChapter["file"]="Text/%s-%s.html"%(cur["abbr"],nbrChapter)
+      curBook["chapters"].append(curChapter)
+    toc.append(curBook)
+
+
+
+print(toc)
+for book in toc:
+  print(book)
+
+
+tocTemplate = env.get_template("toc.ncx")
+tocOutput = tocTemplate.render(books=toc)
+fileOutput="toc.ncx"
+with open(fileOutput,"w") as f:
+  f.write(tocOutput)
+
+
+"""
 rawBook=createBook(moduleName,bookAbbr,mgr)
-
-
 output = bookTemplate.render(book=rawBook)
 bookName=getInfoBasedOnAbbr(bookAbbr)["name"]
 with open("%s.html"%bookName,"w") as f:
@@ -179,5 +234,5 @@ with open("%s.html"%bookName,"w") as f:
 tocoutput=tocTemplate.render(toc=rawBook)
 with open("toc.ncx","w") as f:
     f.write(tocoutput)
-
+"""
 

@@ -19,7 +19,5 @@
 }
 
 body {
-  font-family: "Gentium Plus"; 
-     /* font-family: "Cardo"; */
-    /* fall back to sans serif so that it's really obvious if the fonts don't load */
+   font-family: "Gentium Plus"; 
 }
