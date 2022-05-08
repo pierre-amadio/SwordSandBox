@@ -52,11 +52,6 @@ from jinja2 import Template,FileSystemLoader,Environment
 file_loader = FileSystemLoader("templates")
 env = Environment(loader=file_loader)
 
-"""
-bookTemplate = env.get_template("book.xml")
-tocTemplate = env.get_template("toc.ncx")
-"""
-
 def getAllBooks(versification="KJV"):
     """
      Return an array:
@@ -133,32 +128,6 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,mgr):
         print("No module")
         sys.exit()
     return mod.renderText()
-
-def OLDcreateBook(moduleName,bookAbbr,mgr):
-    bookName=getInfoBasedOnAbbr(bookAbbr)["name"]
-    
-    book={}
-    book["name"]=bookName
-    book["chapters"]=[]
-    for chapterInd in range(getNbrChapter(moduleName,bookAbbr,mgr)):
-        chapter=chapterInd+1
-        chapterAnchorId="%s-%s"%(bookAbbr,chapter)
-
-        verseMax=getVerseMax(moduleName,bookAbbr,chapter,mgr)
-        book["chapters"].append({})
-        book["chapters"][chapterInd]["id"]=chapterAnchorId
-        book["chapters"][chapterInd]["nbr"]=str(chapter)
-        book["chapters"][chapterInd]["title"]=""
-        book["chapters"][chapterInd]["verses"]=[]
-
-        for verseInd in range(verseMax):
-            verseNbr=verseInd+1
-            verseContent=get_verse(bookAbbr,chapter,verseNbr,moduleName,mgr)
-            book["chapters"][chapterInd]["verses"].append({})
-            book["chapters"][chapterInd]["verses"][verseInd]["content"]=verseContent.getRawData()
-            book["chapters"][chapterInd]["verses"][verseInd]["nbr"]=str(verseNbr)
-            book["chapters"][chapterInd]["verses"][verseInd]["osisId"]="%s %s:%s"%(bookAbbr,chapter,verseNbr)
-    return (book)
 
 def createChapter(moduleName,bookAbbr,mgr,chapter):
   print("Let s create ",bookAbbr,chapter)
