@@ -77,7 +77,7 @@ def getInfoBasedOnAbbr(abbr):
     """
     Return info related to a book based on its abbreviation (ie 'Gen')
     """
-    for cur in getAllBooks():
+    for cur in getAllBooks(versification):
         if cur['abbr']==abbr:
             return cur
     sys.exit("no such book : %s"%abbr)
@@ -130,7 +130,8 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,mgr):
     return mod.renderText()
 
 def bookPrefix(bookAbbr):
-    cnt=-38
+    """cnt=-38"""
+    cnt=1
     for b in getAllBooks(versification):
         if b["abbr"]==bookAbbr:
             return(cnt)
@@ -140,7 +141,6 @@ def bookPrefix(bookAbbr):
 
 
 def createChapter(moduleName,bookAbbr,mgr,chapter):
-    print("Let s create ",bookAbbr,chapter)
     verseMax=getVerseMax(moduleName,bookAbbr,chapter,mgr)
     curChapter={}
     curChapter["id"]="%s-%s"%(bookAbbr,chapter)
@@ -181,7 +181,8 @@ markup=Sword.MarkupFilterMgr(outputType)
 markup.thisown=False
 mgr = Sword.SWMgr(markup)
 
-moduleName="SBLGNT"
+""" moduleName="SBLGNT" """
+moduleName="FreCrampon"
 
 mod=mgr.getModule(moduleName)
 versification=mod.getConfigEntry("Versification")
@@ -190,14 +191,15 @@ toc=[]
 nbrBook=0
 uniqueID=0
 for cur in getAllBooks(versification):
-  if cur['testament']==2:
+  if cur['testament']<=2:
     tmpContent=createBook(moduleName,cur["abbr"],mgr)
+    prefix=bookPrefix(cur["abbr"])
     curBook={}
-    curBook["file"]="Text/%s-1.html"%cur["abbr"]
+    curBook["file"]="Text/%02d-%s-1.html"%(prefix,cur["abbr"])
     curBook["name"]=tmpContent["name"]
+    print(curBook["name"])
     curBook["navpointId"]=uniqueID
     curBook["playOrderId"]=uniqueID
-    prefix=bookPrefix(cur["abbr"])
     uniqueID+=1
     curBook["chapters"]=[]
     for chapter in tmpContent["chapters"]:
