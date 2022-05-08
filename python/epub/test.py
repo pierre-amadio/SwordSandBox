@@ -129,27 +129,41 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,mgr):
         sys.exit()
     return mod.renderText()
 
-def createChapter(moduleName,bookAbbr,mgr,chapter):
-  print("Let s create ",bookAbbr,chapter)
-  verseMax=getVerseMax(moduleName,bookAbbr,chapter,mgr)
-  curChapter={}
-  curChapter["id"]="%s-%s"%(bookAbbr,chapter)
-  curChapter["nbr"]=chapter
-  curChapter["verses"]=[]
-  for verseInd in range(verseMax):
-    verseNbr=verseInd+1
-    verseContent=get_verse(bookAbbr,chapter,verseNbr,moduleName,mgr)
-    curChapter["verses"].append({})
-    curChapter["verses"][verseInd]["content"]=verseContent.getRawData()
-    curChapter["verses"][verseInd]["nbr"]=str(verseNbr)
-    curChapter["verses"][verseInd]["osisId"]="%s %s:%s"%(bookAbbr,chapter,verseNbr)
+def bookPrefix(bookAbbr):
+    cnt=-38
+    for b in getAllBooks(versification):
+        if b["abbr"]==bookAbbr:
+            return(cnt)
+        cnt+=1
+    return 0
 
-  chapterTemplate = env.get_template("chapter.html")
-  chapterOutput = chapterTemplate.render(chapter=curChapter)
-  fileOutput="html/%s-%s.html"%(bookAbbr,chapter)
-  with open(fileOutput,"w") as f:
-      f.write(chapterOutput)
-  return(curChapter)
+
+
+def createChapter(moduleName,bookAbbr,mgr,chapter):
+    print("Let s create ",bookAbbr,chapter)
+    verseMax=getVerseMax(moduleName,bookAbbr,chapter,mgr)
+    curChapter={}
+    curChapter["id"]="%s-%s"%(bookAbbr,chapter)
+    curChapter["nbr"]=chapter
+    curChapter["verses"]=[]
+
+    prefix=bookPrefix(bookAbbr)
+
+    for verseInd in range(verseMax):
+      verseNbr=verseInd+1
+      verseContent=get_verse(bookAbbr,chapter,verseNbr,moduleName,mgr)
+      curChapter["verses"].append({})
+      curChapter["verses"][verseInd]["content"]=verseContent.getRawData()
+      curChapter["verses"][verseInd]["nbr"]=str(verseNbr)
+      curChapter["verses"][verseInd]["osisId"]="%s %s:%s"%(bookAbbr,chapter,verseNbr)
+
+    chapterTemplate = env.get_template("chapter.html")
+    chapterOutput = chapterTemplate.render(chapter=curChapter)
+    """ fileOutput="html/%s-%s.html"%(bookAbbr,chapter) """
+    fileOutput="html/%02d-%s-%s.html"%(int(prefix),bookAbbr,chapter) 
+    with open(fileOutput,"w") as f:
+        f.write(chapterOutput)
+    return(curChapter)
 
 def createBook(moduleName,bookAbbr,mgr):
     bookName=getInfoBasedOnAbbr(bookAbbr)["name"]
@@ -183,6 +197,7 @@ for cur in getAllBooks(versification):
     curBook["name"]=tmpContent["name"]
     curBook["navpointId"]=uniqueID
     curBook["playOrderId"]=uniqueID
+    prefix=bookPrefix(cur["abbr"])
     uniqueID+=1
     curBook["chapters"]=[]
     for chapter in tmpContent["chapters"]:
@@ -192,7 +207,7 @@ for cur in getAllBooks(versification):
       curChapter["playOrderId"]=uniqueID
       uniqueID+=1
       curChapter["name"]="%s-%s"%(curBook["name"],nbrChapter)
-      curChapter["file"]="Text/%s-%s.html"%(cur["abbr"],nbrChapter)
+      curChapter["file"]="Text/%02d-%s-%s.html"%(prefix,cur["abbr"],nbrChapter)
       curBook["chapters"].append(curChapter)
     toc.append(curBook)
 
