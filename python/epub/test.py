@@ -117,7 +117,7 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,mgr):
     mgr.setGlobalOption("Hebrew Cantillation", "On")
     mgr.setGlobalOption("Strong's Numbers", "Off")
     mgr.setGlobalOption("Headings", "Off")
-    mgr.setGlobalOption("Footnotes", "On")
+    mgr.setGlobalOption("Footnotes", "Off")
     mgr.setGlobalOption("Textual Variants", "Off")
     mgr.setGlobalOption("Morphological Tags", "Off")
     mgr.setGlobalOption("Lemmas", "Off")
