@@ -130,8 +130,8 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,mgr):
     return mod.renderText()
 
 def bookPrefix(bookAbbr):
-    """cnt=-38"""
-    cnt=1
+    cnt=-38
+    """ cnt=1"""
     for b in getAllBooks(versification):
         if b["abbr"]==bookAbbr:
             return(cnt)
@@ -181,8 +181,8 @@ markup=Sword.MarkupFilterMgr(outputType)
 markup.thisown=False
 mgr = Sword.SWMgr(markup)
 
-""" moduleName="SBLGNT" """
-moduleName="FreCrampon"
+moduleName="SBLGNT" 
+""" moduleName="FreCrampon" """
 
 mod=mgr.getModule(moduleName)
 versification=mod.getConfigEntry("Versification")
