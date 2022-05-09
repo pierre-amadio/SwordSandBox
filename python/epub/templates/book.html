@@ -6,13 +6,8 @@
 <link rel="stylesheet" type="text/css" href="../Styles/style.css"/>
 </head>
 <body>
+	
+<div id="newBook"><H1>{{book.name}}</H1></div>
 
-<div>
-<H2>{{chapter.nbr}}</H2>
-  {% for verse in chapter.verses -%}
-	  <span class="verseNbr">{{verse.nbr}}</span>
-   {{verse.content}}
-  {% endfor -%}
-</div>
 </body>
 </html>

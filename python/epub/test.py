@@ -170,13 +170,23 @@ def createBook(moduleName,bookAbbr,mgr):
     book={}
     book["name"]=bookName
     book["chapters"]=[]
+
+    prefix=bookPrefix(bookAbbr)
+    bookTemplate = env.get_template("book.html")
+    bookOutput = bookTemplate.render(book=book)
+    """ fileOutput="html/%s-%s.html"%(bookAbbr,chapter) """
+    fileOutput="html/%02d-%s.html"%(int(prefix),bookAbbr) 
+    with open(fileOutput,"w") as f:
+        f.write(bookOutput)
+ 
+
     for chapterInd in range(getNbrChapter(moduleName,bookAbbr,mgr)):
       chapter=chapterInd+1
       book["chapters"].append(createChapter(moduleName,bookAbbr,mgr,chapter))
     return(book)
 
 
-outputType=Sword.FMT_HTML
+outputType=Sword.FMT_PLAIN
 markup=Sword.MarkupFilterMgr(outputType)
 markup.thisown=False
 mgr = Sword.SWMgr(markup)
@@ -191,11 +201,11 @@ toc=[]
 nbrBook=0
 uniqueID=0
 for cur in getAllBooks(versification):
-  if cur['testament']<=2:
+  if cur['testament']==2:
     tmpContent=createBook(moduleName,cur["abbr"],mgr)
     prefix=bookPrefix(cur["abbr"])
     curBook={}
-    curBook["file"]="Text/%02d-%s-1.html"%(prefix,cur["abbr"])
+    curBook["file"]="Text/%02d-%s.html"%(prefix,cur["abbr"])
     curBook["name"]=tmpContent["name"]
     print(curBook["name"])
     curBook["navpointId"]=uniqueID
