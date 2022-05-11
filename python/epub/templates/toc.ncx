@@ -1,13 +1,17 @@
+
 {% for book in books -%}
 <navPoint id="navPoint-{{book.navpointId}}" playOrder="{{book.playOrderId}}">
 <navLabel><text>{{book.name}}</text></navLabel>
-<content src="{{book.file}}"/>
+<content src="Text/{{book.file}}"/>
+{% if book.chapters|length %}
 {%for chapter in book.chapters -%}
 <navPoint id="navPoint-{{chapter.navpointId}}" playOrder="{{chapter.playOrderId}}">
 <navLabel><text>{{chapter.name}}</text></navLabel>
-<content src="{{chapter.file}}"/>
+<content src="Text/{{chapter.file}}"/>
 </navPoint>
 {% endfor -%}
+{% endif -%}
 </navPoint>
+
 {% endfor -%}
 

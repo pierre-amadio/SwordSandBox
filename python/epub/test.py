@@ -43,14 +43,13 @@ Add the content of the toc.ncx file in the existing toc.ncx
 In content.opf change title and language (grc)
 
 """
-
-
-
 import Sword
 import sys
 from jinja2 import Template,FileSystemLoader,Environment
 file_loader = FileSystemLoader("templates")
 env = Environment(loader=file_loader)
+
+
 
 def getAllBooks(versification="KJV"):
     """
@@ -108,7 +107,6 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,mgr):
     versification=mod.getConfigEntry("Versification")
     vk=Sword.VerseKey()
     vk.setVersificationSystem(versification)
-    #vk.setTestament() ??
     vk.setBookName(bookStr)
     vk.setChapter(chapterInt)
     vk.setVerse(verseNbr)
@@ -130,8 +128,11 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,mgr):
     return mod.renderText()
 
 def bookPrefix(bookAbbr):
-    cnt=-38
-    """ cnt=1"""
+    """
+     cnt => -38 for full bible (Crampon)
+              1 for greek new testament
+    """
+    cnt=1
     for b in getAllBooks(versification):
         if b["abbr"]==bookAbbr:
             return(cnt)
@@ -147,7 +148,7 @@ def createChapter(moduleName,bookAbbr,mgr,chapter):
     curChapter["nbr"]=chapter
     curChapter["verses"]=[]
 
-    prefix=bookPrefix(bookAbbr)
+    prefix=bookPrefix(bookAbbr)+tocOffset
 
     for verseInd in range(verseMax):
       verseNbr=verseInd+1
@@ -171,7 +172,7 @@ def createBook(moduleName,bookAbbr,mgr):
     book["name"]=bookName
     book["chapters"]=[]
 
-    prefix=bookPrefix(bookAbbr)
+    prefix=bookPrefix(bookAbbr)+tocOffset
     bookTemplate = env.get_template("book.html")
     bookOutput = bookTemplate.render(book=book)
     """ fileOutput="html/%s-%s.html"%(bookAbbr,chapter) """
@@ -191,23 +192,36 @@ markup=Sword.MarkupFilterMgr(outputType)
 markup.thisown=False
 mgr = Sword.SWMgr(markup)
 
-moduleName="SBLGNT" 
-""" moduleName="FreCrampon" """
+""" moduleName="SBLGNT"  """
+moduleName="FreCrampon"
 
 mod=mgr.getModule(moduleName)
 versification=mod.getConfigEntry("Versification")
 
 toc=[]
-nbrBook=0
-uniqueID=0
+toc.append({
+    "navpointId":"1",
+    "playOrderId":"1",
+    "name":"Table Of Contents",
+    "file":"01-TOC.html"
+    })
+
+toc.append({
+    "navpointId":"2",
+    "playOrderId":"2",
+    "name":"Foreword",
+    "file":"02-Foreword.html"
+    })
+tocOffset=2
+
+uniqueID=tocOffset+1
 for cur in getAllBooks(versification):
-  if cur['testament']==2:
+  if cur['testament']<=2:
     tmpContent=createBook(moduleName,cur["abbr"],mgr)
-    prefix=bookPrefix(cur["abbr"])
+    prefix=int(bookPrefix(cur["abbr"]))+tocOffset
     curBook={}
     curBook["file"]="Text/%02d-%s.html"%(prefix,cur["abbr"])
     curBook["name"]=tmpContent["name"]
-    print(curBook["name"])
     curBook["navpointId"]=uniqueID
     curBook["playOrderId"]=uniqueID
     uniqueID+=1
@@ -232,16 +246,12 @@ fileOutput="toc.ncx"
 with open(fileOutput,"w") as f:
   f.write(tocOutput)
 
+htmlTocTemplate = env.get_template("TOC.html")
+htmlTocOutput = htmlTocTemplate.render(books=toc)
+fileOutput="html/01-TOC.html"
+with open(fileOutput,"w") as f:
+  f.write(htmlTocOutput)
 
-"""
-rawBook=createBook(moduleName,bookAbbr,mgr)
-output = bookTemplate.render(book=rawBook)
-bookName=getInfoBasedOnAbbr(bookAbbr)["name"]
-with open("%s.html"%bookName,"w") as f:
-    f.write(output)
 
-tocoutput=tocTemplate.render(toc=rawBook)
-with open("toc.ncx","w") as f:
-    f.write(tocoutput)
-"""
+
 
