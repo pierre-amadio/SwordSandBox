@@ -171,7 +171,12 @@ def createChapter(moduleName,bookAbbr,mgr,chapter):
 def createBook(moduleName,bookAbbr,mgr):
     bookName=getInfoBasedOnAbbr(bookAbbr)["name"]
     book={}
-    book["name"]=bookName
+
+    if(moduleLang=="fr"):
+        config=Sword.SWConfig("/usr/share/sword/locales.d/fr-utf8.conf")
+        book["name"]=config.get("Text",bookName)
+    else:
+        book["name"]=bookName
     book["chapters"]=[]
 
     prefix=bookPrefix(bookAbbr)+tocOffset
@@ -194,11 +199,12 @@ markup=Sword.MarkupFilterMgr(outputType)
 markup.thisown=False
 mgr = Sword.SWMgr(markup)
 
-moduleName="SBLGNT"  
-""" moduleName="FreCrampon" """
+""" moduleName="SBLGNT"   """
+moduleName="FreCrampon" 
 
 mod=mgr.getModule(moduleName)
 versification=mod.getConfigEntry("Versification")
+moduleLang=mod.getConfigEntry("Lang")
 
 toc=[]
 toc.append({
