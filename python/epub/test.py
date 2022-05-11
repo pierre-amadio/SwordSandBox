@@ -31,10 +31,13 @@ Downlod the greek font
 https://software.sil.org/downloads/r/gentium/GentiumPlus-6.101.zip
 Let's use GentiumPlus-6.101/GentiumPlus-Regular.ttf
 
+Launch the script
+Also add the foreword:
+cp templates/Foreword.html  html/02-Foreword.html
+
+
 Start sigil
 Add all the html files in the Text dir.
-Also add the foreword:
-cp templates/Foreword.html as html/02-Foreword.html
 Remove the default Section001.xhtml
 
 It looks like the Styles/style.css file has been imported automatically: double check just in case.
@@ -130,10 +133,6 @@ def get_verse(bookStr,chapterInt,verseNbr,moduleName,mgr):
     return mod.renderText()
 
 def bookPrefix(bookAbbr):
-    """
-     cnt => -38 for full bible (Crampon)
-              1 for greek new testament
-    """
     cnt=1
     for b in getAllBooks(versification):
         if b["abbr"]==bookAbbr:
@@ -224,11 +223,11 @@ tocOffset=2
 
 uniqueID=tocOffset+1
 for cur in getAllBooks(versification):
-  if cur['testament']==2:
+  if cur['testament']<=2:
     tmpContent=createBook(moduleName,cur["abbr"],mgr)
     prefix=int(bookPrefix(cur["abbr"]))+tocOffset
     curBook={}
-    curBook["file"]="Text/%02d-%s.html"%(prefix,cur["abbr"])
+    curBook["file"]="%02d-%s.html"%(prefix,cur["abbr"])
     curBook["name"]=tmpContent["name"]
     curBook["navpointId"]=uniqueID
     curBook["playOrderId"]=uniqueID
@@ -241,7 +240,7 @@ for cur in getAllBooks(versification):
       curChapter["playOrderId"]=uniqueID
       uniqueID+=1
       curChapter["name"]="%s-%s"%(curBook["name"],nbrChapter)
-      curChapter["file"]="Text/%02d-%s-%s.html"%(prefix,cur["abbr"],nbrChapter)
+      curChapter["file"]="%02d-%s-%s.html"%(prefix,cur["abbr"],nbrChapter)
       curBook["chapters"].append(curChapter)
     toc.append(curBook)
 
