@@ -32,6 +32,7 @@ https://software.sil.org/downloads/r/gentium/GentiumPlus-6.101.zip
 Let's use GentiumPlus-6.101/GentiumPlus-Regular.ttf
 
 Launch the script
+ rm -rf html; mkdir html; ./test.py
 Also add the foreword:
 cp templates/Foreword.html  html/02-Foreword.html
 
@@ -198,8 +199,8 @@ markup=Sword.MarkupFilterMgr(outputType)
 markup.thisown=False
 mgr = Sword.SWMgr(markup)
 
-""" moduleName="SBLGNT"   """
-moduleName="FreCrampon" 
+moduleName="SBLGNT"   
+""" moduleName="FreCrampon" """
 
 mod=mgr.getModule(moduleName)
 versification=mod.getConfigEntry("Versification")
@@ -223,7 +224,7 @@ tocOffset=2
 
 uniqueID=tocOffset+1
 for cur in getAllBooks(versification):
-  if cur['testament']<=2:
+  if cur['testament']==2:
     tmpContent=createBook(moduleName,cur["abbr"],mgr)
     prefix=int(bookPrefix(cur["abbr"]))+tocOffset
     curBook={}
