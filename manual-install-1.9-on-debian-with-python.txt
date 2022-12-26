@@ -42,6 +42,11 @@ make
 make install
 mkdir -p /usr/local/sword/sword/modules
 
+# Check in wich actual directory has the python module been installed.
+# It is not necessarily /usr/local...../python3.9 . It can be python3.8 or something 
+# else according to your local system.
+# Change PYTHONPATH below so it point to the real place:
+
 mkdir ~/dev/swordstuff
 cat >> ~/dev/swordstuff/env-sword.sh <<EOF
 export PATH=$PATH:/usr/local/sword/bin/
