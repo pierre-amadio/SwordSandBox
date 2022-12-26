@@ -224,7 +224,8 @@ tocOffset=2
 
 uniqueID=tocOffset+1
 for cur in getAllBooks(versification):
-  if cur['testament']==2:
+  """ use ur['testament']==2 if you only need the new testament (such as with MorphGNT)"""
+  if cur['testament']!=4:
     tmpContent=createBook(moduleName,cur["abbr"],mgr)
     prefix=int(bookPrefix(cur["abbr"]))+tocOffset
     curBook={}
