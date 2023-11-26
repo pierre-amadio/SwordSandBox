@@ -199,7 +199,8 @@ markup=Sword.MarkupFilterMgr(outputType)
 markup.thisown=False
 mgr = Sword.SWMgr(markup)
 
-moduleName="SBLGNT"   
+#moduleName="SBLGNT"   
+moduleName="HebDelitzsch"   
 """ moduleName="FreCrampon" """
 
 mod=mgr.getModule(moduleName)
@@ -224,8 +225,9 @@ tocOffset=2
 
 uniqueID=tocOffset+1
 for cur in getAllBooks(versification):
-  """ use ur['testament']==2 if you only need the new testament (such as with MorphGNT)"""
-  if cur['testament']!=4:
+  """ use cur['testament']==2 if you only need the new testament (such as with MorphGNT)"""
+  """ use something that never occurs such as cur['testament']==4 otherwise """
+  if cur['testament']==2:
     tmpContent=createBook(moduleName,cur["abbr"],mgr)
     prefix=int(bookPrefix(cur["abbr"]))+tocOffset
     curBook={}
@@ -262,5 +264,9 @@ with open(fileOutput,"w") as f:
   f.write(htmlTocOutput)
 
 
+navTemplate = env.get_template("nav.xhtml")
+navOutput = navTemplate.render(books=toc)
+with open("nav.xhtml","w") as f:
+    f.write(navOutput)
 
 
