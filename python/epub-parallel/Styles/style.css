@@ -1,0 +1,16 @@
+.verseNbr{
+  font-size:60%;
+  font-weight: bold;
+  display:inline-block;
+  vertical-align: text-top;
+
+}
+
+@font-face {
+  font-family: "Gentium Plus"; 
+  src: url("../Fonts/GentiumPlus-Regular.ttf");
+}
+
+body {
+    font-family: "Gentium Plus"; 
+}
