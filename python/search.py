@@ -3,7 +3,7 @@
 import Sword
 import sys
 import urllib
-import urllib2
+import urllib3
 import os
 import time
 import pdb
@@ -52,7 +52,7 @@ def show_available_modules():
     mgr.configPath = "%s/mods.d" % swordDir
 
     for m in mgr.getModules().values():
-        print "%s -> %s "%(m.Name(),m.Description())
+        print( "%s -> %s "%(m.Name(),m.Description()))
 
 def get_info_from_refs(ref):
     reg=re.compile("^(\S+)\s+(\d+):(\d+)$")
@@ -63,7 +63,7 @@ def get_info_from_refs(ref):
         out['chapter']=search.group(2)
         out['verse']=search.group(3)
     else:
-        print "Cannot regexp '%s'"%ref
+        print("Cannot regexp '%s'"%ref)
         out={}
         out['abbr']='Gen'
         out['chapter']='1'
@@ -94,7 +94,7 @@ def display_verse(key,moduleName,outputType=Sword.FMT_PLAIN):
     mgr.setGlobalOption("Transliterated Forms","Off")
 
     if not mod:
-        print "No module"
+        print("No module")
         sys.exit()
     return mod.renderText()
 
@@ -129,16 +129,16 @@ def search(query,moduleName="ESV2011",searchType=0):
 #query="בקשׁ"
 #query="עמד"
 #query="אמד"
-#query="lemma:H0835" 
+query="lemma:H0835" 
 
 
-query="Word//Lemma./G0/"
+#query="Word//Lemma./G0/"
 
-result=search(query,"LXX",-3)
+result=search(query,"KJV",-3)
 for c in result:
-    print c
-    print display_verse(c,"LXX",Sword.FMT_HTML)
-    print "##"
+    print( c)
+    print(display_verse(c,"KJV",Sword.FMT_HTML))
+    print ("##")
 
 
 
